@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import smartcupon.modelo.pojo.Usuario;
 
 /**
  * FXML Controller class
@@ -19,6 +20,8 @@ import javafx.scene.control.Label;
  */
 public class FXMLHomeController implements Initializable {
 
+    Usuario usuario = null;
+    
     @FXML
     private Label lbNombreUsuario;
 
@@ -28,7 +31,12 @@ public class FXMLHomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
+
+    public void inicializarVariables(Usuario usuario) {
+        this.usuario = usuario;
+        lbNombreUsuario.setText(usuario.getNombre());
+    }
 
     @FXML
     private void btnIrPantallaEmpresa(ActionEvent event) {
@@ -47,7 +55,7 @@ public class FXMLHomeController implements Initializable {
     }
 
     @FXML
-    private void btnIrPantallaUsuarios(ActionEvent event) {
+    private void btnIrPantallaUsuario(ActionEvent event) {
     }
-    
+
 }

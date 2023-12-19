@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLInicioSesionController">
+<AnchorPane id="AnchorPane" prefHeight="558.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLInicioSesionController">
     <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
+      <Pane layoutX="452.0" prefHeight="569.0" prefWidth="419.0" style="-fx-background-color: white;">
+         <children>
+            <TextField fx:id="tfPassword" layoutX="85.0" layoutY="313.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu contraseña" style="-fx-background-color: #F4F6F6; -fx-border-radius: 30; -fx-background-radius: 30;" />
+            <TextField fx:id="tfUsername" layoutX="84.0" layoutY="239.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu usuario" style="-fx-background-color: #F4F6F6; -fx-border-radius: 30; -fx-background-radius: 30;" />
+            <Button layoutX="121.0" layoutY="377.0" mnemonicParsing="false" onAction="#btnIniciarSesion" prefHeight="27.0" prefWidth="195.0" style="-fx-background-color: #2d82d1; -fx-border-radius: 30; -fx-background-radius: 30;" text="Iniciar sesión" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Button>
+            <Label layoutX="108.0" layoutY="150.0" text="Ingresa a tu cuenta de SmartCupon">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="88.0" layoutY="82.0" text="Bienvenido">
+               <font>
+                  <Font name="System Bold" size="46.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbErrorUsername" layoutX="307.0" layoutY="276.0" text="Label" textFill="WHITE" />
+            <Label fx:id="lbErrorPassword" layoutX="307.0" layoutY="348.0" text="Label" textFill="WHITE" />
+            <Label layoutX="78.0" layoutY="214.0" text="Usuario" />
+            <Label layoutX="78.0" layoutY="285.0" text="Contraseña" />
+            <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="321.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../Downloads/user.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="321.0" layoutY="321.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../Downloads/lock.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutX="-5.0" prefHeight="569.0" prefWidth="457.0" style="-fx-background-color: white;">
+         <children>
+            <ImageView fitHeight="320.0" fitWidth="457.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Captura%20de%20pantalla%202023-12-18%20113955.png" />
+               </image>
+            </ImageView>
+         </children></Pane>
     </children>
 </AnchorPane>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="583.0" prefWidth="1018.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLAdminEmpresasController">
+   <children>
+      <Pane layoutX="32.0" layoutY="143.0" prefHeight="409.0" prefWidth="968.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Lista de promociones registradas">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <TableView layoutX="15.0" layoutY="45.0" prefHeight="347.0" prefWidth="939.0" style="-fx-background-color: transparent;">
+              <columns>
+                <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
+                <TableColumn fx:id="colDescripcion" prefWidth="75.0" text="Descripción" />
+                  <TableColumn fx:id="colFechaInicio" prefWidth="79.0" text="Fecha Inicio" />
+                  <TableColumn fx:id="colFechaTermino" prefWidth="89.0" text="Fecha Termino" />
+                  <TableColumn fx:id="colRestricciones" prefWidth="82.0" text="Restricciones" />
+                  <TableColumn fx:id="colTipo" prefWidth="65.0" text="Tipo" />
+                  <TableColumn fx:id="colPorcentajeDescuento" prefWidth="103.0" text="Porcentaje Descuento" />
+                  <TableColumn fx:id="colCategoria" prefWidth="52.0" text="Categoria" />
+                  <TableColumn fx:id="colCuponesDisponibles" prefWidth="118.0" text="Cupones Disponibles" />
+                  <TableColumn fx:id="colCodigo" prefWidth="65.0" text="Codigo" />
+                  <TableColumn fx:id="colEstatus" prefWidth="71.0" text="Estatus" />
+                  <TableColumn fx:id="ColEmpresa" prefWidth="64.0" text="Empresa" />
+              </columns>
+            </TableView>
+         </children></Pane>
+      <Pane layoutX="32.0" layoutY="19.0" prefHeight="62.0" prefWidth="968.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+         <children>
+            <TextField fx:id="tfBuscarPromocion" layoutX="14.0" layoutY="16.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 30;" />
+            <ImageView fitHeight="19.0" fitWidth="20.0" layoutX="204.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/search.png" />
+               </image></ImageView>
+         </children>
+      </Pane>
+      <Label layoutX="32.0" layoutY="94.0" text="Promociones">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Button layoutX="672.0" layoutY="97.0" mnemonicParsing="false" onAction="#btnRegistrar" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Registrar" textFill="WHITE" />
+      <Button layoutX="789.0" layoutY="97.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Editar" textFill="WHITE" />
+      <Button layoutX="898.0" layoutY="97.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Eliminar" textFill="WHITE" />
+   </children>
+</AnchorPane>

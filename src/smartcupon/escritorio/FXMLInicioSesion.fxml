@@ -30,8 +30,8 @@
                   <Font name="System Bold" size="46.0" />
                </font>
             </Label>
-            <Label fx:id="lbErrorUsername" layoutX="307.0" layoutY="276.0" text="Label" textFill="WHITE" />
-            <Label fx:id="lbErrorPassword" layoutX="307.0" layoutY="348.0" text="Label" textFill="WHITE" />
+            <Label fx:id="lbErrorUsername" layoutX="221.0" layoutY="276.0" prefHeight="17.0" prefWidth="180.0" text="Label" textFill="RED" />
+            <Label fx:id="lbErrorPassword" layoutX="221.0" layoutY="349.0" prefHeight="17.0" prefWidth="180.0" text="Label" textFill="RED" />
             <Label layoutX="78.0" layoutY="214.0" text="Usuario" />
             <Label layoutX="78.0" layoutY="285.0" text="Contraseña" />
             <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="321.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">

@@ -10,42 +10,42 @@ package smartcupon.modelo.pojo;
  * @author jegal
  */
 public class RespuestaInicioSesion {
-    
-    private String error;
+
+    private Boolean error;
     private String contenido;
-    private Usuario usuarioSesion;
+    private Usuario usuario;
 
     public RespuestaInicioSesion() {
     }
 
-    public RespuestaInicioSesion(String error, String contenido, Usuario usuarioSesion) {
+    public RespuestaInicioSesion(Boolean error, String contenido, Usuario usuarioSesion) {
         this.error = error;
         this.contenido = contenido;
-        this.usuarioSesion = usuarioSesion;
+        this.usuario = usuarioSesion;
     }
 
-    public String getError() {
+    public Boolean getError() {
         return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
     }
 
     public String getContenido() {
         return contenido;
     }
 
-    public Usuario getUsuarioSesion() {
-        return usuarioSesion;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
     public void setContenido(String contenido) {
         this.contenido = contenido;
     }
 
-    public void setUsuarioSesion(Usuario usuarioSesion) {
-        this.usuarioSesion = usuarioSesion;
+    public Usuario getUsuario() {
+        return usuario;
     }
-    
+
+    public void setUsuario(Usuario usuarioSesion) {
+        this.usuario = usuarioSesion;
+    }
+
 }

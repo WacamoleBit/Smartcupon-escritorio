@@ -13,7 +13,7 @@
     <children>
       <Pane layoutX="452.0" prefHeight="569.0" prefWidth="419.0" style="-fx-background-color: white;">
          <children>
-            <TextField fx:id="tfPassword" layoutX="85.0" layoutY="313.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu contraseña" style="-fx-background-color: #F4F6F6; -fx-border-radius: 30; -fx-background-radius: 30;" />
+            <PasswordField fx:id="tfPassword" layoutX="87.0" layoutY="313.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu contraseña" style="-fx-background-color: #F4F6F6; -fx-background-radius: 30;" />
             <TextField fx:id="tfUsername" layoutX="84.0" layoutY="239.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu usuario" style="-fx-background-color: #F4F6F6; -fx-border-radius: 30; -fx-background-radius: 30;" />
             <Button layoutX="121.0" layoutY="377.0" mnemonicParsing="false" onAction="#btnIniciarSesion" prefHeight="27.0" prefWidth="195.0" style="-fx-background-color: #2d82d1; -fx-border-radius: 30; -fx-background-radius: 30;" text="Iniciar sesión" textFill="WHITE">
                <font>

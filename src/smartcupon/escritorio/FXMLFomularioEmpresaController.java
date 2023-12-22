@@ -23,25 +23,23 @@ public class FXMLFomularioEmpresaController implements Initializable {
     @FXML
     private TextField tfNombre;
     @FXML
-    private TextField tfTelefono;
-    @FXML
-    private TextField tfCalle;
-    @FXML
-    private TextField tfNumero;
-    @FXML
-    private TextField tfCodigoPostal;
-    @FXML
-    private TextField tfCuidad;
-    @FXML
-    private TextField tfNombreEncargado;
-    @FXML
-    private TextField tfColonia;
-    @FXML
-    private TextField tfLatitud;
-    @FXML
-    private TextField tfLongitud;
-    @FXML
     private TextField tfEmpresaAsociada;
+    @FXML
+    private TextField tfApellidoPaterno;
+    @FXML
+    private TextField tfApellidoMaterno;
+    @FXML
+    private TextField tfCurp;
+    @FXML
+    private TextField tfUsername;
+    @FXML
+    private TextField tfRol;
+    @FXML
+    private TextField tfEmail;
+    @FXML
+    private TextField tfPassword;
+    @FXML
+    private TextField tfSucursalAsociada;
 
     /**
      * Initializes the controller class.

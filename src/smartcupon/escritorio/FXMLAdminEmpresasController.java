@@ -6,12 +6,19 @@
 package smartcupon.escritorio;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import smartcupon.modelo.dao.EmpresaDAO;
+import smartcupon.modelo.pojo.Empresa;
 
 /**
  * FXML Controller class
@@ -20,33 +27,32 @@ import javafx.scene.control.TextField;
  */
 public class FXMLAdminEmpresasController implements Initializable {
 
+    
+    private ObservableList<Empresa> empresas;
     @FXML
-    private TableColumn<?, ?> colNombre;
+    private TableColumn colNombre;
     @FXML
-    private TableColumn<?, ?> colEmail;
+    private TableColumn colEmail;
     @FXML
-    private TableColumn<?, ?> colApellidoPaterno;
+    private TableView<Empresa> tvEmpresas;
     @FXML
-    private TableColumn<?, ?> colApellidoMaterno;
+    private TableColumn colNombreComercial;
     @FXML
-    private TableColumn<?, ?> colCurp;
+    private TableColumn colPaginaWeb;
     @FXML
-    private TableColumn<?, ?> colUsername;
+    private TableColumn colRfc;
     @FXML
-    private TableColumn<?, ?> colPassword;
+    private TableColumn colEstatus;
     @FXML
-    private TableColumn<?, ?> colRol;
-    @FXML
-    private TableColumn<?, ?> colEmpresa;
-    @FXML
-    private TextField tfBuscarUsuario;
+    private TextField tfBuscarEmpresa;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        empresas = FXCollections.observableArrayList();
+        configurarColumnas();
     }    
 
     @FXML
@@ -60,5 +66,18 @@ public class FXMLAdminEmpresasController implements Initializable {
     @FXML
     private void btnEliminar(ActionEvent event) {
     }
+
+    private void configurarColumnas() {
+        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        colNombreComercial.setCellValueFactory(new PropertyValueFactory("nombreComercial"));
+        colRfc.setCellValueFactory(new PropertyValueFactory("rfc"));
+        colEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
+    }
     
+    public void consultarEmpresas(){
+        List<Empresa> listaEmpresas = EmpresaDAO.obtenerEstados();
+        empresas.addAll(listaEmpresas);
+        tvEmpresas.setItems(empresas);
+    }
 }

@@ -99,6 +99,7 @@ public class FXMLInicioSesionController implements Initializable {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLHome.fxml"));
             Parent vista = loader.load();
+            
             FXMLHomeController controller = loader.getController();
             controller.inicializarVariables(usuario);
 

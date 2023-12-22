@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import smartcupon.modelo.pojo.Usuario;
 
 /**
@@ -24,6 +25,18 @@ public class FXMLHomeController implements Initializable {
     
     @FXML
     private Label lbNombreUsuario;
+    @FXML
+    private Label lbEmpresa;
+    @FXML
+    private TextField tfEmpresa;
+    @FXML
+    private TextField tfCurp;
+    @FXML
+    private TextField tfEmail;
+    @FXML
+    private TextField tfRol;
+    @FXML
+    private TextField tfNombre;
 
     /**
      * Initializes the controller class.
@@ -36,10 +49,24 @@ public class FXMLHomeController implements Initializable {
     public void inicializarVariables(Usuario usuario) {
         this.usuario = usuario;
         lbNombreUsuario.setText(usuario.getNombre());
+        tfNombre.setText(usuario.getNombre() + " " + usuario.getApellidoPaterno() + " " + usuario.getApellidoMaterno());
+        tfCurp.setText(usuario.getCurp());
+        tfEmail.setText(usuario.getEmail());
+        tfRol.setText(usuario.getNombreRol());
+        
+        detectarRolUsuario();
+    }
+    
+    private void detectarRolUsuario() {
+        if(this.usuario.getRol() != 1){
+            lbEmpresa.setVisible(false);
+            tfEmpresa.setVisible(false);
+        }
     }
 
     @FXML
     private void btnIrPantallaEmpresa(ActionEvent event) {
+        
     }
 
     @FXML

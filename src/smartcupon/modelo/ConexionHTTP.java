@@ -85,6 +85,76 @@ public class ConexionHTTP {
 
         return respuesta;
     }
+    
+    public static CodigoHTTP peticionPUT(String url, String json) {
+        CodigoHTTP respuesta = new CodigoHTTP();
+
+        try {
+            URL urlServicio = new URL(url);
+            HttpURLConnection conexionHTTP = (HttpURLConnection) urlServicio.openConnection();
+
+            conexionHTTP.setRequestMethod("PUT");
+            conexionHTTP.setRequestProperty("Content-Type", "application/json");
+            conexionHTTP.setDoOutput(true);
+
+            //Escribir datos en el cuerpo de la peticion
+            OutputStream outputStream = conexionHTTP.getOutputStream();
+            outputStream.write(json.getBytes());
+            outputStream.flush();
+            outputStream.close();
+            //Termina la escritura
+
+            int codigoRespuesta = conexionHTTP.getResponseCode();
+            respuesta.setCodigoRespuesta(codigoRespuesta);
+
+            if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
+                respuesta.setContenido(deserializar(conexionHTTP.getInputStream()));
+            }
+        } catch (MalformedURLException ex) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_URL);
+            respuesta.setContenido("ERROR: " + ex.getMessage());
+        } catch (IOException ex) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_PETICION);
+            respuesta.setContenido("ERROR: " + ex.getMessage());
+        }
+
+        return respuesta;
+    }
+    
+    public static CodigoHTTP peticionDELETE(String url, String json) {
+        CodigoHTTP respuesta = new CodigoHTTP();
+
+        try {
+            URL urlServicio = new URL(url);
+            HttpURLConnection conexionHTTP = (HttpURLConnection) urlServicio.openConnection();
+
+            conexionHTTP.setRequestMethod("DELETE");
+            conexionHTTP.setRequestProperty("Content-Type", "application/json");
+            conexionHTTP.setDoOutput(true);
+
+            //Escribir datos en el cuerpo de la peticion
+            OutputStream outputStream = conexionHTTP.getOutputStream();
+            outputStream.write(json.getBytes());
+            outputStream.flush();
+            outputStream.close();
+            //Termina la escritura
+
+            int codigoRespuesta = conexionHTTP.getResponseCode();
+            respuesta.setCodigoRespuesta(codigoRespuesta);
+
+            if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
+                respuesta.setContenido(deserializar(conexionHTTP.getInputStream()));
+            }
+        } catch (MalformedURLException ex) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_URL);
+            respuesta.setContenido("ERROR: " + ex.getMessage());
+        } catch (IOException ex) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_PETICION);
+            respuesta.setContenido("ERROR: " + ex.getMessage());
+        }
+
+        return respuesta;
+    }
 
     private static String deserializar(InputStream contenido) throws IOException {
         InputStreamReader reader = new InputStreamReader(contenido);

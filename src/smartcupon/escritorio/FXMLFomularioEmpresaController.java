@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import smartcupon.modelo.pojo.DatosEmpresa;
 
 /**
  * FXML Controller class
@@ -20,26 +21,32 @@ import javafx.scene.image.ImageView;
  */
 public class FXMLFomularioEmpresaController implements Initializable {
 
+    private DatosEmpresa datosEmpresa;
+    
     @FXML
     private TextField tfNombre;
     @FXML
-    private TextField tfEmpresaAsociada;
-    @FXML
-    private TextField tfApellidoPaterno;
-    @FXML
-    private TextField tfApellidoMaterno;
-    @FXML
-    private TextField tfCurp;
-    @FXML
-    private TextField tfUsername;
-    @FXML
-    private TextField tfRol;
-    @FXML
     private TextField tfEmail;
     @FXML
-    private TextField tfPassword;
+    private TextField tfNombreComercial;
     @FXML
-    private TextField tfSucursalAsociada;
+    private TextField tfRepresentanteLegal;
+    @FXML
+    private TextField tfRfc;
+    @FXML
+    private TextField tfPaginaWeb;
+    @FXML
+    private TextField tfTelefono;
+    @FXML
+    private ImageView ivFoto;
+    @FXML
+    private TextField tfCalle;
+    @FXML
+    private TextField tfNumero;
+    @FXML
+    private TextField tfCodigoPostal;
+    @FXML
+    private TextField tfCuidad;
 
     /**
      * Initializes the controller class.
@@ -49,8 +56,22 @@ public class FXMLFomularioEmpresaController implements Initializable {
         // TODO
     }    
 
+    public void iniciarlizarInformacion(DatosEmpresa datosEmpresa){
+        if (datosEmpresa!=null) {
+            this.datosEmpresa=datosEmpresa;
+            rellenarCampos();
+        }
+    }
+    
     @FXML
     private void btnGuardar(ActionEvent event) {
+        
     }
+    
+    private void rellenarCampos(){
+        tfNombre.setText(datosEmpresa.getEmpresa().getNombre());
+        tfCodigoPostal.setText(datosEmpresa.getDireccion().getCodigoPostal());
+    }
+    
     
 }

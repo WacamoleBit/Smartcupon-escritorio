@@ -5,6 +5,7 @@
  */
 package smartcupon.escritorio;
 
+import com.sun.deploy.util.FXLoader;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,13 +13,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import smartcupon.modelo.dao.EmpresaDAO;
+import smartcupon.modelo.pojo.DatosEmpresa;
 import smartcupon.modelo.pojo.Empresa;
+import smartcupon.utils.Utilidades;
 
 /**
  * FXML Controller class
@@ -27,6 +36,7 @@ import smartcupon.modelo.pojo.Empresa;
  */
 public class FXMLAdminEmpresasController implements Initializable {
 
+    private DatosEmpresa datosEmpresa;
     
     private ObservableList<Empresa> empresas;
     @FXML
@@ -61,6 +71,30 @@ public class FXMLAdminEmpresasController implements Initializable {
 
     @FXML
     private void btnEditar(ActionEvent event) {
+        Empresa empresa = tvEmpresas.getSelectionModel().getSelectedItem();
+        if (empresa!= null) {
+            consultarInformacionEmpresa(empresa.getIdEmpresa());
+            datosEmpresa.setEmpresa(empresa);
+            
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFomularioEmpresa.fxml"));
+                Parent vista = loader.load();
+
+                FXMLFomularioEmpresaController controlador = loader.getController();
+                controlador.iniciarlizarInformacion(datosEmpresa);
+                
+                Stage stage = new Stage();
+                Scene escenaFormularioEdicion = new Scene(vista);
+                stage.setScene(escenaFormularioEdicion);
+                stage.setTitle("Formulario de empresa");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            Utilidades.mostrarAlertaSimple("Seleccion de empresa", "Para editar, debes seleccionar una empresa de la tabla", Alert.AlertType.WARNING);
+        }
     }
 
     @FXML
@@ -72,12 +106,17 @@ public class FXMLAdminEmpresasController implements Initializable {
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
         colNombreComercial.setCellValueFactory(new PropertyValueFactory("nombreComercial"));
         colRfc.setCellValueFactory(new PropertyValueFactory("rfc"));
-        colEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
+        colPaginaWeb.setCellValueFactory(new PropertyValueFactory("paginaWeb"));
+        colEstatus.setCellValueFactory(new PropertyValueFactory("nombreEstatus"));
     }
     
     public void consultarEmpresas(){
-        List<Empresa> listaEmpresas = EmpresaDAO.obtenerEstados();
+        List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
         empresas.addAll(listaEmpresas);
         tvEmpresas.setItems(empresas);
+    }
+    
+    private void consultarInformacionEmpresa(Integer idEmpresa){
+        datosEmpresa = EmpresaDAO.obtenerDatosEmpresa(idEmpresa);
     }
 }

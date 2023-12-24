@@ -22,11 +22,12 @@ public class Usuario {
     private Integer rol;
     private String nombreRol;
     private Integer empresa;
+    private String nombreEmpresa;
 
     public Usuario() {
     }
 
-    public Usuario(Integer idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String curp, String email, String username, String password, Integer rol, String nombreRol, Integer empresa) {
+    public Usuario(Integer idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String curp, String email, String username, String password, Integer rol, String nombreRol, Integer empresa, String nombreEmpresa) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -38,6 +39,7 @@ public class Usuario {
         this.rol = rol;
         this.nombreRol = nombreRol;
         this.empresa = empresa;
+        this.nombreEmpresa = nombreEmpresa;
     }
 
     public Integer getIdUsuario() {
@@ -126,6 +128,14 @@ public class Usuario {
 
     public void setEmpresa(Integer empresa) {
         this.empresa = empresa;
+    }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
     }
 
 }

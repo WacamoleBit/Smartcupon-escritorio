@@ -28,7 +28,7 @@ import smartcupon.modelo.pojo.Usuario;
 public class FXMLHomeController implements Initializable {
 
     Usuario usuario = null;
-    
+
     @FXML
     private Label lbNombreUsuario;
     @FXML
@@ -59,12 +59,12 @@ public class FXMLHomeController implements Initializable {
         tfCurp.setText(usuario.getCurp());
         tfEmail.setText(usuario.getEmail());
         tfRol.setText(usuario.getNombreRol());
-        
+
         detectarRolUsuario();
     }
-    
+
     private void detectarRolUsuario() {
-        if(this.usuario.getRol() != 1){
+        if (this.usuario.getRol() != 1) {
             lbEmpresa.setVisible(false);
             tfEmpresa.setVisible(false);
         }
@@ -72,23 +72,23 @@ public class FXMLHomeController implements Initializable {
 
     @FXML
     private void btnIrPantallaEmpresa(ActionEvent event) {
-         try {
-                FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminEmpresas.fxml"));
-                Parent vista = vistaLoader.load();
+        try {
+            FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminEmpresas.fxml"));
+            Parent vista = vistaLoader.load();
 
-                FXMLAdminEmpresasController controlador = vistaLoader.getController();
-                controlador.consultarEmpresas();
-                
-                Stage stage = new Stage();
-                Scene escenaFormularioEdicion = new Scene(vista);
-                stage.setScene(escenaFormularioEdicion);
-                stage.setTitle("Modificar Paciente");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.showAndWait();
+            FXMLAdminEmpresasController controlador = vistaLoader.getController();
+            controlador.consultarEmpresas();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Stage stage = new Stage();
+            Scene escenaFormularioEdicion = new Scene(vista);
+            stage.setScene(escenaFormularioEdicion);
+            stage.setTitle("Modificar Paciente");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -105,6 +105,22 @@ public class FXMLHomeController implements Initializable {
 
     @FXML
     private void btnIrPantallaUsuarios(ActionEvent event) {
+        try {
+            FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminUsuarios.fxml"));
+            Parent vista = vistaLoader.load();
+
+            FXMLAdminUsuariosController controlador = vistaLoader.getController();
+            controlador.inicializarInformacion(usuario);
+
+            Stage stage = new Stage();
+            Scene escenaFormularioEdicion = new Scene(vista);
+            stage.setScene(escenaFormularioEdicion);
+            stage.setTitle("Modificar Paciente");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

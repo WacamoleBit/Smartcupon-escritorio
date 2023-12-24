@@ -20,13 +20,14 @@ public class Empresa {
     private String telefono;
     private String paginaWeb;
     private String rfc;
-    private Integer estatus;
+    private Integer idEstatus;
+    private String nombreEstatus;
     private String logoBase64;
 
     public Empresa() {
     }
 
-    public Empresa(Integer idEmpresa, String nombre, String nombreComercial, byte[] logo, Integer representante, String email, Integer direccion, String telefono, String paginaWeb, String rfc, Integer estatus) {
+    public Empresa(Integer idEmpresa, String nombre, String nombreComercial, byte[] logo, Integer representante, String email, Integer direccion, String telefono, String paginaWeb, String rfc, Integer idEstatus, String nombreEstatus) {
         this.idEmpresa = idEmpresa;
         this.nombre = nombre;
         this.nombreComercial = nombreComercial;
@@ -37,8 +38,9 @@ public class Empresa {
         this.telefono = telefono;
         this.paginaWeb = paginaWeb;
         this.rfc = rfc;
-        this.estatus = estatus;
-    }
+        this.idEstatus = idEstatus;
+        this.nombreEstatus = nombreEstatus;
+    }    
 
     public Integer getIdEmpresa() {
         return idEmpresa;
@@ -120,14 +122,6 @@ public class Empresa {
         this.rfc = rfc;
     }
 
-    public Integer getEstatus() {
-        return estatus;
-    }
-
-    public void setEstatus(Integer estatus) {
-        this.estatus = estatus;
-    }
-
     public String getLogoBase64() {
         return logoBase64;
     }
@@ -136,6 +130,19 @@ public class Empresa {
         this.logoBase64 = logoBase64;
     }
 
-    
-    
+    public Integer getIdEstatus() {
+        return idEstatus;
+    }
+
+    public void setIdEstatus(Integer idEstatus) {
+        this.idEstatus = idEstatus;
+    }
+
+    public String getNombreEstatus() {
+        return nombreEstatus;
+    }
+
+    public void setNombreEstatus(String nombreEstatus) {
+        this.nombreEstatus = nombreEstatus;
+    }
 }

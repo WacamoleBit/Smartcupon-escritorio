@@ -10,10 +10,11 @@ package smartcupon.modelo.pojo;
  * @author Dell
  */
 public class Empresa {
+
     private Integer idEmpresa;
     private String nombre;
     private String nombreComercial;
-    private byte [] logo;
+    private byte[] logo;
     private Integer representante;
     private String email;
     private Integer direccion;
@@ -40,7 +41,7 @@ public class Empresa {
         this.rfc = rfc;
         this.idEstatus = idEstatus;
         this.nombreEstatus = nombreEstatus;
-    }    
+    }
 
     public Integer getIdEmpresa() {
         return idEmpresa;
@@ -145,4 +146,10 @@ public class Empresa {
     public void setNombreEstatus(String nombreEstatus) {
         this.nombreEstatus = nombreEstatus;
     }
+
+    @Override
+    public String toString() {
+        return nombreComercial;
+    }
+
 }

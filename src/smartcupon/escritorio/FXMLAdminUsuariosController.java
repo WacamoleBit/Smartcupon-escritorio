@@ -5,6 +5,7 @@
  */
 package smartcupon.escritorio;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,13 +13,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import smartcupon.modelo.dao.UsuarioDAO;
 import smartcupon.modelo.pojo.Usuario;
+import smartcupon.utils.Utilidades;
 
 /**
  * FXML Controller class
@@ -64,10 +72,50 @@ public class FXMLAdminUsuariosController implements Initializable {
 
     @FXML
     private void btnRegistrar(ActionEvent event) {
+        try {
+            FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLFormularioUsuario.fxml"));
+            Parent vista = vistaLoader.load();
+
+            FXMLFormularioUsuarioController controlador = vistaLoader.getController();
+
+            Stage stage = new Stage();
+            Scene escenaAdminUsuarios = new Scene(vista);
+            stage.setScene(escenaAdminUsuarios);
+            stage.setTitle("Registrar Usuario");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML
     private void btnEditar(ActionEvent event) {
+        int posicionSeleccionada = tvUsuarios.getSelectionModel().getSelectedIndex();
+
+        if (posicionSeleccionada != -1) {
+            try {
+
+                FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLFormularioUsuario.fxml"));
+                Parent vista = vistaLoader.load();
+
+                FXMLFormularioUsuarioController controlador = vistaLoader.getController();
+                controlador.iniciarVariables(posicionSeleccionada + 1);
+
+                Stage stage = new Stage();
+                Scene escenaAdminUsuarios = new Scene(vista);
+                stage.setScene(escenaAdminUsuarios);
+                stage.setTitle("Editar Usuario");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            Utilidades.mostrarAlertaSimple("Seleccion de usuario",
+                    "Para poder modificar debes seleccionar un usuario de la tabla",
+                    Alert.AlertType.WARNING);
+        }
     }
 
     @FXML
@@ -84,11 +132,6 @@ public class FXMLAdminUsuariosController implements Initializable {
         colPassword.setCellValueFactory(new PropertyValueFactory("password"));
         colRol.setCellValueFactory(new PropertyValueFactory("nombreRol"));
         colEmpresa.setCellValueFactory(new PropertyValueFactory("nombreEmpresa"));
-    }
-
-    public void inicializarInformacion(Usuario usuario) {
-        this.usuario = usuario;
-        
     }
 
     private void mostrarInformacionUsuarios() {

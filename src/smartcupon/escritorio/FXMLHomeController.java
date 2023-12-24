@@ -110,12 +110,11 @@ public class FXMLHomeController implements Initializable {
             Parent vista = vistaLoader.load();
 
             FXMLAdminUsuariosController controlador = vistaLoader.getController();
-            controlador.inicializarInformacion(usuario);
 
             Stage stage = new Stage();
-            Scene escenaFormularioEdicion = new Scene(vista);
-            stage.setScene(escenaFormularioEdicion);
-            stage.setTitle("Modificar Paciente");
+            Scene escenaAdminUsuarios = new Scene(vista);
+            stage.setScene(escenaAdminUsuarios);
+            stage.setTitle("Administrar Usuarios");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException ex) {

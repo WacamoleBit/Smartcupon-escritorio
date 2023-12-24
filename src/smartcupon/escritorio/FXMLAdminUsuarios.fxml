@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="583.0" prefWidth="833.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLAdminEmpresasController">
+<AnchorPane id="AnchorPane" prefHeight="583.0" prefWidth="833.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLAdminUsuariosController">
    <children>
       <Pane layoutX="32.0" layoutY="143.0" prefHeight="409.0" prefWidth="769.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
          <children>
@@ -17,7 +17,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TableView layoutX="15.0" layoutY="45.0" prefHeight="347.0" prefWidth="739.0" style="-fx-background-color: transparent;">
+            <TableView fx:id="tvUsuarios" layoutX="15.0" layoutY="45.0" prefHeight="347.0" prefWidth="739.0" style="-fx-background-color: transparent;">
               <columns>
                 <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
                 <TableColumn fx:id="colApellidoPaterno" prefWidth="118.0" text="Apellido Paterno" />

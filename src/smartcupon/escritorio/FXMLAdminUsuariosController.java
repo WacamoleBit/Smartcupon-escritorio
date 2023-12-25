@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,6 +26,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.dao.UsuarioDAO;
+import smartcupon.modelo.pojo.FiltroBuscarUsuario;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Usuario;
 import smartcupon.utils.Utilidades;
@@ -61,6 +63,12 @@ public class FXMLAdminUsuariosController implements Initializable {
     private TextField tfBuscarUsuario;
     @FXML
     private TableView<Usuario> tvUsuarios;
+    @FXML
+    private CheckBox cbPorNombre;
+    @FXML
+    private CheckBox cbPorUsername;
+    @FXML
+    private CheckBox cbPorRol;
 
     /**
      * Initializes the controller class.
@@ -85,7 +93,7 @@ public class FXMLAdminUsuariosController implements Initializable {
             stage.setTitle("Registrar Usuario");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-            
+
             mostrarInformacionUsuarios();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -111,7 +119,7 @@ public class FXMLAdminUsuariosController implements Initializable {
                 stage.setTitle("Editar Usuario");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
-                
+
                 mostrarInformacionUsuarios();
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -127,14 +135,14 @@ public class FXMLAdminUsuariosController implements Initializable {
     private void btnEliminar(ActionEvent event) {
         Mensaje mensaje = null;
         Integer idUsuario = tvUsuarios.getSelectionModel().getSelectedItem().getIdUsuario();
-        
+
         boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
                 "Eliminar usuario",
                 "¿Estás seguro que quieres eliminar este usuario?");
-        
+
         if (idUsuario != null && idUsuario > 0 && aceptar) {
             mensaje = UsuarioDAO.eliminarUsuario(idUsuario);
-            
+
             if (!mensaje.getError()) {
                 Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
                         mensaje.getMensaje(),
@@ -145,8 +153,30 @@ public class FXMLAdminUsuariosController implements Initializable {
                         Alert.AlertType.INFORMATION);
             }
         }
-        
+
         mostrarInformacionUsuarios();
+    }
+
+    @FXML
+    private void btnBuscar(ActionEvent event) {
+        boolean checkboxActivo = validarCheckBox();
+
+        if (!tfBuscarUsuario.getText().trim().isEmpty() && checkboxActivo) {
+            FiltroBuscarUsuario filtro = new FiltroBuscarUsuario();
+
+            filtro.setCadenaBusqueda(tfBuscarUsuario.getText());
+            filtro.setPorNombre(cbPorNombre.isSelected());
+            filtro.setPorRol(cbPorRol.isSelected());
+            filtro.setPorUsername(cbPorUsername.isSelected());
+
+            List<Usuario> lista = UsuarioDAO.buscarPorFiltro(filtro);
+
+            usuarios = FXCollections.observableArrayList(lista);
+
+            tvUsuarios.setItems(usuarios);
+        } else {
+            mostrarInformacionUsuarios();
+        }
     }
 
     private void configurarColumnasTabla() {
@@ -163,11 +193,16 @@ public class FXMLAdminUsuariosController implements Initializable {
 
     private void mostrarInformacionUsuarios() {
         tvUsuarios.setItems(null);
-        
+
         List<Usuario> respuesta = UsuarioDAO.obtenerTodos();
-        
+
         usuarios = FXCollections.observableArrayList(respuesta);
 
         tvUsuarios.setItems(usuarios);
     }
+
+    private boolean validarCheckBox() {
+        return cbPorNombre.isSelected() || cbPorRol.isSelected() || cbPorUsername.isSelected();
+    }
+
 }

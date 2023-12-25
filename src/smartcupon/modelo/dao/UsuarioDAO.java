@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import smartcupon.modelo.ConexionHTTP;
 import smartcupon.modelo.pojo.CodigoHTTP;
+import smartcupon.modelo.pojo.FiltroBuscarUsuario;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Usuario;
 import smartcupon.utils.Constantes;
@@ -80,7 +81,7 @@ public class UsuarioDAO {
     }
 
     public static List<Usuario> obtenerTodos() {
-        List<Usuario> usuarios = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList();
         String url = Constantes.URL_WS + "usuarios/obtenerTodos";
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
 
@@ -106,5 +107,22 @@ public class UsuarioDAO {
         }
 
         return usuario;
+    }
+    
+    public static List<Usuario> buscarPorFiltro(FiltroBuscarUsuario filtro) {
+        List<Usuario> usuarios = new ArrayList();
+        String parametros = String.format("?cadenaBusqueda=%s&porNombre=%s&porUsername=%s&porRol=%s", 
+                filtro.getCadenaBusqueda(), filtro.isPorNombre(), filtro.isPorUsername(), filtro.isPorRol());
+        String url = Constantes.URL_WS + "usuarios/buscarPorFiltro" + parametros;
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistUsuario = new TypeToken<ArrayList<Usuario>>() {
+            }.getType();
+            usuarios = gson.fromJson(respuesta.getContenido(), arraylistUsuario);
+        }
+
+        return usuarios;
     }
 }

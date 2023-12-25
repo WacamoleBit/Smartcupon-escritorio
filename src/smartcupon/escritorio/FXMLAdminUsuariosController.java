@@ -91,16 +91,16 @@ public class FXMLAdminUsuariosController implements Initializable {
 
     @FXML
     private void btnEditar(ActionEvent event) {
-        int posicionSeleccionada = tvUsuarios.getSelectionModel().getSelectedIndex();
+        Integer idUsuario = tvUsuarios.getSelectionModel().getSelectedItem().getIdUsuario();
 
-        if (posicionSeleccionada != -1) {
+        if (idUsuario != null) {
             try {
 
                 FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLFormularioUsuario.fxml"));
                 Parent vista = vistaLoader.load();
 
                 FXMLFormularioUsuarioController controlador = vistaLoader.getController();
-                controlador.iniciarVariables(posicionSeleccionada + 1);
+                controlador.iniciarVariables(idUsuario);
 
                 Stage stage = new Stage();
                 Scene escenaAdminUsuarios = new Scene(vista);
@@ -138,7 +138,7 @@ public class FXMLAdminUsuariosController implements Initializable {
 
     private void mostrarInformacionUsuarios() {
         List<Usuario> respuesta = UsuarioDAO.obtenerTodos();
-
+        
         usuarios = FXCollections.observableArrayList(respuesta);
 
         tvUsuarios.setItems(usuarios);

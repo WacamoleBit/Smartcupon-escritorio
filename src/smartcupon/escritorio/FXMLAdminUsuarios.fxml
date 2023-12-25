@@ -19,16 +19,19 @@
             </Label>
             <TableView fx:id="tvUsuarios" layoutX="15.0" layoutY="45.0" prefHeight="347.0" prefWidth="739.0" style="-fx-background-color: transparent;">
               <columns>
-                <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
-                <TableColumn fx:id="colApellidoPaterno" prefWidth="118.0" text="Apellido Paterno" />
-                  <TableColumn fx:id="colApellidoMaterno" prefWidth="113.0" text="Apellido Materno" />
-                  <TableColumn fx:id="colCurp" prefWidth="87.0" text="Curp" />
-                  <TableColumn fx:id="colEmail" prefWidth="77.0" text="Email" />
-                  <TableColumn fx:id="colUsername" prefWidth="74.0" text="Username" />
-                  <TableColumn fx:id="colPassword" prefWidth="75.0" text="Password" />
-                  <TableColumn fx:id="colRol" prefWidth="64.0" text="Rol" />
-                  <TableColumn fx:id="colEmpresa" prefWidth="55.0" text="Empresa" />
+                <TableColumn fx:id="colNombre" prefWidth="75.0" sortable="false" text="Nombre" />
+                <TableColumn fx:id="colApellidoPaterno" prefWidth="118.0" sortable="false" text="Apellido Paterno" />
+                  <TableColumn fx:id="colApellidoMaterno" prefWidth="113.0" sortable="false" text="Apellido Materno" />
+                  <TableColumn fx:id="colCurp" prefWidth="87.0" sortable="false" text="Curp" />
+                  <TableColumn fx:id="colEmail" prefWidth="77.0" sortable="false" text="Email" />
+                  <TableColumn fx:id="colUsername" prefWidth="74.0" sortable="false" text="Username" />
+                  <TableColumn fx:id="colPassword" prefWidth="75.0" sortable="false" text="Password" />
+                  <TableColumn fx:id="colRol" prefWidth="64.0" sortable="false" text="Rol" />
+                  <TableColumn fx:id="colEmpresa" prefWidth="55.0" sortable="false" text="Empresa" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
          </children></Pane>
       <Pane layoutX="32.0" layoutY="19.0" prefHeight="62.0" prefWidth="769.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">

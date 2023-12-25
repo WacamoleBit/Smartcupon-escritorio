@@ -25,7 +25,7 @@ public class UsuarioDAO {
 
     public static Mensaje registrarUsuario(Usuario usuario) {
         Mensaje mensaje = new Mensaje();
-        String url = Constantes.URL_WS + "/usuarios/registrarUsuario";
+        String url = Constantes.URL_WS + "usuarios/registrarUsuario";
 
         Gson gson = new Gson();
         String parametros = gson.toJson(usuario);
@@ -44,12 +44,12 @@ public class UsuarioDAO {
 
     public static Mensaje editarUsaurio(Usuario usuario) {
         Mensaje mensaje = new Mensaje();
-        String url = Constantes.URL_WS + "/usuarios/editarUsuario/" + usuario.getIdUsuario();
+        String url = Constantes.URL_WS + "usuarios/editarUsuario/" + usuario.getIdUsuario();
 
         Gson gson = new Gson();
         String parametros = gson.toJson(usuario);
 
-        CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
+        CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, parametros);
 
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);

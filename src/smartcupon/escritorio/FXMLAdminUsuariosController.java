@@ -108,6 +108,8 @@ public class FXMLAdminUsuariosController implements Initializable {
                 stage.setTitle("Editar Usuario");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
+                
+                tvUsuarios.refresh();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

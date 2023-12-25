@@ -270,7 +270,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
                         Alert.AlertType.INFORMATION);
             }
         } else {
-            mensaje = UsuarioDAO.editarUsaurio(usuario);
+            mensaje = UsuarioDAO.editarUsuario(usuario);
 
             if (!mensaje.getError()) {
                 Utilidades.mostrarAlertaSimple("Registro exitoso",

@@ -25,6 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.dao.UsuarioDAO;
+import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Usuario;
 import smartcupon.utils.Utilidades;
 
@@ -84,6 +85,8 @@ public class FXMLAdminUsuariosController implements Initializable {
             stage.setTitle("Registrar Usuario");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            
+            mostrarInformacionUsuarios();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -109,7 +112,7 @@ public class FXMLAdminUsuariosController implements Initializable {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
                 
-                tvUsuarios.refresh();
+                mostrarInformacionUsuarios();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -122,6 +125,28 @@ public class FXMLAdminUsuariosController implements Initializable {
 
     @FXML
     private void btnEliminar(ActionEvent event) {
+        Mensaje mensaje = null;
+        Integer idUsuario = tvUsuarios.getSelectionModel().getSelectedItem().getIdUsuario();
+        
+        boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
+                "Eliminar usuario",
+                "¿Estás seguro que quieres eliminar este usuario?");
+        
+        if (idUsuario != null && idUsuario > 0 && aceptar) {
+            mensaje = UsuarioDAO.eliminarUsuario(idUsuario);
+            
+            if (!mensaje.getError()) {
+                Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarAlertaSimple("Error al eliminar",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            }
+        }
+        
+        mostrarInformacionUsuarios();
     }
 
     private void configurarColumnasTabla() {
@@ -137,6 +162,8 @@ public class FXMLAdminUsuariosController implements Initializable {
     }
 
     private void mostrarInformacionUsuarios() {
+        tvUsuarios.setItems(null);
+        
         List<Usuario> respuesta = UsuarioDAO.obtenerTodos();
         
         usuarios = FXCollections.observableArrayList(respuesta);

@@ -21,33 +21,32 @@ import smartcupon.utils.Constantes;
  * @author jegal
  */
 public class ConexionHTTP {
-    
-    public static CodigoHTTP peticionGET(String url){
+
+    public static CodigoHTTP peticionGET(String url) {
         CodigoHTTP respuesta = new CodigoHTTP();
         try {
             URL urlServicio = new URL(url);
             HttpURLConnection conexionHTTP = (HttpURLConnection) urlServicio.openConnection();
-            
+
             conexionHTTP.setRequestMethod("GET");
-            
-            
+
             int codigoRespuesta = conexionHTTP.getResponseCode();
             respuesta.setCodigoRespuesta(codigoRespuesta);
-                
-            if(codigoRespuesta == HttpURLConnection.HTTP_OK){
+
+            if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
                 respuesta.setContenido(deserializar(conexionHTTP.getInputStream()));
-            }else{
-                respuesta.setContenido("CODE ERROR: "+codigoRespuesta);
+            } else {
+                respuesta.setContenido("CODE ERROR: " + codigoRespuesta);
             }
-            
+
         } catch (MalformedURLException ex) {
             respuesta.setCodigoRespuesta(Constantes.ERROR_URL);
             respuesta.setContenido("Error :" + ex.getMessage());
-        }catch(IOException ioe){
+        } catch (IOException ioe) {
             respuesta.setCodigoRespuesta(Constantes.ERROR_PETICION);
             respuesta.setContenido("Error :" + ioe.getMessage());
         }
-        
+
         return respuesta;
     }
 
@@ -85,7 +84,7 @@ public class ConexionHTTP {
 
         return respuesta;
     }
-    
+
     public static CodigoHTTP peticionPUT(String url, String json) {
         CodigoHTTP respuesta = new CodigoHTTP();
 
@@ -120,8 +119,8 @@ public class ConexionHTTP {
 
         return respuesta;
     }
-    
-    public static CodigoHTTP peticionDELETE(String url, String json) {
+
+    public static CodigoHTTP peticionDELETE(String url) {
         CodigoHTTP respuesta = new CodigoHTTP();
 
         try {
@@ -131,13 +130,6 @@ public class ConexionHTTP {
             conexionHTTP.setRequestMethod("DELETE");
             conexionHTTP.setRequestProperty("Content-Type", "application/json");
             conexionHTTP.setDoOutput(true);
-
-            //Escribir datos en el cuerpo de la peticion
-            OutputStream outputStream = conexionHTTP.getOutputStream();
-            outputStream.write(json.getBytes());
-            outputStream.flush();
-            outputStream.close();
-            //Termina la escritura
 
             int codigoRespuesta = conexionHTTP.getResponseCode();
             respuesta.setCodigoRespuesta(codigoRespuesta);

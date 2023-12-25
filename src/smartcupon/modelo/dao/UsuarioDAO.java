@@ -42,7 +42,7 @@ public class UsuarioDAO {
         return mensaje;
     }
 
-    public static Mensaje editarUsaurio(Usuario usuario) {
+    public static Mensaje editarUsuario(Usuario usuario) {
         Mensaje mensaje = new Mensaje();
         String url = Constantes.URL_WS + "usuarios/editarUsuario/" + usuario.getIdUsuario();
 
@@ -56,6 +56,24 @@ public class UsuarioDAO {
         } else {
             mensaje.setError(true);
             mensaje.setMensaje("Error en la petición para editar el usuario");
+        }
+
+        return mensaje;
+    }
+    
+    public static Mensaje eliminarUsuario(Integer idUsuario) {
+        Mensaje mensaje = new Mensaje();
+        String url = Constantes.URL_WS + "usuarios/eliminarUsuario/" + idUsuario;
+
+        Gson gson = new Gson();
+
+        CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error en la petición para eliminar el usuario");
         }
 
         return mensaje;

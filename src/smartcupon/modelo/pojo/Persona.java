@@ -12,7 +12,7 @@ package smartcupon.modelo.pojo;
 public class Persona {
     private Integer idPersona;
     private String nombre;
-    private String apellidoPäterno;
+    private String apellidoPaterno;
     private String apellidoMaterno;
     private Integer tipoPersona;
     private String nombreTipoPersona;
@@ -20,15 +20,17 @@ public class Persona {
     public Persona() {
     }
 
-    public Persona(Integer idPersona, String nombre, String apellidoPäterno, String apellidoMaterno, Integer tipoPersona, String nombreTipoPersona) {
+    public Persona(Integer idPersona, String nombre, String apellidoPaterno, String apellidoMaterno, Integer tipoPersona, String nombreTipoPersona) {
         this.idPersona = idPersona;
         this.nombre = nombre;
-        this.apellidoPäterno = apellidoPäterno;
+        this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.tipoPersona = tipoPersona;
         this.nombreTipoPersona = nombreTipoPersona;
     }
-
+    
+    
+    
     public Integer getIdPersona() {
         return idPersona;
     }
@@ -45,14 +47,14 @@ public class Persona {
         this.nombre = nombre;
     }
 
-    public String getApellidoPäterno() {
-        return apellidoPäterno;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
     }
 
-    public void setApellidoPäterno(String apellidoPäterno) {
-        this.apellidoPäterno = apellidoPäterno;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
     }
-
+    
     public String getApellidoMaterno() {
         return apellidoMaterno;
     }

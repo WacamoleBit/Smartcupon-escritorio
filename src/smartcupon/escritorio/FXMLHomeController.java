@@ -82,7 +82,7 @@ public class FXMLHomeController implements Initializable {
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
-            stage.setTitle("Modificar Paciente");
+            stage.setTitle("Gestión empresas");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
@@ -101,6 +101,23 @@ public class FXMLHomeController implements Initializable {
 
     @FXML
     private void btnIrPantallaSucursal(ActionEvent event) {
+        try {
+            FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminSucursales.fxml"));
+            Parent vista = vistaLoader.load();
+
+            FXMLAdminSucursalesController controlador = vistaLoader.getController();
+            controlador.consultarSucursales();
+
+            Stage stage = new Stage();
+            Scene escenaFormularioEdicion = new Scene(vista);
+            stage.setScene(escenaFormularioEdicion);
+            stage.setTitle("Gestión sucursales");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

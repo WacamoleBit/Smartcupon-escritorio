@@ -18,7 +18,7 @@ public class Direccion {
     private Integer ciudad;
     private Integer tipoDireccion;
     private Integer estado;
-
+    
     public Direccion() {
     }
 

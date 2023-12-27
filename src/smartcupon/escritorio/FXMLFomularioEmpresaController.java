@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import smartcupon.modelo.pojo.DatosEmpresa;
@@ -26,7 +27,13 @@ public class FXMLFomularioEmpresaController implements Initializable {
     @FXML
     private TextField tfNombre;
     @FXML
-    private TextField tfEmail;
+    private TextField tfTelefono;
+    @FXML
+    private TextField tfCalle;
+    @FXML
+    private TextField tfNumero;
+    @FXML
+    private TextField tfCodigoPostal;
     @FXML
     private TextField tfNombreComercial;
     @FXML
@@ -36,15 +43,9 @@ public class FXMLFomularioEmpresaController implements Initializable {
     @FXML
     private TextField tfPaginaWeb;
     @FXML
-    private TextField tfTelefono;
+    private TextField tfEmail;
     @FXML
     private ImageView ivFoto;
-    @FXML
-    private TextField tfCalle;
-    @FXML
-    private TextField tfNumero;
-    @FXML
-    private TextField tfCodigoPostal;
     @FXML
     private TextField tfCuidad;
 

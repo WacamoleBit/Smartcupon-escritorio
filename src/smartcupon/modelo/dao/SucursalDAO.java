@@ -16,6 +16,7 @@ import smartcupon.modelo.ConexionHTTP;
 import smartcupon.modelo.pojo.CodigoHTTP;
 import smartcupon.modelo.pojo.DatosSucursal;
 import smartcupon.modelo.pojo.Empresa;
+import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Sucursal;
 import smartcupon.utils.Constantes;
 
@@ -50,5 +51,23 @@ public class SucursalDAO {
     
         return datosSucursal;
     }
+    
+    public static Mensaje registrarSucursal(DatosSucursal datosSucursal){
+        Mensaje mensaje = new Mensaje();
+        String url = Constantes.URL_WS+"sucursales/registrarSucursal";
+        Gson gson = new Gson();
+        String json = gson.toJson(datosSucursal);
+        System.out.println(json);
+        CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, json);
+        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        }else{
+            mensaje.setMensaje("Error en la peticion para registrar la sucursal");
+        }
+        
+        return mensaje;
+    }
+    
+    
     
 }

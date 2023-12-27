@@ -69,11 +69,15 @@
             <TextField fx:id="tfColonia" layoutX="194.0" layoutY="133.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
             <Label layoutX="195.0" layoutY="106.0" text="Colonia" />
             <Label layoutX="469.0" layoutY="37.0" text="Estado" />
-            <ComboBox fx:id="cbEstado" layoutX="399.0" layoutY="62.0" prefHeight="25.0" prefWidth="176.0" visibleRowCount="5" />
-            <ComboBox fx:id="cbCiudad" layoutX="399.0" layoutY="133.0" prefHeight="25.0" prefWidth="176.0" />
+            <ComboBox fx:id="cbEstado" layoutX="399.0" layoutY="62.0" prefHeight="25.0" prefWidth="176.0" style="-fx-background-color: white; -fx-background-radius: 30;" visibleRowCount="5" />
+            <ComboBox fx:id="cbCiudad" layoutX="399.0" layoutY="133.0" prefHeight="25.0" prefWidth="176.0" style="-fx-background-color: white; -fx-background-radius: 30;" />
          </children>
       </Pane>
-      <Label layoutX="502.0" layoutY="74.0" text="Empresa asociada" />
-      <TextField fx:id="tfEmpresaAsociada" layoutX="467.0" layoutY="99.0" prefHeight="25.0" prefWidth="165.0" style="-fx-background-radius: 30; -fx-background-color: #F4F6F6;" />
+      <Pane layoutX="434.0" layoutY="45.0" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+         <children>
+            <Label layoutX="53.0" layoutY="14.0" text="Empresa asociada" />
+            <ComboBox fx:id="cbEmpresa" layoutX="12.0" layoutY="40.0" prefHeight="25.0" prefWidth="176.0" style="-fx-background-color: white; -fx-background-radius: 30;" visibleRowCount="5" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

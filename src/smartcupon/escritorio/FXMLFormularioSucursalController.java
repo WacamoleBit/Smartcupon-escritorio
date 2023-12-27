@@ -15,14 +15,22 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 import smartcupon.modelo.dao.DireccionDAO;
+import smartcupon.modelo.dao.EmpresaDAO;
 import smartcupon.modelo.dao.SucursalDAO;
 import smartcupon.modelo.pojo.Ciudad;
 import smartcupon.modelo.pojo.DatosSucursal;
+import smartcupon.modelo.pojo.Direccion;
+import smartcupon.modelo.pojo.Empresa;
 import smartcupon.modelo.pojo.Estado;
+import smartcupon.modelo.pojo.Mensaje;
+import smartcupon.modelo.pojo.Persona;
+import smartcupon.modelo.pojo.Sucursal;
+import smartcupon.utils.Utilidades;
 
 /**
  * FXML Controller class
@@ -35,6 +43,7 @@ public class FXMLFormularioSucursalController implements Initializable {
     
     private ObservableList<Estado> estados;
     private ObservableList<Ciudad> ciudades;
+    private ObservableList<Empresa> empresas;
     
     @FXML
     private TextField tfNombre;
@@ -61,9 +70,9 @@ public class FXMLFormularioSucursalController implements Initializable {
     @FXML
     private ComboBox<Ciudad> cbCiudad;
     @FXML
-    private TextField tfEmpresaAsociada;
-    @FXML
     private TextField tfApellidoMaterno;
+    @FXML
+    private ComboBox<Empresa> cbEmpresa;
 
     /**
      * Initializes the controller class.
@@ -72,14 +81,21 @@ public class FXMLFormularioSucursalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.cargarInformacionEstados();
         this.configurarSeleccionEstado();
+        this.cargarInformacionEmpresas();
     }    
 
     @FXML
     private void btnGuardar(ActionEvent event) {
+        if(datosSucursal!= null){
+            editarSucursal();
+        }else{
+            registrarSucursal();
+        }
+        
     }
     
     public void inicializarInformacion(DatosSucursal datosSucursal){
-        if(datosSucursal!= null){
+        if(datosSucursal!= null && datosSucursal.getSucursal()!=null && datosSucursal.getPersona()!=null && datosSucursal.getDireccion()!=null){
             this.datosSucursal = datosSucursal;
             rellenarCampos();
         }
@@ -90,9 +106,13 @@ public class FXMLFormularioSucursalController implements Initializable {
         tfTelefono.setText(datosSucursal.getSucursal().getTelefono());
         tfLatitud.setText(datosSucursal.getSucursal().getLatitud().toString());
         tfLongitud.setText(datosSucursal.getSucursal().getLongitud().toString());
+        int numeroEmpresa = buscarIdEmpresa(datosSucursal.getSucursal().getEmpresa());
+        cbEmpresa.getSelectionModel().select(numeroEmpresa);
+        
         tfNombreEncargado.setText(datosSucursal.getPersona().getNombre());
         tfApellidoMaterno.setText(datosSucursal.getPersona().getApellidoMaterno());
         tfApellidoPaterno.setText(datosSucursal.getPersona().getApellidoPaterno());
+        
         tfCalle.setText(datosSucursal.getDireccion().getCalle());
         tfCodigoPostal.setText(datosSucursal.getDireccion().getCodigoPostal());
         tfColonia.setText(datosSucursal.getDireccion().getColonia());
@@ -103,12 +123,63 @@ public class FXMLFormularioSucursalController implements Initializable {
         cbCiudad.getSelectionModel().select(numeroCiudad);
     }
     
+    
+    private void registrarSucursal(){
+        
+        datosSucursal = new DatosSucursal();
+        
+        Sucursal sucursal = new Sucursal();
+        Persona encargado = new Persona();
+        Direccion direccion = new Direccion();
+        
+        sucursal.setNombre(tfNombre.getText());
+        sucursal.setTelefono(tfTelefono.getText());
+        sucursal.setLatitud(Double.parseDouble(tfLatitud.getText()));
+        sucursal.setLongitud(Double.parseDouble(tfLongitud.getText()));
+        sucursal.setEmpresa(cbEmpresa.getSelectionModel().getSelectedIndex());
+        
+        encargado.setNombre(tfNombreEncargado.getText());
+        encargado.setApellidoPaterno(tfApellidoPaterno.getText());
+        encargado.setApellidoMaterno(tfApellidoMaterno.getText());
+        
+        direccion.setCalle(tfCalle.getText());
+        direccion.setNumero(Integer.parseInt(tfNumero.getText()));
+        direccion.setColonia(tfColonia.getText());
+        direccion.setCodigoPostal(tfCodigoPostal.getText());
+        direccion.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex());
+        
+        datosSucursal.setSucursal(sucursal);
+        datosSucursal.setPersona(encargado);
+        datosSucursal.setDireccion(direccion);
+        
+        rellenarSucursal(datosSucursal);
+    }
+    
+    private void rellenarSucursal(DatosSucursal datosSucursal){
+        Mensaje respuesta = SucursalDAO.registrarSucursal(datosSucursal);
+        if(!respuesta.getError()){
+            Utilidades.mostrarAlertaSimple("Sucursal regustrada",respuesta.getMensaje(), Alert.AlertType.INFORMATION);
+        }else{
+            Utilidades.mostrarAlertaSimple("Error", respuesta.getMensaje(), Alert.AlertType.WARNING);
+        }
+    }
+    
        private void cargarInformacionEstados() {
         estados = FXCollections.observableArrayList();
         List<Estado> listaEstados = DireccionDAO.obtenerEstados();
         estados.addAll(listaEstados);
         cbEstado.setItems(estados);
+        
     }
+       
+       private void cargarInformacionEmpresas(){
+           empresas = FXCollections.observableArrayList();
+           List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
+           empresas.addAll(listaEmpresas);
+           cbEmpresa.setItems(empresas);
+           
+           
+       }
        
         private void configurarSeleccionEstado() {
         cbEstado.valueProperty().addListener(new ChangeListener<Estado>(){
@@ -140,10 +211,24 @@ public class FXMLFormularioSucursalController implements Initializable {
     
     private int buscarIdCiudad(Integer idCiudad){
         for (int i=0; i < ciudades.size();i++){
-            if(estados.get(i).getIdEstado() == idCiudad){
+            if(ciudades.get(i).getIdCiudad() == idCiudad){
                 return i;
             }
         }
         return 0;
+    }
+    
+    private int buscarIdEmpresa(int idEmpresa) {
+        for (int i = 0; i < empresas.size(); i++) {
+            if (empresas.get(i).getIdEmpresa() == idEmpresa) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private void editarSucursal() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

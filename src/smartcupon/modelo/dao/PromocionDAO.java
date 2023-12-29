@@ -61,6 +61,24 @@ public class PromocionDAO {
 
         return mensaje;
     }
+    
+    public static Mensaje eliminarPromocion(Integer idPromocion) {
+        Mensaje mensaje = new Mensaje();
+        String url = Constantes.URL_WS + "promociones/eliminarPromocion/" + idPromocion;
+
+        Gson gson = new Gson();
+
+        CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error en la petición para eliminar la promoción");
+        }
+
+        return mensaje;
+    }
 
     public static List<TipoPromocion> obtenerTiposPromocion() {
         List<TipoPromocion> tiposPromocion = new ArrayList();

@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -24,7 +25,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.dao.PromocionDAO;
+import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Promocion;
+import smartcupon.utils.Utilidades;
 
 /**
  * FXML Controller class
@@ -34,7 +37,7 @@ import smartcupon.modelo.pojo.Promocion;
 public class FXMLAdminPromocionesController implements Initializable {
 
     private ObservableList<Promocion> promociones;
-    
+
     @FXML
     private TableColumn<?, ?> colNombre;
     @FXML
@@ -71,7 +74,7 @@ public class FXMLAdminPromocionesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnasTabla();
         mostrarInformacionPromociones();
-    }    
+    }
 
     @FXML
     private void btnRegistrar(ActionEvent event) {
@@ -100,6 +103,29 @@ public class FXMLAdminPromocionesController implements Initializable {
 
     @FXML
     private void btnEliminar(ActionEvent event) {
+        Mensaje mensaje = null;
+
+        Integer idPromocion = tvPromociones.getSelectionModel().getSelectedItem().getIdPromocion();
+
+        boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
+                "Eliminar promoción",
+                "¿Estás seguro de que quieres eliminar este usuario?");
+
+        if (idPromocion != null && idPromocion > 0 && aceptar) {
+            mensaje = PromocionDAO.eliminarPromocion(idPromocion);
+
+            if (!mensaje.getError()) {
+                Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarAlertaSimple("Error al eliminar",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            }
+        }
+
+        mostrarInformacionPromociones();
     }
 
     private void configurarColumnasTabla() {
@@ -119,12 +145,12 @@ public class FXMLAdminPromocionesController implements Initializable {
 
     private void mostrarInformacionPromociones() {
         tvPromociones.setItems(null);
-        
+
         List<Promocion> respuesta = PromocionDAO.obtenerPromociones();
-        
+
         promociones = FXCollections.observableArrayList(respuesta);
-        
+
         tvPromociones.setItems(promociones);
     }
-    
+
 }

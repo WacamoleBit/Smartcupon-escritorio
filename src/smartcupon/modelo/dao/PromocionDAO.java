@@ -12,8 +12,12 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import smartcupon.modelo.ConexionHTTP;
+import smartcupon.modelo.pojo.Categoria;
 import smartcupon.modelo.pojo.CodigoHTTP;
+import smartcupon.modelo.pojo.DatosPromocion;
+import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Promocion;
+import smartcupon.modelo.pojo.TipoPromocion;
 import smartcupon.utils.Constantes;
 
 /**
@@ -37,4 +41,54 @@ public class PromocionDAO {
         return promociones;
     }
 
+    public static Mensaje registrarPromocion(Promocion promocion) {
+        Mensaje mensaje = new Mensaje();
+        DatosPromocion datos = new DatosPromocion();
+        datos.setPromocion(promocion);
+        String url = Constantes.URL_WS + "promociones/registrarPromocion";
+
+        Gson gson = new Gson();
+        String parametros = gson.toJson(datos);
+
+        CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error en la petición para crear el usuario");
+        }
+
+        return mensaje;
+    }
+
+    public static List<TipoPromocion> obtenerTiposPromocion() {
+        List<TipoPromocion> tiposPromocion = new ArrayList();
+        String url = Constantes.URL_WS + "promociones/obtenerTiposPromocion";
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistTiposPromocion = new TypeToken<ArrayList<TipoPromocion>>() {
+            }.getType();
+            tiposPromocion = gson.fromJson(respuesta.getContenido(), arraylistTiposPromocion);
+        }
+
+        return tiposPromocion;
+    }
+
+    public static List<Categoria> obtenerCategorias() {
+        List<Categoria> categorias = new ArrayList();
+        String url = Constantes.URL_WS + "promociones/obtenerCategorias";
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistCategorias = new TypeToken<ArrayList<Categoria>>() {
+            }.getType();
+            categorias = gson.fromJson(respuesta.getContenido(), arraylistCategorias);
+        }
+
+        return categorias;
+    }
 }

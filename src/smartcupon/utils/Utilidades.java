@@ -6,9 +6,11 @@
 package smartcupon.utils;
 
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextFormatter;
 
 /**
  *
@@ -38,5 +40,28 @@ public class Utilidades {
         Optional<ButtonType> resultado = alerta.showAndWait();
         
         return resultado.orElse(botonCancelar) == botonAceptar;
+    }
+    
+    public static TextFormatter<String> configurarFiltroNumeros() {
+        // Se crea el nuevo comportamiento, que se activa cuando se ingresa texto en
+        // el componente asignado.
+        UnaryOperator<TextFormatter.Change> filtro = change -> {
+            
+            //Obtiene la cadena de texto que se intenta ingresar
+            String cadena = change.getControlNewText();
+            
+            // Verifica si la cadena contiene solo dígitos
+            if (cadena.matches("\\d*")) { // \\d* significa: "cero o mas difitos"
+                
+                // Si se cumple la condifión, se actaliza el cambio.
+                return change;
+            } else {
+                
+                //Si no se cumple, la cadena regresa null y no se actualiza la cadena
+                return null;
+            }
+        };
+        
+        return new TextFormatter<>(filtro);
     }
 }

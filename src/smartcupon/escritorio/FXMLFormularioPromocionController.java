@@ -6,6 +6,7 @@
 package smartcupon.escritorio;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -118,12 +119,22 @@ public class FXMLFormularioPromocionController implements Initializable {
         configurarCamposNumericos();
     }
 
+    public void inicializarDatos(Integer idPromocion) {
+        this.promocion = PromocionDAO.obtenerPorId(idPromocion);
+        cargarInformacionPromocion();
+        cbEstatus.setDisable(false);
+    }
+
     @FXML
     private void btnGuardar(ActionEvent event) {
         ocultarLabelsError();
 
         if (promocion == null) {
             promocion = new Promocion();
+        } else {
+            promocion.setEstatus(
+                    cbEstatus.getSelectionModel().getSelectedIndex() + 1
+            );
         }
 
         if (validarDatos()) {
@@ -145,7 +156,6 @@ public class FXMLFormularioPromocionController implements Initializable {
                     Integer.parseInt(tfMaximoCupones.getText())
             );
             promocion.setCodigoPromocion(tfCodigoPromocion.getText());
-            promocion.setEstatus(cbEstatus.getSelectionModel().getSelectedIndex());
             promocion.setEmpresa(
                     cbCategoria.getValue().getIdCategoria()
             );
@@ -329,9 +339,23 @@ public class FXMLFormularioPromocionController implements Initializable {
                         mensaje.getMensaje(),
                         Alert.AlertType.INFORMATION);
             }
-        }
 
-        limpiarCampos();
+            limpiarCampos();
+        } else {
+            mensaje = PromocionDAO.editarPromocion(promocion);
+
+            if (!mensaje.getError()) {
+                Utilidades.mostrarAlertaSimple("Edición exitosa",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarAlertaSimple("Error al editar",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            }
+
+            cargarInformacionPromocion();
+        }
     }
 
     private void limpiarCampos() {
@@ -345,8 +369,61 @@ public class FXMLFormularioPromocionController implements Initializable {
         dpFechaInicio.setValue(null);
         dpFechaTermino.setValue(null);
         cbEmpresa.setValue(null);
-        cbEstatus.setValue(ESTILOERROR);
+        cbEstatus.getSelectionModel().selectFirst();
         cbCategoria.setValue(null);
+    }
+
+    private void cargarInformacionPromocion() {
+        tfNombre.setText(promocion.getNombre());
+        tfDescripcion.setText(promocion.getDescripcion());
+        tfRestricciones.setText(promocion.getRestricciones());
+        cbTipoPromocion.getSelectionModel().select(
+                buscarIdTipoPromocion(promocion.getTipoPromocion())
+        );
+        tfCostoDescuento.setText(promocion.getPorcentajeDescuento().toString());
+        tfMaximoCupones.setText(promocion.getMaximoCupones().toString());
+        tfCodigoPromocion.setText(promocion.getCodigoPromocion());
+        dpFechaInicio.setValue(LocalDate.parse(promocion.getFechaInicio()));
+        dpFechaTermino.setValue(LocalDate.parse(promocion.getFechaTermino()));
+        cbCategoria.getSelectionModel().select(
+                buscarIdCategoria(promocion.getCategoria())
+        );
+        cbEstatus.getSelectionModel().select(
+                promocion.getEstatus() - 1
+        );
+        cbEmpresa.getSelectionModel().select(
+                buscarIdEmpresa(promocion.getEmpresa())
+        );
+    }
+
+    public int buscarIdTipoPromocion(int idTipoPromocion) {
+        for (int i = 0; i < tiposPromocion.size(); i++) {
+            if (tiposPromocion.get(i).getIdTipoPromocion() == idTipoPromocion) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    public int buscarIdCategoria(int idCategoria) {
+        for (int i = 0; i < categorias.size(); i++) {
+            if (categorias.get(i).getIdCategoria() == idCategoria) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    public int buscarIdEmpresa(int idEmpresa) {
+        for (int i = 0; i < empresas.size(); i++) {
+            if (empresas.get(i).getIdEmpresa() == idEmpresa) {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
 }

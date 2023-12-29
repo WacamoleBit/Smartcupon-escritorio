@@ -99,6 +99,33 @@ public class FXMLAdminPromocionesController implements Initializable {
 
     @FXML
     private void btnEditar(ActionEvent event) {
+        Integer idPromocion = tvPromociones.getSelectionModel().getSelectedItem().getIdPromocion();
+
+        if (idPromocion != null) {
+            try {
+                FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLFormularioPromocion.fxml"));
+                Parent vista = vistaLoader.load();
+
+                FXMLFormularioPromocionController controlador = vistaLoader.getController();
+                controlador.inicializarDatos(idPromocion);
+
+                Stage stage = new Stage();
+                Scene escenaFormularioPromocion = new Scene(vista);
+                stage.setScene(escenaFormularioPromocion);
+                stage.setTitle("Editar Promoción");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+
+                mostrarInformacionPromociones();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        } else {
+            Utilidades.mostrarAlertaSimple("Seleccion de usuario",
+                    "Para poder modificar debes seleccionar un usuario de la tabla",
+                    Alert.AlertType.WARNING);
+        }
     }
 
     @FXML

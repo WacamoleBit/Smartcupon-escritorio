@@ -79,6 +79,41 @@ public class PromocionDAO {
 
         return mensaje;
     }
+    
+    public static Mensaje editarPromocion(Promocion promocion) {
+        Mensaje mensaje = new Mensaje();
+        DatosPromocion datos = new DatosPromocion();
+        datos.setPromocion(promocion);
+        String url = Constantes.URL_WS + "promociones/editarPromocion";
+
+        Gson gson = new Gson();
+        String parametros = gson.toJson(datos);
+
+        CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, parametros);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error en la petición para crear el usuario");
+        }
+
+        return mensaje;
+    }
+
+    public static Promocion obtenerPorId(Integer idPromocion) {
+        Promocion promocion = new Promocion();
+        String url = Constantes.URL_WS + "promociones/obtenerPorId/" + idPromocion;
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+
+            promocion = gson.fromJson(respuesta.getContenido(), Promocion.class);
+        }
+
+        return promocion;
+    }
 
     public static List<TipoPromocion> obtenerTiposPromocion() {
         List<TipoPromocion> tiposPromocion = new ArrayList();

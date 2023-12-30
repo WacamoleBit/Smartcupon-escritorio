@@ -8,6 +8,8 @@ package smartcupon.escritorio;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -17,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import smartcupon.modelo.dao.EmpresaDAO;
 import smartcupon.modelo.dao.RolDAO;
@@ -64,6 +67,24 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private ComboBox<Rol> cbRol;
     @FXML
     private ComboBox<Empresa> cbEmpresaAsociada;
+    @FXML
+    private Label lbErrorNombre;
+    @FXML
+    private Label lbErrorApellidoPaterno;
+    @FXML
+    private Label lbErrorApellidoMaterno;
+    @FXML
+    private Label lbErrorCURP;
+    @FXML
+    private Label lbErrorUsername;
+    @FXML
+    private Label lbErrorEmail;
+    @FXML
+    private Label lbErrorRol;
+    @FXML
+    private Label lbErrorPassword;
+    @FXML
+    private Label lbErrorEmpresa;
 
     /**
      * Initializes the controller class.
@@ -73,6 +94,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         cargarInformacionRoles();
         cargarInformacionEmpresas();
         configurarSeleccionRol();
+        ocultarLabelsError();
     }
 
     public void iniciarVariables(int idUsuario) {
@@ -146,7 +168,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         empresas = FXCollections.observableArrayList();
         empresas.addAll(todas);
 
-        cbEmpresaAsociada.setItems(empresas);;
+        cbEmpresaAsociada.setItems(empresas);
     }
 
     private int buscarIdRol(int idRol) {
@@ -188,6 +210,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         if (tfNombre.getText().trim().isEmpty()) {
             valido = false;
             tfNombre.setStyle(ESTILOERROR);
+            lbErrorNombre.setText("Ingrese nombre");
         } else {
             tfNombre.setStyle(ESTILODEFAULT);
         }
@@ -195,6 +218,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         if (tfApellidoPaterno.getText().trim().isEmpty()) {
             valido = false;
             tfApellidoPaterno.setStyle(ESTILOERROR);
+            lbErrorApellidoPaterno.setText("Ingrese apellido paterno");
         } else {
             tfApellidoPaterno.setStyle(ESTILODEFAULT);
         }
@@ -202,13 +226,24 @@ public class FXMLFormularioUsuarioController implements Initializable {
         if (tfApellidoMaterno.getText().trim().isEmpty()) {
             valido = false;
             tfApellidoMaterno.setStyle(ESTILOERROR);
+            lbErrorApellidoMaterno.setText("Ingrese apellido materno");
         } else {
             tfApellidoMaterno.setStyle(ESTILODEFAULT);
+        }
+        
+        if (!tfCurp.getText().trim().isEmpty()
+                && !validarCURP(tfCurp.getText())) {
+            valido = false;
+            tfCurp.setStyle(ESTILOERROR);
+            lbErrorCURP.setText("Ingrese CURP valida");
+        } else {
+            tfCurp.setStyle(ESTILODEFAULT);
         }
 
         if (tfCurp.getText().trim().isEmpty()) {
             valido = false;
             tfCurp.setStyle(ESTILOERROR);
+            lbErrorCURP.setText("Ingrese CURP");
         } else {
             tfCurp.setStyle(ESTILODEFAULT);
         }
@@ -216,13 +251,24 @@ public class FXMLFormularioUsuarioController implements Initializable {
         if (tfUsername.getText().trim().isEmpty()) {
             valido = false;
             tfUsername.setStyle(ESTILOERROR);
+            lbErrorUsername.setText("Ingrese username");
         } else {
             tfUsername.setStyle(ESTILODEFAULT);
+        }
+        
+        if (!tfEmail.getText().trim().isEmpty()
+                && !Utilidades.validarEmail(tfEmail.getText())) {
+            valido = false;
+            tfEmail.setStyle(ESTILOERROR);
+            lbErrorEmail.setText("Ingrese email valido");
+        } else {
+            tfEmail.setStyle(ESTILODEFAULT);
         }
 
         if (tfEmail.getText().trim().isEmpty()) {
             valido = false;
             tfEmail.setStyle(ESTILOERROR);
+            lbErrorEmail.setText("Ingrese email");
         } else {
             tfEmail.setStyle(ESTILODEFAULT);
         }
@@ -230,6 +276,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         if (tfPassword.getText().trim().isEmpty()) {
             valido = false;
             tfPassword.setStyle(ESTILOERROR);
+            lbErrorPassword.setText("Ingrese contraseña");
         } else {
             tfPassword.setStyle(ESTILODEFAULT);
         }
@@ -237,7 +284,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         if (cbRol.getValue() == null) {
             valido = false;
             cbRol.setStyle(ESTILOERROR);
-
+            lbErrorRol.setText("Seleccione rol");
         } else {
             cbRol.setStyle(ESTILODEFAULT);
         }
@@ -247,6 +294,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 && cbEmpresaAsociada.getValue() == null) {
             valido = false;
             cbEmpresaAsociada.setStyle(ESTILOERROR);
+            lbErrorEmpresa.setText("Seleccione empresa");
         } else {
             cbEmpresaAsociada.setStyle(ESTILODEFAULT);
         }
@@ -269,6 +317,8 @@ public class FXMLFormularioUsuarioController implements Initializable {
                         mensaje.getMensaje(),
                         Alert.AlertType.INFORMATION);
             }
+
+            limpiarDatos();
         } else {
             mensaje = UsuarioDAO.editarUsuario(usuario);
 
@@ -283,7 +333,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
             }
         }
 
-        limpiarDatos();
+        cargarInformacionUsuario();
     }
 
     private void limpiarDatos() {
@@ -296,5 +346,27 @@ public class FXMLFormularioUsuarioController implements Initializable {
         tfPassword.setText("");
         cbEmpresaAsociada.setValue(null);
         cbRol.setValue(null);
+    }
+
+    private void ocultarLabelsError() {
+        lbErrorNombre.setText(null);
+        lbErrorApellidoPaterno.setText(null);
+        lbErrorApellidoMaterno.setText(null);
+        lbErrorCURP.setText(null);
+        lbErrorUsername.setText(null);
+        lbErrorEmail.setText(null);
+        lbErrorPassword.setText(null);
+        lbErrorEmpresa.setText(null);
+        lbErrorRol.setText(null);
+    }
+
+    private boolean validarCURP(String curp) {
+        // Expresión regular para validar CURP
+        String expresion = "^[A-Z]{4}[0-9]{6}[HM]{1}[A-Z]{5}[0-9]{2}$";
+
+        Pattern patron = Pattern.compile(expresion);
+        Matcher matcher = patron.matcher(curp);
+
+        return matcher.matches();
     }
 }

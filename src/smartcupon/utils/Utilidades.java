@@ -7,6 +7,8 @@ package smartcupon.utils;
 
 import java.util.Optional;
 import java.util.function.UnaryOperator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -63,5 +65,12 @@ public class Utilidades {
         };
         
         return new TextFormatter<>(filtro);
+    }
+    
+    public static boolean validarEmail(String email) {
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 }

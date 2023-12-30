@@ -147,6 +147,8 @@ public class FXMLHomeController implements Initializable {
             Stage stage = new Stage();
             Scene escenaAdminUsuarios = new Scene(vista);
             stage.setScene(escenaAdminUsuarios);
+            stage.sizeToScene();
+            stage.setResizable(false);
             stage.setTitle("Gestión usuarios");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

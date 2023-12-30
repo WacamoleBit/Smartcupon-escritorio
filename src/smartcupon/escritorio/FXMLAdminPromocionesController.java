@@ -99,7 +99,8 @@ public class FXMLAdminPromocionesController implements Initializable {
 
     @FXML
     private void btnEditar(ActionEvent event) {
-        Integer idPromocion = tvPromociones.getSelectionModel().getSelectedItem().getIdPromocion();
+        Integer idPromocion = (tvPromociones.getSelectionModel().getSelectedItem() != null)
+                ? tvPromociones.getSelectionModel().getSelectedItem().getIdPromocion() : null;
 
         if (idPromocion != null) {
             try {
@@ -132,24 +133,31 @@ public class FXMLAdminPromocionesController implements Initializable {
     private void btnEliminar(ActionEvent event) {
         Mensaje mensaje = null;
 
-        Integer idPromocion = tvPromociones.getSelectionModel().getSelectedItem().getIdPromocion();
+        Integer idPromocion = (tvPromociones.getSelectionModel().getSelectedItem() != null)
+                ? tvPromociones.getSelectionModel().getSelectedItem().getIdPromocion() : null;
 
-        boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
-                "Eliminar promoción",
-                "¿Estás seguro de que quieres eliminar este usuario?");
+        if (idPromocion != null) {
+            boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
+                    "Eliminar promoción",
+                    "¿Estás seguro de que quieres eliminar este usuario?");
 
-        if (idPromocion != null && idPromocion > 0 && aceptar) {
-            mensaje = PromocionDAO.eliminarPromocion(idPromocion);
+            if (idPromocion > 0 && aceptar) {
+                mensaje = PromocionDAO.eliminarPromocion(idPromocion);
 
-            if (!mensaje.getError()) {
-                Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
-                        mensaje.getMensaje(),
-                        Alert.AlertType.INFORMATION);
-            } else {
-                Utilidades.mostrarAlertaSimple("Error al eliminar",
-                        mensaje.getMensaje(),
-                        Alert.AlertType.INFORMATION);
+                if (!mensaje.getError()) {
+                    Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
+                            mensaje.getMensaje(),
+                            Alert.AlertType.INFORMATION);
+                } else {
+                    Utilidades.mostrarAlertaSimple("Error al eliminar",
+                            mensaje.getMensaje(),
+                            Alert.AlertType.INFORMATION);
+                }
             }
+        } else {
+            Utilidades.mostrarAlertaSimple("Seleccion de promoción",
+                    "Para poder eliminar debes seleccionar una promoción de la tabla",
+                    Alert.AlertType.WARNING);
         }
 
         mostrarInformacionPromociones();

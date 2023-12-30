@@ -62,11 +62,45 @@ public class FXMLAdminEmpresasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         empresas = FXCollections.observableArrayList();
-        configurarColumnas();
+        cargarInformacion();
     }    
 
+    private void cargarInformacion() {
+        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        colNombreComercial.setCellValueFactory(new PropertyValueFactory("nombreComercial"));
+        colRfc.setCellValueFactory(new PropertyValueFactory("rfc"));
+        colPaginaWeb.setCellValueFactory(new PropertyValueFactory("paginaWeb"));
+        colEstatus.setCellValueFactory(new PropertyValueFactory("nombreEstatus"));
+    }
+    
+    public void consultarEmpresas(){
+        List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
+        empresas.addAll(listaEmpresas);
+        tvEmpresas.setItems(empresas);
+    }
+    
+    private void consultarInformacionEmpresa(Integer idEmpresa){
+        datosEmpresa = EmpresaDAO.obtenerDatosEmpresa(idEmpresa);
+    }
+    
     @FXML
     private void btnRegistrar(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFomularioEmpresa.fxml"));
+            Parent vista = loader.load();
+            FXMLFomularioEmpresaController controlador = loader.getController();
+            controlador.iniciarlizarInformacion(null);
+            
+            Stage stage = new Stage();
+            Scene scene = new Scene(vista);
+            stage.setScene(scene);
+            stage.setTitle("Formulario de empresa");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -74,12 +108,12 @@ public class FXMLAdminEmpresasController implements Initializable {
         Empresa empresa = tvEmpresas.getSelectionModel().getSelectedItem();
         if (empresa!= null) {
             consultarInformacionEmpresa(empresa.getIdEmpresa());
+            System.out.println(empresa.getIdEmpresa());
             datosEmpresa.setEmpresa(empresa);
             
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFomularioEmpresa.fxml"));
                 Parent vista = loader.load();
-
                 FXMLFomularioEmpresaController controlador = loader.getController();
                 controlador.iniciarlizarInformacion(datosEmpresa);
                 
@@ -99,24 +133,5 @@ public class FXMLAdminEmpresasController implements Initializable {
 
     @FXML
     private void btnEliminar(ActionEvent event) {
-    }
-
-    private void configurarColumnas() {
-        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
-        colNombreComercial.setCellValueFactory(new PropertyValueFactory("nombreComercial"));
-        colRfc.setCellValueFactory(new PropertyValueFactory("rfc"));
-        colPaginaWeb.setCellValueFactory(new PropertyValueFactory("paginaWeb"));
-        colEstatus.setCellValueFactory(new PropertyValueFactory("nombreEstatus"));
-    }
-    
-    public void consultarEmpresas(){
-        List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
-        empresas.addAll(listaEmpresas);
-        tvEmpresas.setItems(empresas);
-    }
-    
-    private void consultarInformacionEmpresa(Integer idEmpresa){
-        datosEmpresa = EmpresaDAO.obtenerDatosEmpresa(idEmpresa);
     }
 }

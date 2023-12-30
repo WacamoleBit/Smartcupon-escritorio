@@ -124,7 +124,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
             guardarDatos(usuario);
         } else {
             Utilidades.mostrarAlertaSimple("Campso vacios",
-                    "Llene los campos antes de guardar",
+                    "Llene o corrija los campos antes de guardar",
                     Alert.AlertType.ERROR);
         }
     }
@@ -230,7 +230,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         } else {
             tfApellidoMaterno.setStyle(ESTILODEFAULT);
         }
-        
+
         if (!tfCurp.getText().trim().isEmpty()
                 && !validarCURP(tfCurp.getText())) {
             valido = false;
@@ -255,7 +255,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         } else {
             tfUsername.setStyle(ESTILODEFAULT);
         }
-        
+
         if (!tfEmail.getText().trim().isEmpty()
                 && !Utilidades.validarEmail(tfEmail.getText())) {
             valido = false;

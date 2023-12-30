@@ -5,22 +5,38 @@
  */
 package smartcupon.escritorio;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
+import javax.imageio.ImageIO;
 import smartcupon.modelo.dao.EmpresaDAO;
 import smartcupon.modelo.dao.PromocionDAO;
 import smartcupon.modelo.pojo.Categoria;
@@ -29,6 +45,7 @@ import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Promocion;
 import smartcupon.modelo.pojo.TipoPromocion;
 import smartcupon.utils.Utilidades;
+import static smartcupon.utils.Utilidades.seleccionarImagen;
 
 /**
  * FXML Controller class
@@ -56,6 +73,7 @@ public class FXMLFormularioPromocionController implements Initializable {
     private ObservableList<Categoria> categorias = null;
 
     private Promocion promocion = null;
+    private File imagen = null;
 
     @FXML
     private TextField tfNombre;
@@ -105,6 +123,8 @@ public class FXMLFormularioPromocionController implements Initializable {
     private ComboBox<Empresa> cbEmpresa;
     @FXML
     private Label lbErrorEmpresa;
+    @FXML
+    private ImageView ivPromocion;
 
     /**
      * Initializes the controller class.
@@ -117,6 +137,7 @@ public class FXMLFormularioPromocionController implements Initializable {
         cargarInformacionTipoPromocion();
         cargarInformacionCategorias();
         configurarCamposNumericos();
+        configurarDatePickers();
     }
 
     public void inicializarDatos(Integer idPromocion) {
@@ -164,7 +185,7 @@ public class FXMLFormularioPromocionController implements Initializable {
 
         } else {
             Utilidades.mostrarAlertaSimple("Campos vacios",
-                    "Llene los campos antes de guardar",
+                    "Llene o corrija los campos antes de guardar",
                     Alert.AlertType.ERROR);
         }
     }
@@ -284,6 +305,15 @@ public class FXMLFormularioPromocionController implements Initializable {
             tfCodigoPromocion.setStyle(ESTILODEFAULT);
         }
 
+        if (!tfCodigoPromocion.getText().trim().isEmpty()
+                && tfCodigoPromocion.getText().length() != 8) {
+            valido = false;
+            tfCodigoPromocion.setStyle(ESTILOERROR);
+            lbErrorCodigo.setText("El máximo son 8 caracteres");
+        } else {
+            tfCodigoPromocion.setStyle(ESTILODEFAULT);
+        }
+
         if (dpFechaInicio.getValue() == null) {
             valido = false;
             dpFechaInicio.setStyle(ESTILOCUADRADOERROR);
@@ -298,6 +328,23 @@ public class FXMLFormularioPromocionController implements Initializable {
             lbErrorFechaFin.setText("Seleccione fecha de termino");
         } else {
             dpFechaTermino.setStyle(ESTILOCUADRADODEFAULT);
+        }
+
+        if (dpFechaTermino.getValue() != null && dpFechaInicio.getValue() != null) {
+            LocalDate fechaInicio = dpFechaInicio.getValue();
+            LocalDate fechaTermino = dpFechaTermino.getValue();
+
+            int comparacion = fechaInicio.compareTo(fechaTermino);
+
+            if (comparacion > 0) {
+                dpFechaTermino.setStyle(ESTILOCUADRADOERROR);
+                dpFechaInicio.setStyle(ESTILOCUADRADOERROR);
+                lbErrorFechaFin.setText("Corrige la fecha de termino");
+                lbErrorFechaInicio.setText("Corrige la fecha de inicio");
+            } else {
+                dpFechaTermino.setStyle(ESTILOCUADRADODEFAULT);
+                dpFechaInicio.setStyle(ESTILOCUADRADODEFAULT);
+            }
         }
 
         if (cbCategoria.getValue() == null) {
@@ -328,7 +375,7 @@ public class FXMLFormularioPromocionController implements Initializable {
         Mensaje mensaje = null;
 
         if (promocion.getIdPromocion() == null) {
-            mensaje = PromocionDAO.registrarPromocion(promocion);
+            mensaje = PromocionDAO.registrarPromocion(promocion, imagen);
 
             if (!mensaje.getError()) {
                 Utilidades.mostrarAlertaSimple("Registro exitoso",
@@ -342,7 +389,7 @@ public class FXMLFormularioPromocionController implements Initializable {
 
             limpiarCampos();
         } else {
-            mensaje = PromocionDAO.editarPromocion(promocion);
+            mensaje = PromocionDAO.editarPromocion(promocion, imagen);
 
             if (!mensaje.getError()) {
                 Utilidades.mostrarAlertaSimple("Edición exitosa",
@@ -394,6 +441,10 @@ public class FXMLFormularioPromocionController implements Initializable {
         cbEmpresa.getSelectionModel().select(
                 buscarIdEmpresa(promocion.getEmpresa())
         );
+
+        if (promocion.getImagenBase64() != null && promocion.getImagenBase64().length() > 0) {
+            ivPromocion.setImage(Utilidades.decodificarImagenBase64(promocion.getImagenBase64()));
+        }
     }
 
     public int buscarIdTipoPromocion(int idTipoPromocion) {
@@ -426,4 +477,60 @@ public class FXMLFormularioPromocionController implements Initializable {
         return 0;
     }
 
+    private void configurarDatePickers() {
+        dpFechaInicio.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+            }
+        });
+
+        dpFechaTermino.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                LocalDate fechaInicio = dpFechaInicio.getValue();
+
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+
+                if (fechaInicio != null && date.isBefore(fechaInicio)) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+            }
+        });
+
+    }
+
+    @FXML
+    private void btnBuscarImagen(MouseEvent event) {
+        Window ventanaPadre = tfNombre.getScene().getWindow();
+
+        imagen = seleccionarImagen(ventanaPadre);
+
+        if (imagen != null) {
+            mostrarEnImageview(imagen);
+        }
+    }
+
+    private void mostrarEnImageview(File arhivoImagen) {
+        try {
+            BufferedImage buffer = ImageIO.read(arhivoImagen);
+            Image imagen = SwingFXUtils.toFXImage(buffer, null);
+            ivPromocion.setImage(imagen);
+        } catch (IOException e) {
+            Utilidades.mostrarAlertaSimple("Error al cargar",
+                    "Error al intentar visualizar la imagen seleccionada",
+                    Alert.AlertType.ERROR);
+        }
+    }
 }

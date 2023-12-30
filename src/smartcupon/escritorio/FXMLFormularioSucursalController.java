@@ -87,7 +87,7 @@ public class FXMLFormularioSucursalController implements Initializable {
     @FXML
     private void btnGuardar(ActionEvent event) {
         if(datosSucursal!= null){
-            editarSucursal();
+            
         }else{
             registrarSucursal();
         }
@@ -121,6 +121,7 @@ public class FXMLFormularioSucursalController implements Initializable {
         cbEstado.getSelectionModel().select(numeroEstado);
         int numeroCiudad = buscarIdCiudad(datosSucursal.getDireccion().getCiudad());
         cbCiudad.getSelectionModel().select(numeroCiudad);
+        
     }
     
     
@@ -164,6 +165,10 @@ public class FXMLFormularioSucursalController implements Initializable {
         }
     }
     
+    private void actualizarSucursal(DatosSucursal datosSucursal){
+       
+    }
+    
        private void cargarInformacionEstados() {
         estados = FXCollections.observableArrayList();
         List<Estado> listaEstados = DireccionDAO.obtenerEstados();
@@ -177,8 +182,6 @@ public class FXMLFormularioSucursalController implements Initializable {
            List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
            empresas.addAll(listaEmpresas);
            cbEmpresa.setItems(empresas);
-           
-           
        }
        
         private void configurarSeleccionEstado() {
@@ -228,7 +231,22 @@ public class FXMLFormularioSucursalController implements Initializable {
         return 0;
     }
 
-    private void editarSucursal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void editarSucursal(DatosSucursal datosSucursal) {
+        
+        datosSucursal.getSucursal().setNombre(tfNombre.getText());
+        datosSucursal.getSucursal().setTelefono(tfTelefono.getText());
+        datosSucursal.getSucursal().setLatitud(Double.parseDouble(tfLatitud.getText()));
+        datosSucursal.getSucursal().setLongitud(Double.parseDouble(tfLongitud.getText()));
+        datosSucursal.getSucursal().setEmpresa(cbEmpresa.getSelectionModel().getSelectedIndex());
+        
+        datosSucursal.getPersona().setNombre(tfNombreEncargado.getText());
+        datosSucursal.getPersona().setApellidoPaterno(tfApellidoPaterno.getText());
+        datosSucursal.getPersona().setApellidoMaterno(tfApellidoMaterno.getText());
+        
+        datosSucursal.getDireccion().setCalle(tfCalle.getText());
+        datosSucursal.getDireccion().setNumero(Integer.parseInt(tfNumero.getText()));
+        datosSucursal.getDireccion().setColonia(tfColonia.getText());
+        datosSucursal.getDireccion().setCodigoPostal(tfCodigoPostal.getText());
+        datosSucursal.getDireccion().setCiudad(cbCiudad.getSelectionModel().getSelectedIndex());
     }
 }

@@ -68,6 +68,19 @@ public class SucursalDAO {
         return mensaje;
     }
     
-    
+    public static Mensaje editarSucursal(DatosSucursal datosSucursal){
+        Mensaje mensaje = new Mensaje();
+        String url = Constantes.URL_WS+"sucursales/editarSucursal";
+        Gson gson = new Gson();
+        String json = gson.toJson(datosSucursal);
+        CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, json);
+        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        }else{
+            mensaje.setMensaje("Error en la petición para registrar la sucursal");
+        }
+        
+        return mensaje;
+    }
     
 }

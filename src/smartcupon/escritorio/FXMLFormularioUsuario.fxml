@@ -27,20 +27,24 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f6f6" height="3.0" layoutX="25.0" layoutY="104.0" stroke="#f4f6f6" strokeType="INSIDE" width="573.0" />
-      <Pane layoutX="25.0" layoutY="153.0" prefHeight="322.0" prefWidth="204.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+      <Pane layoutX="25.0" layoutY="130.0" prefHeight="345.0" prefWidth="204.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
          <children>
-            <TextField fx:id="tfNombre" layoutX="13.0" layoutY="66.0" prefHeight="25.0" prefWidth="178.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfNombre" layoutX="13.0" layoutY="66.0" prefHeight="25.0" prefWidth="178.0" promptText="Nombre" style="-fx-background-radius: 30; -fx-background-color: white;" />
             <Label layoutX="15.0" layoutY="49.0" text="Nombre " />
             <Label layoutX="15.0" layoutY="116.0" text="Apellido Paterno" />
-            <Label layoutX="13.0" layoutY="176.0" text="Apellido Materno" />
+            <Label layoutX="12.0" layoutY="182.0" text="Apellido Materno" />
             <Label layoutX="11.0" layoutY="14.0" text="Datos del usuario">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
-            <TextField fx:id="tfApellidoPaterno" layoutX="14.0" layoutY="133.0" prefHeight="25.0" prefWidth="178.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <TextField fx:id="tfApellidoMaterno" layoutX="13.0" layoutY="193.0" prefHeight="25.0" prefWidth="178.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="14.0" layoutY="237.0" text="Curp" />
-            <TextField fx:id="tfCurp" layoutX="14.0" layoutY="254.0" prefHeight="25.0" prefWidth="178.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfApellidoPaterno" layoutX="14.0" layoutY="133.0" prefHeight="25.0" prefWidth="178.0" promptText="Apellido Paterno" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfApellidoMaterno" layoutX="12.0" layoutY="199.0" prefHeight="25.0" prefWidth="178.0" promptText="Apellido Materno" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <Label layoutX="14.0" layoutY="250.0" text="CURP" />
+            <TextField fx:id="tfCurp" layoutX="15.0" layoutY="267.0" prefHeight="25.0" prefWidth="178.0" promptText="CURP" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <Label fx:id="lbErrorNombre" layoutX="109.0" layoutY="91.0" text="Label" textFill="RED" />
+            <Label fx:id="lbErrorApellidoPaterno" layoutX="62.0" layoutY="158.0" text="Label" textFill="RED" />
+            <Label fx:id="lbErrorApellidoMaterno" layoutX="59.0" layoutY="224.0" text="Label" textFill="RED" />
+            <Label fx:id="lbErrorCURP" layoutX="120.0" layoutY="292.0" text="Label" textFill="RED" />
          </children>
       </Pane>
       <Button layoutX="208.0" layoutY="497.0" mnemonicParsing="false" onAction="#btnGuardar" prefHeight="30.0" prefWidth="234.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Guardar" textFill="WHITE">
@@ -48,29 +52,33 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Pane layoutX="250.0" layoutY="320.0" prefHeight="155.0" prefWidth="361.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+      <Pane layoutX="250.0" layoutY="300.0" prefHeight="175.0" prefWidth="361.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
          <children>
-            <TextField fx:id="tfUsername" layoutX="14.0" layoutY="62.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfUsername" layoutX="14.0" layoutY="62.0" promptText="Nombre de usuario" style="-fx-background-radius: 30; -fx-background-color: white;" />
             <Label layoutX="14.0" layoutY="37.0" text="Username" />
             <Label layoutX="194.0" layoutY="37.0" text="Rol" />
-            <TextField fx:id="tfEmail" layoutX="14.0" layoutY="120.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="14.0" layoutY="96.0" text="Correo" />
-            <Label layoutX="194.0" layoutY="96.0" text="Contraseña" />
-            <TextField fx:id="tfPassword" layoutX="194.0" layoutY="120.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfEmail" layoutX="16.0" layoutY="129.0" promptText="ejemplo@email.com" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <Label layoutX="16.0" layoutY="105.0" text="Correo" />
+            <Label layoutX="196.0" layoutY="105.0" text="Contraseña" />
+            <TextField fx:id="tfPassword" layoutX="196.0" layoutY="129.0" promptText="Contraseña" style="-fx-background-radius: 30; -fx-background-color: white;" />
             <Label layoutX="14.0" layoutY="14.0" text="Datos de la cuenta">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             <ComboBox fx:id="cbRol" layoutX="193.0" layoutY="62.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 30;" />
+            <Label fx:id="lbErrorUsername" layoutX="71.0" layoutY="88.0" text="Label" textFill="RED" />
+            <Label fx:id="lbErrorEmail" layoutX="90.0" layoutY="154.0" text="Label" textFill="RED" />
+            <Label fx:id="lbErrorRol" layoutX="270.0" layoutY="88.0" text="Label" textFill="RED" />
+            <Label fx:id="lbErrorPassword" layoutX="244.0" layoutY="154.0" text="Label" textFill="RED" />
          </children>
       </Pane>
-      <ImageView fitHeight="126.0" fitWidth="128.0" layoutX="459.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="126.0" fitWidth="128.0" layoutX="459.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../img/photo.png" />
          </image>
       </ImageView>
-      <Pane layoutX="250.0" layoutY="153.0" prefHeight="155.0" prefWidth="178.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+      <Pane layoutX="250.0" layoutY="130.0" prefHeight="155.0" prefWidth="178.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
          <children>
             <Label layoutX="14.0" layoutY="37.0" text="Empresa asociada" />
             <Label layoutX="14.0" layoutY="14.0" text="Datos de la empresa">
@@ -79,6 +87,7 @@
                </font>
             </Label>
             <ComboBox fx:id="cbEmpresaAsociada" layoutX="13.0" layoutY="62.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 30;" />
+            <Label fx:id="lbErrorEmpresa" layoutX="57.0" layoutY="87.0" text="Label" textFill="RED" />
          </children>
       </Pane>
    </children>

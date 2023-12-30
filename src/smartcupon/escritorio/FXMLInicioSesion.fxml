@@ -9,41 +9,41 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="558.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLInicioSesionController">
+<AnchorPane id="AnchorPane" maxHeight="558.0" maxWidth="870.0" prefHeight="558.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLInicioSesionController">
     <children>
       <Pane layoutX="452.0" prefHeight="569.0" prefWidth="419.0" style="-fx-background-color: white;">
          <children>
-            <PasswordField fx:id="tfPassword" layoutX="87.0" layoutY="313.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu contraseña" style="-fx-background-color: #F4F6F6; -fx-background-radius: 30;" />
-            <TextField fx:id="tfUsername" layoutX="84.0" layoutY="239.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu usuario" style="-fx-background-color: #F4F6F6; -fx-border-radius: 30; -fx-background-radius: 30;" />
-            <Button layoutX="121.0" layoutY="377.0" mnemonicParsing="false" onAction="#btnIniciarSesion" prefHeight="27.0" prefWidth="195.0" style="-fx-background-color: #2d82d1; -fx-border-radius: 30; -fx-background-radius: 30;" text="Iniciar sesión" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="11.0" />
-               </font>
-            </Button>
-            <Label layoutX="108.0" layoutY="150.0" text="Ingresa a tu cuenta de SmartCupon">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
             <Label layoutX="88.0" layoutY="82.0" text="Bienvenido">
                <font>
                   <Font name="System Bold" size="46.0" />
                </font>
             </Label>
-            <Label fx:id="lbErrorUsername" layoutX="221.0" layoutY="276.0" prefHeight="17.0" prefWidth="180.0" text="Label" textFill="RED" />
-            <Label fx:id="lbErrorPassword" layoutX="221.0" layoutY="349.0" prefHeight="17.0" prefWidth="180.0" text="Label" textFill="RED" />
+            <Label layoutX="108.0" layoutY="150.0" text="Ingresa a tu cuenta de SmartCupon">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
             <Label layoutX="78.0" layoutY="214.0" text="Usuario" />
-            <Label layoutX="78.0" layoutY="285.0" text="Contraseña" />
+            <TextField fx:id="tfUsername" layoutX="84.0" layoutY="239.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu usuario" style="-fx-background-color: #F4F6F6; -fx-border-radius: 30; -fx-background-radius: 30;" />
             <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="321.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/user.png" />
                </image>
             </ImageView>
+            <Label fx:id="lbErrorUsername" layoutX="221.0" layoutY="276.0" prefHeight="17.0" prefWidth="180.0" text="Label" textFill="RED" />
+            <Label layoutX="78.0" layoutY="285.0" text="Contraseña" />
+            <PasswordField fx:id="tfPassword" layoutX="87.0" layoutY="313.0" prefHeight="36.0" prefWidth="268.0" promptText="Ingresa tu contraseña" style="-fx-background-color: #F4F6F6; -fx-background-radius: 30;" />
+            <Label fx:id="lbErrorPassword" layoutX="221.0" layoutY="349.0" prefHeight="17.0" prefWidth="180.0" text="Label" textFill="RED" />
             <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="321.0" layoutY="321.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/lock.png" />
                </image>
             </ImageView>
+            <Button layoutX="121.0" layoutY="377.0" mnemonicParsing="false" onAction="#btnIniciarSesion" prefHeight="27.0" prefWidth="195.0" style="-fx-background-color: #2d82d1; -fx-border-radius: 30; -fx-background-radius: 30;" text="Iniciar sesión" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <Pane layoutX="-5.0" prefHeight="569.0" prefWidth="457.0" style="-fx-background-color: white;">

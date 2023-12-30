@@ -9,16 +9,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="553.0" prefWidth="638.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLFomularioEmpresaController">
+<AnchorPane id="AnchorPane" prefHeight="553.0" prefWidth="638.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLFormularioPromocionController">
    <children>
       <Label layoutX="25.0" layoutY="30.0" text="Promoción">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <ImageView fitHeight="22.0" fitWidth="16.0" layoutX="25.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivPromocion" fitHeight="99.0" fitWidth="112.0" layoutX="486.0" layoutY="28.0" onMouseClicked="#btnBuscarImagen" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../img/agency.png" />
+            <Image url="@../../img/photo.png" />
          </image>
       </ImageView>
       <Label layoutX="47.0" layoutY="103.0" text="Registro de la promoción">
@@ -26,66 +26,78 @@
             <Font size="13.0" />
          </font>
       </Label>
+      <ImageView fitHeight="22.0" fitWidth="16.0" layoutX="25.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/agency.png" />
+         </image>
+      </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f6f6" height="3.0" layoutX="25.0" layoutY="128.0" stroke="#f4f6f6" strokeType="INSIDE" width="573.0" />
-      <Pane layoutX="25.0" layoutY="153.0" prefHeight="322.0" prefWidth="204.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+      <Pane layoutX="25.0" layoutY="140.0" prefHeight="345.0" prefWidth="204.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
          <children>
-            <TextField fx:id="tfNombre" layoutX="13.0" layoutY="55.0" prefHeight="25.0" prefWidth="178.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="12.0" layoutY="38.0" text="Nombre " />
-            <Label layoutX="14.0" layoutY="93.0" text="Descripción" />
-            <Label layoutX="13.0" layoutY="204.0" text="Restrcciones" />
             <Label layoutX="14.0" layoutY="14.0" text="Datos de la Promocion">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
-            <TextArea layoutX="13.0" layoutY="221.0" prefHeight="87.0" prefWidth="178.0" style="-fx-background-color: white; -fx-background-radius: 30;" />
-            <TextArea layoutX="13.0" layoutY="110.0" prefHeight="87.0" prefWidth="178.0" style="-fx-background-color: white; -fx-background-radius: 30;" />
+            <Label layoutX="12.0" layoutY="38.0" text="Nombre " />
+            <TextField fx:id="tfNombre" layoutX="13.0" layoutY="55.0" prefHeight="25.0" prefWidth="178.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <Label fx:id="lbErrorNombre" layoutX="107.0" layoutY="85.0" text="Label" textFill="RED" />
+            <Label layoutX="14.0" layoutY="93.0" text="Descripción" />
+            <TextArea fx:id="tfDescripcion" layoutX="13.0" layoutY="110.0" prefHeight="87.0" prefWidth="178.0" style="-fx-background-color: white;" />
+            <Label layoutX="13.0" layoutY="215.0" text="Restricciones" />
+            <Label fx:id="lbErrorDescripcion" layoutX="90.0" layoutY="197.0" text="Label" textFill="RED" />
+            <TextArea fx:id="tfRestricciones" layoutX="13.0" layoutY="232.0" prefHeight="87.0" prefWidth="178.0" style="-fx-background-color: white;" />
+            <Label fx:id="lbErrorRestricciones" layoutX="82.0" layoutY="320.0" text="Label" textFill="RED" />
          </children>
       </Pane>
+      <Pane layoutX="250.0" layoutY="140.0" prefHeight="165.0" prefWidth="361.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Configuración de promoción">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="37.0" text="Tipo de promoción" />
+            <ComboBox fx:id="cbTipoPromocion" layoutX="11.0" layoutY="54.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 30;" />
+            <Label fx:id="lbErrorTipoPromocion" layoutX="44.0" layoutY="79.0" text="Label" textFill="RED" />
+            <Label layoutX="194.0" layoutY="37.0" text="Costo final / Decuento" />
+            <TextField fx:id="tfCostoDescuento" layoutX="194.0" layoutY="54.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <Label fx:id="lbErrorCostoDescuento" layoutX="216.0" layoutY="79.0" text="Label" textFill="RED" />
+            <Label layoutX="16.0" layoutY="103.0" text="Maximo de cupones" />
+            <TextField fx:id="tfMaximoCupones" layoutX="16.0" layoutY="120.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <Label fx:id="lbErrorMaximoCupones" layoutX="44.0" layoutY="143.0" text="Label" textFill="RED" />
+            <Label layoutX="196.0" layoutY="103.0" text="Código de promoción" />
+            <TextField fx:id="tfCodigoPromocion" layoutX="196.0" layoutY="120.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <Label fx:id="lbErrorCodigo" layoutX="216.0" layoutY="143.0" text="Label" textFill="RED" />
+         </children>
+      </Pane>
+      <Pane layoutX="250.0" layoutY="320.0" prefHeight="165.0" prefWidth="361.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Duración">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="37.0" text="Fecha de inicio" />
+            <DatePicker fx:id="dpFechaInicio" layoutX="14.0" layoutY="54.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label fx:id="lbErrorFechaInicio" layoutX="58.0" layoutY="80.0" text="Label" textFill="RED" />
+            <Label layoutX="194.0" layoutY="37.0" text="Fecha de termino" />
+            <DatePicker fx:id="dpFechaTermino" layoutX="194.0" layoutY="54.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label fx:id="lbErrorFechaFin" layoutX="212.0" layoutY="80.0" text="Label" textFill="RED" />
+            <Label layoutX="16.0" layoutY="97.0" text="Categoría" />
+            <Label fx:id="lbErrorCategoria" layoutX="60.0" layoutY="135.0" text="Label" textFill="RED" />
+            <Label layoutX="195.0" layoutY="97.0" text="Estatus" />
+            <ComboBox fx:id="cbEstatus" disable="true" layoutX="195.0" layoutY="112.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 30;" />
+            <Label fx:id="lbErrorEstatus" layoutX="240.0" layoutY="135.0" text="Label" textFill="RED" />
+            <ComboBox fx:id="cbCategoria" layoutX="20.0" layoutY="112.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 30;" />
+         </children>
+      </Pane>
+      <Label layoutX="352.0" layoutY="66.0" text="Empresa asociada" />
       <Button layoutX="208.0" layoutY="497.0" mnemonicParsing="false" onAction="#btnGuardar" prefHeight="30.0" prefWidth="234.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Guardar" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Pane layoutX="250.0" layoutY="320.0" prefHeight="155.0" prefWidth="361.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
-         <children>
-            <TextField fx:id="tfCalle" layoutX="14.0" layoutY="62.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="14.0" layoutY="37.0" text="Fecha Inicio" />
-            <Label layoutX="194.0" layoutY="37.0" text="Fecha Fin" />
-            <TextField fx:id="tfNumero" layoutX="194.0" layoutY="62.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <TextField fx:id="tfCodigoPostal" layoutX="14.0" layoutY="120.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="14.0" layoutY="96.0" text="Empresa " />
-            <Label layoutX="194.0" layoutY="96.0" text="Estado" />
-            <TextField fx:id="tfCuidad" layoutX="194.0" layoutY="120.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="14.0" layoutY="14.0" text="Dirección">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Label layoutX="352.0" layoutY="77.0" text="Empresa asociada" />
-      <TextField fx:id="tfEmpresaAsociada" layoutX="325.0" layoutY="94.0" style="-fx-background-radius: 30; -fx-background-color: #F4F6F6;" />
-      <ImageView fitHeight="99.0" fitWidth="112.0" layoutX="486.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../img/photo.png" />
-         </image>
-      </ImageView>
-      <Pane layoutX="250.0" layoutY="153.0" prefHeight="155.0" prefWidth="361.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
-         <children>
-            <TextField fx:id="tfCalle1" layoutX="14.0" layoutY="62.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="14.0" layoutY="37.0" text="Tipo " />
-            <Label layoutX="194.0" layoutY="37.0" text="Numero" />
-            <TextField fx:id="tfNumero1" layoutX="194.0" layoutY="62.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <TextField fx:id="tfCodigoPostal1" layoutX="14.0" layoutY="120.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="14.0" layoutY="96.0" text="Numero de cupones" />
-            <Label layoutX="194.0" layoutY="96.0" text="Cuidad" />
-            <TextField fx:id="tfCuidad1" layoutX="194.0" layoutY="120.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <Label layoutX="14.0" layoutY="14.0" text="Dirección">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
+      <ComboBox fx:id="cbEmpresa" layoutX="325.0" layoutY="83.0" prefWidth="150.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 30;" />
+      <Label fx:id="lbErrorEmpresa" layoutX="370.0" layoutY="111.0" text="Label" textFill="RED" />
    </children>
 </AnchorPane>

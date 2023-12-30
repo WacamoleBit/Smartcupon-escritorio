@@ -93,6 +93,22 @@ public class FXMLHomeController implements Initializable {
 
     @FXML
     private void btnIrPantallaPromocion(ActionEvent event) {
+        try {
+            FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminPromociones.fxml"));
+            Parent vista = vistaLoader.load();
+
+            FXMLAdminPromocionesController controlador = vistaLoader.getController();
+
+            Stage stage = new Stage();
+            Scene escenaFormularioEdicion = new Scene(vista);
+            stage.setScene(escenaFormularioEdicion);
+            stage.setTitle("Gestión promociones");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -131,7 +147,9 @@ public class FXMLHomeController implements Initializable {
             Stage stage = new Stage();
             Scene escenaAdminUsuarios = new Scene(vista);
             stage.setScene(escenaAdminUsuarios);
-            stage.setTitle("Administrar Usuarios");
+            stage.sizeToScene();
+            stage.setResizable(false);
+            stage.setTitle("Gestión usuarios");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException ex) {

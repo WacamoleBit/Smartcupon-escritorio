@@ -91,6 +91,8 @@ public class FXMLAdminUsuariosController implements Initializable {
             Scene escenaAdminUsuarios = new Scene(vista);
             stage.setScene(escenaAdminUsuarios);
             stage.setTitle("Registrar Usuario");
+            stage.setResizable(false);
+            stage.sizeToScene();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
@@ -102,7 +104,8 @@ public class FXMLAdminUsuariosController implements Initializable {
 
     @FXML
     private void btnEditar(ActionEvent event) {
-        Integer idUsuario = tvUsuarios.getSelectionModel().getSelectedItem().getIdUsuario();
+        Integer idUsuario = (tvUsuarios.getSelectionModel().getSelectedItem() != null)
+                ? tvUsuarios.getSelectionModel().getSelectedItem().getIdUsuario() : null;
 
         if (idUsuario != null) {
             try {
@@ -117,6 +120,8 @@ public class FXMLAdminUsuariosController implements Initializable {
                 Scene escenaAdminUsuarios = new Scene(vista);
                 stage.setScene(escenaAdminUsuarios);
                 stage.setTitle("Editar Usuario");
+                stage.setResizable(false);
+                stage.sizeToScene();
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
 
@@ -134,24 +139,31 @@ public class FXMLAdminUsuariosController implements Initializable {
     @FXML
     private void btnEliminar(ActionEvent event) {
         Mensaje mensaje = null;
-        Integer idUsuario = tvUsuarios.getSelectionModel().getSelectedItem().getIdUsuario();
+        Integer idUsuario = (tvUsuarios.getSelectionModel().getSelectedItem() != null)
+                ? tvUsuarios.getSelectionModel().getSelectedItem().getIdUsuario() : null;
 
-        boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
-                "Eliminar usuario",
-                "¿Estás seguro que quieres eliminar este usuario?");
+        if (idUsuario != null) {
+            boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
+                    "Eliminar usuario",
+                    "¿Estás seguro que quieres eliminar este usuario?");
 
-        if (idUsuario != null && idUsuario > 0 && aceptar) {
-            mensaje = UsuarioDAO.eliminarUsuario(idUsuario);
+            if (idUsuario > 0 && aceptar) {
+                mensaje = UsuarioDAO.eliminarUsuario(idUsuario);
 
-            if (!mensaje.getError()) {
-                Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
-                        mensaje.getMensaje(),
-                        Alert.AlertType.INFORMATION);
-            } else {
-                Utilidades.mostrarAlertaSimple("Error al eliminar",
-                        mensaje.getMensaje(),
-                        Alert.AlertType.INFORMATION);
+                if (!mensaje.getError()) {
+                    Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
+                            mensaje.getMensaje(),
+                            Alert.AlertType.INFORMATION);
+                } else {
+                    Utilidades.mostrarAlertaSimple("Error al eliminar",
+                            mensaje.getMensaje(),
+                            Alert.AlertType.INFORMATION);
+                }
             }
+        } else {
+            Utilidades.mostrarAlertaSimple("Seleccion de promoción",
+                    "Para poder eliminar debes seleccionar un usuario de la tabla",
+                    Alert.AlertType.WARNING);
         }
 
         mostrarInformacionUsuarios();

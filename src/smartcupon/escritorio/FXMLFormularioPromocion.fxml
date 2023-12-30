@@ -16,7 +16,7 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <ImageView fitHeight="99.0" fitWidth="112.0" layoutX="486.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivPromocion" fitHeight="99.0" fitWidth="112.0" layoutX="486.0" layoutY="28.0" onMouseClicked="#btnBuscarImagen" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../img/photo.png" />
          </image>

@@ -5,6 +5,9 @@
  */
 package smartcupon.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
@@ -13,12 +16,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 /**
  *
  * @author jegal
  */
 public class Utilidades {
+
     public static void mostrarAlertaSimple(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -26,7 +33,7 @@ public class Utilidades {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
-    
+
     public static boolean mostrarAlertaConfirmacion(String titulo, String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle("Confirmación");
@@ -40,37 +47,57 @@ public class Utilidades {
 
         // Mostrar la ventana y esperar la respuesta del usuario
         Optional<ButtonType> resultado = alerta.showAndWait();
-        
+
         return resultado.orElse(botonCancelar) == botonAceptar;
     }
-    
+
     public static TextFormatter<String> configurarFiltroNumeros() {
         // Se crea el nuevo comportamiento, que se activa cuando se ingresa texto en
         // el componente asignado.
         UnaryOperator<TextFormatter.Change> filtro = change -> {
-            
+
             //Obtiene la cadena de texto que se intenta ingresar
             String cadena = change.getControlNewText();
-            
+
             // Verifica si la cadena contiene solo dígitos
             if (cadena.matches("\\d*")) { // \\d* significa: "cero o mas difitos"
-                
+
                 // Si se cumple la condifión, se actaliza el cambio.
                 return change;
             } else {
-                
+
                 //Si no se cumple, la cadena regresa null y no se actualiza la cadena
                 return null;
             }
         };
-        
+
         return new TextFormatter<>(filtro);
     }
-    
+
     public static boolean validarEmail(String email) {
         Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
         Matcher matcher = pattern.matcher(email);
 
         return matcher.matches();
+    }
+
+    public static File seleccionarImagen(Window ventanaPadre) {
+        FileChooser dialogoSeleccionImagen = new FileChooser();
+
+        dialogoSeleccionImagen.setTitle("Selecciona una imagen");
+        FileChooser.ExtensionFilter filtroArchivos = new FileChooser.ExtensionFilter("Archivos de imagen", "*.png", "*.jpeg", "*.jpg");
+
+        dialogoSeleccionImagen.getExtensionFilters().add(filtroArchivos);
+
+        File foto = dialogoSeleccionImagen.showOpenDialog(ventanaPadre);
+
+        return foto;
+    }
+
+    public static Image decodificarImagenBase64(String imagenBase64) {
+        byte[] decodeImage = Base64.getDecoder().decode(imagenBase64.replaceAll("\\n", ""));
+
+        Image imagen = new Image(new ByteArrayInputStream(decodeImage));
+        return imagen;
     }
 }

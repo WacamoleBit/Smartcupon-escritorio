@@ -7,10 +7,16 @@ package smartcupon.modelo.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import smartcupon.escritorio.FXMLFormularioPromocionController;
 import smartcupon.modelo.ConexionHTTP;
 import smartcupon.modelo.pojo.Categoria;
 import smartcupon.modelo.pojo.CodigoHTTP;
@@ -41,27 +47,37 @@ public class PromocionDAO {
         return promociones;
     }
 
-    public static Mensaje registrarPromocion(Promocion promocion) {
+    public static Mensaje registrarPromocion(Promocion promocion, File archivoImagen) {
         Mensaje mensaje = new Mensaje();
-        DatosPromocion datos = new DatosPromocion();
-        datos.setPromocion(promocion);
         String url = Constantes.URL_WS + "promociones/registrarPromocion";
 
-        Gson gson = new Gson();
-        String parametros = gson.toJson(datos);
+        try {
+            byte[] imagen = Files.readAllBytes(archivoImagen.toPath());
 
-        CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
+            promocion.setImagen(imagen);
 
-        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
-            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-        } else {
+            DatosPromocion datos = new DatosPromocion();
+            datos.setPromocion(promocion);
+
+            Gson gson = new Gson();
+            String parametros = gson.toJson(datos);
+
+            CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
+
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+                mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+            } else {
+                mensaje.setError(true);
+                mensaje.setMensaje("Error en la petición para crear el usuario");
+            }
+        } catch (IOException ex) {
             mensaje.setError(true);
-            mensaje.setMensaje("Error en la petición para crear el usuario");
+            mensaje.setMensaje("El archivo seleccionado no puede ser enviado para su almacenamiento");
         }
 
         return mensaje;
     }
-    
+
     public static Mensaje eliminarPromocion(Integer idPromocion) {
         Mensaje mensaje = new Mensaje();
         String url = Constantes.URL_WS + "promociones/eliminarPromocion/" + idPromocion;
@@ -79,23 +95,37 @@ public class PromocionDAO {
 
         return mensaje;
     }
-    
-    public static Mensaje editarPromocion(Promocion promocion) {
+
+    public static Mensaje editarPromocion(Promocion promocion, File archivoImagen) {
         Mensaje mensaje = new Mensaje();
-        DatosPromocion datos = new DatosPromocion();
-        datos.setPromocion(promocion);
         String url = Constantes.URL_WS + "promociones/editarPromocion";
 
-        Gson gson = new Gson();
-        String parametros = gson.toJson(datos);
+        try {
+            if (archivoImagen != null) {
+                byte[] imagen = Files.readAllBytes(archivoImagen.toPath());
 
-        CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, parametros);
+                promocion.setImagen(imagen);
+            } else {
+                promocion.setImagen(null);
+            }
 
-        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
-            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-        } else {
+            DatosPromocion datos = new DatosPromocion();
+            datos.setPromocion(promocion);
+
+            Gson gson = new Gson();
+            String parametros = gson.toJson(datos);
+
+            CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, parametros);
+
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+                mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+            } else {
+                mensaje.setError(true);
+                mensaje.setMensaje("Error en la petición para crear el usuario");
+            }
+        } catch (IOException ex) {
             mensaje.setError(true);
-            mensaje.setMensaje("Error en la petición para crear el usuario");
+            mensaje.setMensaje("El archivo seleccionado no puede ser enviado para su almacenamiento");
         }
 
         return mensaje;

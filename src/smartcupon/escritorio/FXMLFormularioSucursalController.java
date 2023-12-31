@@ -17,8 +17,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.util.StringConverter;
 import smartcupon.modelo.dao.DireccionDAO;
 import smartcupon.modelo.dao.EmpresaDAO;
 import smartcupon.modelo.dao.SucursalDAO;
@@ -40,13 +40,13 @@ import smartcupon.utils.Utilidades;
 public class FXMLFormularioSucursalController implements Initializable {
 
     DatosSucursal datosSucursal;
-    
+
     private ObservableList<Estado> estados;
     private ObservableList<Ciudad> ciudades;
     private ObservableList<Empresa> empresas;
-    
+
     @FXML
-    private TextField tfNombre;
+    private TextField tfNombreSucursal;
     @FXML
     private TextField tfNombreEncargado;
     @FXML
@@ -73,46 +73,83 @@ public class FXMLFormularioSucursalController implements Initializable {
     private TextField tfApellidoMaterno;
     @FXML
     private ComboBox<Empresa> cbEmpresa;
+    @FXML
+    private Label lbErrorNombreSucursal;
+    @FXML
+    private Label lbErrorTelefono;
+    @FXML
+    private Label lbErrorLatitud;
+    @FXML
+    private Label lbErrorLongitud;
+    @FXML
+    private Label lbErrorNombreEncargado;
+    @FXML
+    private Label lbErrorNombreApellidoPaterno;
+    @FXML
+    private Label lbErrorNombreApellidoMaterno;
+    @FXML
+    private Label lbErrorCalle;
+    @FXML
+    private Label lbErrorNumero;
+    @FXML
+    private Label lbErrorCodigoPostal;
+    @FXML
+    private Label lbErrorColonia;
+    @FXML
+    private Label lbErrorEstado;
+    @FXML
+    private Label lbErrorCiudad;
+    @FXML
+    private Label lbErrorEmpresa;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ocultarLabelsError();
         this.cargarInformacionEstados();
-        this.configurarSeleccionEstado();
         this.cargarInformacionEmpresas();
-    }    
+        this.configurarSeleccionEstado();
+        configurarCamposNumericos();
+    }
+
+    public void inicializarDatos(Integer idSucursal) {
+        //TODO implementar mostrar datos para editar
+        datosSucursal = SucursalDAO.obtenerPorId(idSucursal);
+
+        rellenarCampos();
+
+        cbCiudad.setDisable(false);
+    }
 
     @FXML
     private void btnGuardar(ActionEvent event) {
-        if(datosSucursal!= null){
-            
-        }else{
-            registrarSucursal();
+        ocultarLabelsError();
+
+        if (datosSucursal == null) {
+            datosSucursal = new DatosSucursal();
         }
-        
-    }
-    
-    public void inicializarInformacion(DatosSucursal datosSucursal){
-        if(datosSucursal!= null && datosSucursal.getSucursal()!=null && datosSucursal.getPersona()!=null && datosSucursal.getDireccion()!=null){
-            this.datosSucursal = datosSucursal;
-            rellenarCampos();
+
+        if (validarDatos()) {
+            datosSucursal = llenarDatosSucursal();
+
+            guardarDatos(datosSucursal);
         }
     }
-    
-    private void rellenarCampos(){
-        tfNombre.setText(datosSucursal.getSucursal().getNombre());
+
+    private void rellenarCampos() {
+        tfNombreSucursal.setText(datosSucursal.getSucursal().getNombre());
         tfTelefono.setText(datosSucursal.getSucursal().getTelefono());
         tfLatitud.setText(datosSucursal.getSucursal().getLatitud().toString());
         tfLongitud.setText(datosSucursal.getSucursal().getLongitud().toString());
         int numeroEmpresa = buscarIdEmpresa(datosSucursal.getSucursal().getEmpresa());
         cbEmpresa.getSelectionModel().select(numeroEmpresa);
-        
+
         tfNombreEncargado.setText(datosSucursal.getPersona().getNombre());
         tfApellidoMaterno.setText(datosSucursal.getPersona().getApellidoMaterno());
         tfApellidoPaterno.setText(datosSucursal.getPersona().getApellidoPaterno());
-        
+
         tfCalle.setText(datosSucursal.getDireccion().getCalle());
         tfCodigoPostal.setText(datosSucursal.getDireccion().getCodigoPostal());
         tfColonia.setText(datosSucursal.getDireccion().getColonia());
@@ -121,74 +158,103 @@ public class FXMLFormularioSucursalController implements Initializable {
         cbEstado.getSelectionModel().select(numeroEstado);
         int numeroCiudad = buscarIdCiudad(datosSucursal.getDireccion().getCiudad());
         cbCiudad.getSelectionModel().select(numeroCiudad);
-        
+
     }
-    
-    
-    private void registrarSucursal(){
-        
-        datosSucursal = new DatosSucursal();
-        
+
+    private DatosSucursal llenarDatosSucursal() {
         Sucursal sucursal = new Sucursal();
         Persona encargado = new Persona();
         Direccion direccion = new Direccion();
-        
-        sucursal.setNombre(tfNombre.getText());
+
+        sucursal.setNombre(tfNombreSucursal.getText());
         sucursal.setTelefono(tfTelefono.getText());
         sucursal.setLatitud(Double.parseDouble(tfLatitud.getText()));
         sucursal.setLongitud(Double.parseDouble(tfLongitud.getText()));
-        sucursal.setEmpresa(cbEmpresa.getSelectionModel().getSelectedIndex());
-        
+        sucursal.setEmpresa(
+                cbEmpresa.getValue().getIdEmpresa()
+        );
+
         encargado.setNombre(tfNombreEncargado.getText());
         encargado.setApellidoPaterno(tfApellidoPaterno.getText());
         encargado.setApellidoMaterno(tfApellidoMaterno.getText());
-        
+
         direccion.setCalle(tfCalle.getText());
         direccion.setNumero(Integer.parseInt(tfNumero.getText()));
         direccion.setColonia(tfColonia.getText());
         direccion.setCodigoPostal(tfCodigoPostal.getText());
-        direccion.setCiudad(cbCiudad.getSelectionModel().getSelectedIndex());
-        
+        direccion.setCiudad(
+                cbCiudad.getValue().getIdCiudad()
+        );
+
         datosSucursal.setSucursal(sucursal);
         datosSucursal.setPersona(encargado);
         datosSucursal.setDireccion(direccion);
-        
-        rellenarSucursal(datosSucursal);
+
+        return datosSucursal;
     }
-    
-    private void rellenarSucursal(DatosSucursal datosSucursal){
-        Mensaje respuesta = SucursalDAO.registrarSucursal(datosSucursal);
-        if(!respuesta.getError()){
-            Utilidades.mostrarAlertaSimple("Sucursal regustrada",respuesta.getMensaje(), Alert.AlertType.INFORMATION);
-        }else{
-            Utilidades.mostrarAlertaSimple("Error", respuesta.getMensaje(), Alert.AlertType.WARNING);
+
+    private void guardarDatos(DatosSucursal datosSucursal) {
+        Mensaje respuesta = null;
+
+        if (datosSucursal.getSucursal().getIdSucursal() == null) {
+            respuesta = SucursalDAO.registrarSucursal(datosSucursal);
+
+            if (!respuesta.getError()) {
+                Utilidades.mostrarAlertaSimple("Registro exitoso",
+                        respuesta.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarAlertaSimple("Error al registrar",
+                        respuesta.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            }
+
+            limpiarCampos();
         }
+
+        //TODO implementar llamada a edicion de sucursal
     }
-    
-    private void actualizarSucursal(DatosSucursal datosSucursal){
-       
+
+    private void limpiarCampos() {
+        tfNombreSucursal.clear();
+        tfTelefono.clear();
+        tfLatitud.clear();
+        tfLongitud.clear();
+        tfNombreEncargado.clear();
+        tfApellidoPaterno.clear();
+        tfApellidoMaterno.clear();
+        tfCalle.clear();
+        tfNumero.clear();
+        tfCodigoPostal.clear();
+        tfColonia.clear();
+        cbEmpresa.setValue(null);
+        cbEstado.setValue(null);
+        cbCiudad.setValue(null);
     }
-    
-       private void cargarInformacionEstados() {
+
+    private void cargarInformacionEstados() {
         estados = FXCollections.observableArrayList();
         List<Estado> listaEstados = DireccionDAO.obtenerEstados();
         estados.addAll(listaEstados);
         cbEstado.setItems(estados);
-        
+
     }
-       
-       private void cargarInformacionEmpresas(){
-           empresas = FXCollections.observableArrayList();
-           List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
-           empresas.addAll(listaEmpresas);
-           cbEmpresa.setItems(empresas);
-       }
-       
-        private void configurarSeleccionEstado() {
-        cbEstado.valueProperty().addListener(new ChangeListener<Estado>(){
+
+    private void cargarInformacionEmpresas() {
+        empresas = FXCollections.observableArrayList();
+        List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
+        empresas.addAll(listaEmpresas);
+        cbEmpresa.setItems(empresas);
+    }
+
+    private void configurarSeleccionEstado() {
+        cbEstado.valueProperty().addListener(new ChangeListener<Estado>() {
             @Override
             public void changed(ObservableValue<? extends Estado> observable, Estado oldValue, Estado newValue) {
-                cargarInformacionCiudades(newValue.getIdEstado());
+                if (newValue != null) {
+                    cbCiudad.setDisable(false);
+                    cargarInformacionCiudades(newValue.getIdEstado());
+                }
             }
         });
     }
@@ -199,28 +265,26 @@ public class FXMLFormularioSucursalController implements Initializable {
         ciudades.addAll(listaCiudades);
         cbCiudad.setItems(ciudades);
     }
-    
-    
-    private int buscarIdEstado(Integer idEstado){
-        for (int i=0; i < estados.size();i++){
-            if(estados.get(i).getIdEstado() == idEstado){
+
+    private int buscarIdEstado(Integer idEstado) {
+        for (int i = 0; i < estados.size(); i++) {
+            if (estados.get(i).getIdEstado() == idEstado) {
                 return i;
             }
         }
-        
+
         return 0;
     }
-    
-    
-    private int buscarIdCiudad(Integer idCiudad){
-        for (int i=0; i < ciudades.size();i++){
-            if(ciudades.get(i).getIdCiudad() == idCiudad){
+
+    private int buscarIdCiudad(Integer idCiudad) {
+        for (int i = 0; i < ciudades.size(); i++) {
+            if (ciudades.get(i).getIdCiudad() == idCiudad) {
                 return i;
             }
         }
         return 0;
     }
-    
+
     private int buscarIdEmpresa(int idEmpresa) {
         for (int i = 0; i < empresas.size(); i++) {
             if (empresas.get(i).getIdEmpresa() == idEmpresa) {
@@ -232,21 +296,128 @@ public class FXMLFormularioSucursalController implements Initializable {
     }
 
     private void editarSucursal(DatosSucursal datosSucursal) {
-        
-        datosSucursal.getSucursal().setNombre(tfNombre.getText());
+        datosSucursal.getSucursal().setNombre(tfNombreSucursal.getText());
         datosSucursal.getSucursal().setTelefono(tfTelefono.getText());
         datosSucursal.getSucursal().setLatitud(Double.parseDouble(tfLatitud.getText()));
         datosSucursal.getSucursal().setLongitud(Double.parseDouble(tfLongitud.getText()));
         datosSucursal.getSucursal().setEmpresa(cbEmpresa.getSelectionModel().getSelectedIndex());
-        
+
         datosSucursal.getPersona().setNombre(tfNombreEncargado.getText());
         datosSucursal.getPersona().setApellidoPaterno(tfApellidoPaterno.getText());
         datosSucursal.getPersona().setApellidoMaterno(tfApellidoMaterno.getText());
-        
+
         datosSucursal.getDireccion().setCalle(tfCalle.getText());
         datosSucursal.getDireccion().setNumero(Integer.parseInt(tfNumero.getText()));
         datosSucursal.getDireccion().setColonia(tfColonia.getText());
         datosSucursal.getDireccion().setCodigoPostal(tfCodigoPostal.getText());
         datosSucursal.getDireccion().setCiudad(cbCiudad.getSelectionModel().getSelectedIndex());
     }
+
+    private boolean validarDatos() {
+        boolean valido = true;
+
+        if (tfNombreSucursal.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorNombreSucursal.setText("Ingrese nombre de sucursal");
+        }
+
+        if (tfTelefono.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorTelefono.setText("Ingrese número de teléfono");
+        }
+
+        if (tfLatitud.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorLatitud.setText("Ingrese latitud");
+        }
+
+        if (tfLongitud.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorLongitud.setText("Ingrese longitud");
+        }
+
+        if (tfNombreEncargado.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorNombreEncargado.setText("Ingrese nombre de encargado");
+        }
+
+        if (tfApellidoPaterno.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorNombreApellidoPaterno.setText("Ingrese apellido paterno");
+        }
+
+        if (tfApellidoMaterno.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorNombreApellidoMaterno.setText("Ingrese apellido materno");
+        }
+
+        if (tfCalle.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorCalle.setText("Ingrese calle");
+        }
+
+        if (tfNumero.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorNumero.setText("Ingrese número");
+        }
+
+        if (tfCodigoPostal.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorCodigoPostal.setText("Ingrese código postal");
+        }
+
+        if (!tfCodigoPostal.getText().trim().isEmpty()
+                && tfCodigoPostal.getText().length() != 5) {
+            valido = false;
+            lbErrorCodigoPostal.setText("El máximo son 5 numeros");
+        }
+
+        if (tfColonia.getText().trim().isEmpty()) {
+            valido = false;
+            lbErrorColonia.setText("Ingrese colonia");
+        }
+
+        if (cbEmpresa.getValue() == null) {
+            valido = false;
+            lbErrorEmpresa.setText("Seleccione empresa");
+        }
+
+        if (cbEstado.getValue() == null) {
+            valido = false;
+            lbErrorEstado.setText("Seleccione estado");
+        }
+
+        if (cbCiudad.getValue() == null) {
+            valido = false;
+            lbErrorCiudad.setText("Seleccione ciudad");
+        }
+
+        return valido;
+    }
+
+    private void ocultarLabelsError() {
+        lbErrorNombreSucursal.setText(null);
+        lbErrorTelefono.setText(null);
+        lbErrorLatitud.setText(null);
+        lbErrorLongitud.setText(null);
+        lbErrorNombreEncargado.setText(null);
+        lbErrorNombreApellidoPaterno.setText(null);
+        lbErrorNombreApellidoMaterno.setText(null);
+        lbErrorCalle.setText(null);
+        lbErrorNumero.setText(null);
+        lbErrorCodigoPostal.setText(null);
+        lbErrorColonia.setText(null);
+        lbErrorEmpresa.setText(null);
+        lbErrorEstado.setText(null);
+        lbErrorCiudad.setText(null);
+    }
+
+    private void configurarCamposNumericos() {
+        tfTelefono.setTextFormatter(Utilidades.configurarFiltroNumerosConLimite(10));
+        tfLatitud.setTextFormatter(Utilidades.configurarFiltroNumerosDecimales());
+        tfLongitud.setTextFormatter(Utilidades.configurarFiltroNumerosDecimales());
+        tfNumero.setTextFormatter(Utilidades.configurarFiltroNumeros());
+        tfCodigoPostal.setTextFormatter(Utilidades.configurarFiltroNumerosConLimite(5));
+    }
+
 }

@@ -33,10 +33,8 @@ import smartcupon.modelo.pojo.Sucursal;
  */
 public class FXMLAdminSucursalesController implements Initializable {
 
-    private DatosSucursal datosSucursal;
-    
     private ObservableList<Sucursal> sucursales;
-    
+
     @FXML
     private TableView<Sucursal> tvSucursales;
     @FXML
@@ -57,58 +55,54 @@ public class FXMLAdminSucursalesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         sucursales = FXCollections.observableArrayList();
         cargarInformacion();
-    }    
-    
-    private void cargarInformacion(){
+    }
+
+    private void cargarInformacion() {
         colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         colTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));
         colLatitud.setCellValueFactory(new PropertyValueFactory("latitud"));
         colLongitud.setCellValueFactory(new PropertyValueFactory("longitud"));
     }
-    
-    public void consultarSucursales(){
-        List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursales();
-        sucursales.addAll(listaSucursales);
-        tvSucursales.setItems(sucursales);
-    }
 
     @FXML
     private void btnRegistrar(ActionEvent event) {
         try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioSucursal.fxml"));
-                Parent vista = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioSucursal.fxml"));
+            Parent vista = loader.load();
 
-                FXMLFormularioSucursalController controlador = loader.getController();
-                controlador.inicializarInformacion(null);
-                
-                Stage stage = new Stage();
-                Scene escenaFormularioEdicion = new Scene(vista);
-                stage.setScene(escenaFormularioEdicion);
-                stage.setTitle("Formulario de sucursal");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.showAndWait();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        
+            FXMLFormularioSucursalController controlador = loader.getController();
+
+            Stage stage = new Stage();
+            Scene escenaFormularioEdicion = new Scene(vista);
+            stage.setScene(escenaFormularioEdicion);
+            stage.setTitle("Registrar sucursal");
+            stage.sizeToScene();
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            consultarSucursales();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
     private void btnEditar(ActionEvent event) {
-        Sucursal sucursal = tvSucursales.getSelectionModel().getSelectedItem();
-        if(sucursal!=null){
-            
-            consultarInformacionSucursal(sucursal.getIdSucursal());
-            System.out.println(sucursal.getIdSucursal());
-            datosSucursal.setSucursal(sucursal);
-            
+        Integer idSucursal = (tvSucursales.getSelectionModel().getSelectedItem() != null)
+                ? tvSucursales.getSelectionModel().getSelectedItem().getIdSucursal() : null;
+
+        if (idSucursal != null) {
+            //TODO mostrar mensaje que no se seleccionó sucursal
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioSucursal.fxml"));
                 Parent vista = loader.load();
 
                 FXMLFormularioSucursalController controlador = loader.getController();
-                controlador.inicializarInformacion(datosSucursal);
-                
+                controlador.inicializarDatos(idSucursal);
+
                 Stage stage = new Stage();
                 Scene escenaFormularioEdicion = new Scene(vista);
                 stage.setScene(escenaFormularioEdicion);
@@ -124,8 +118,11 @@ public class FXMLAdminSucursalesController implements Initializable {
     @FXML
     private void btnEliminar(ActionEvent event) {
     }
-    
-    private void consultarInformacionSucursal(Integer idSucursal){
-           datosSucursal = SucursalDAO.obtenerDatosSucursal(idSucursal);
+
+    public void consultarSucursales() {
+        tvSucursales.setItems(null);
+        List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursales();
+        sucursales = FXCollections.observableArrayList(listaSucursales);
+        tvSucursales.setItems(sucursales);
     }
 }

@@ -40,7 +40,7 @@ public class SucursalDAO {
         return sucursales;
     } 
     
-    public static DatosSucursal obtenerDatosSucursal(Integer idSucursal){
+    public static DatosSucursal obtenerPorId(Integer idSucursal){
         DatosSucursal datosSucursal = new DatosSucursal();
         String url = Constantes.URL_WS + "sucursales/obtenerInformacionSucursal/" + idSucursal;
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);

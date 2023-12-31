@@ -60,13 +60,41 @@ public class Utilidades {
             String cadena = change.getControlNewText();
 
             // Verifica si la cadena contiene solo dígitos
-            if (cadena.matches("\\d*")) { // \\d* significa: "cero o mas difitos"
+            if (cadena.matches("\\d*")) { // \\d* significa: "cero o mas digitos"
 
                 // Si se cumple la condifión, se actaliza el cambio.
                 return change;
             } else {
 
                 //Si no se cumple, la cadena regresa null y no se actualiza la cadena
+                return null;
+            }
+        };
+
+        return new TextFormatter<>(filtro);
+    }
+
+    public static TextFormatter<String> configurarFiltroNumerosDecimales() {
+        UnaryOperator<TextFormatter.Change> filtro = change -> {
+            String cadena = change.getControlNewText();
+
+            // Verifica si la cadena contiene solo dígitos
+            if (cadena.matches("\\d*\\.?\\d*")) { // \\d* significa: "cero o mas digitos , \\.? significa: "cero o un punto"
+                return change;
+            } else {
+                return null;
+            }
+        };
+
+        return new TextFormatter<>(filtro);
+    }
+
+    public static TextFormatter<String> configurarFiltroNumerosConLimite(int limite) {
+        UnaryOperator<TextFormatter.Change> filtro = change -> {
+            String cadena = change.getControlNewText();
+            if (cadena.matches("\\d{0," + limite + "}")) { // \\d{0, 10} significa: "cero o 10 digitos"
+                return change;
+            } else {
                 return null;
             }
         };

@@ -39,7 +39,10 @@ import smartcupon.utils.Utilidades;
  */
 public class FXMLFormularioSucursalController implements Initializable {
 
-    DatosSucursal datosSucursal;
+    DatosSucursal datosSucursal = null;
+    Sucursal sucursal = null;
+    Persona encargado = null;
+    Direccion direccion = null;
 
     private ObservableList<Estado> estados;
     private ObservableList<Ciudad> ciudades;
@@ -117,6 +120,9 @@ public class FXMLFormularioSucursalController implements Initializable {
     public void inicializarDatos(Integer idSucursal) {
         //TODO implementar mostrar datos para editar
         datosSucursal = SucursalDAO.obtenerPorId(idSucursal);
+        sucursal = datosSucursal.getSucursal();
+        direccion = datosSucursal.getDireccion();
+        encargado = datosSucursal.getPersona();
 
         rellenarCampos();
 
@@ -129,6 +135,9 @@ public class FXMLFormularioSucursalController implements Initializable {
 
         if (datosSucursal == null) {
             datosSucursal = new DatosSucursal();
+            sucursal = new Sucursal();
+            direccion = new Direccion();
+            encargado = new Persona();
         }
 
         if (validarDatos()) {
@@ -162,10 +171,6 @@ public class FXMLFormularioSucursalController implements Initializable {
     }
 
     private DatosSucursal llenarDatosSucursal() {
-        Sucursal sucursal = new Sucursal();
-        Persona encargado = new Persona();
-        Direccion direccion = new Direccion();
-
         sucursal.setNombre(tfNombreSucursal.getText());
         sucursal.setTelefono(tfTelefono.getText());
         sucursal.setLatitud(Double.parseDouble(tfLatitud.getText()));
@@ -210,9 +215,21 @@ public class FXMLFormularioSucursalController implements Initializable {
             }
 
             limpiarCampos();
-        }
+        } else {
+            respuesta = SucursalDAO.editarSucursal(datosSucursal);
 
-        //TODO implementar llamada a edicion de sucursal
+            if (!respuesta.getError()) {
+                Utilidades.mostrarAlertaSimple("Edición exitoso",
+                        respuesta.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarAlertaSimple("Error al editar",
+                        respuesta.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            }
+
+            llenarDatosSucursal();
+        }
     }
 
     private void limpiarCampos() {
@@ -293,24 +310,6 @@ public class FXMLFormularioSucursalController implements Initializable {
         }
 
         return 0;
-    }
-
-    private void editarSucursal(DatosSucursal datosSucursal) {
-        datosSucursal.getSucursal().setNombre(tfNombreSucursal.getText());
-        datosSucursal.getSucursal().setTelefono(tfTelefono.getText());
-        datosSucursal.getSucursal().setLatitud(Double.parseDouble(tfLatitud.getText()));
-        datosSucursal.getSucursal().setLongitud(Double.parseDouble(tfLongitud.getText()));
-        datosSucursal.getSucursal().setEmpresa(cbEmpresa.getSelectionModel().getSelectedIndex());
-
-        datosSucursal.getPersona().setNombre(tfNombreEncargado.getText());
-        datosSucursal.getPersona().setApellidoPaterno(tfApellidoPaterno.getText());
-        datosSucursal.getPersona().setApellidoMaterno(tfApellidoMaterno.getText());
-
-        datosSucursal.getDireccion().setCalle(tfCalle.getText());
-        datosSucursal.getDireccion().setNumero(Integer.parseInt(tfNumero.getText()));
-        datosSucursal.getDireccion().setColonia(tfColonia.getText());
-        datosSucursal.getDireccion().setCodigoPostal(tfCodigoPostal.getText());
-        datosSucursal.getDireccion().setCiudad(cbCiudad.getSelectionModel().getSelectedIndex());
     }
 
     private boolean validarDatos() {

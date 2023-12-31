@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -23,8 +24,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.dao.SucursalDAO;
-import smartcupon.modelo.pojo.DatosSucursal;
 import smartcupon.modelo.pojo.Sucursal;
+import smartcupon.utils.Utilidades;
 
 /**
  * FXML Controller class
@@ -95,7 +96,6 @@ public class FXMLAdminSucursalesController implements Initializable {
                 ? tvSucursales.getSelectionModel().getSelectedItem().getIdSucursal() : null;
 
         if (idSucursal != null) {
-            //TODO mostrar mensaje que no se seleccionó sucursal
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioSucursal.fxml"));
                 Parent vista = loader.load();
@@ -112,6 +112,10 @@ public class FXMLAdminSucursalesController implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            Utilidades.mostrarAlertaSimple("Seleccion de sucursal",
+                    "Para poder modificar debes seleccionar una sucursal de la tabla",
+                    Alert.AlertType.WARNING);
         }
     }
 

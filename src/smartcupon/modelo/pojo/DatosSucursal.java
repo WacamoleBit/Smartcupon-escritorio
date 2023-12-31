@@ -10,6 +10,7 @@ package smartcupon.modelo.pojo;
  * @author Dell
  */
 public class DatosSucursal {
+
     private Sucursal sucursal;
     private Persona persona;
     private Direccion direccion;
@@ -67,5 +68,4 @@ public class DatosSucursal {
         this.error = error;
     }
 
-    
 }

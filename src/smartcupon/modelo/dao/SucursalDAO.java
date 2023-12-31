@@ -25,62 +25,68 @@ import smartcupon.utils.Constantes;
  * @author Dell
  */
 public class SucursalDAO {
-    
-    public static List<Sucursal> obtenerSucursales(){
+
+    public static List<Sucursal> obtenerSucursales() {
         List<Sucursal> sucursales = new ArrayList<>();
         String url = Constantes.URL_WS + "sucursales/obtenerSucursales";
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
-        
+
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
-            Type tipoListaEstados = new TypeToken<List<Sucursal>>(){}.getType();
+            Type tipoListaEstados = new TypeToken<List<Sucursal>>() {
+            }.getType();
             sucursales = gson.fromJson(respuesta.getContenido(), tipoListaEstados);
         }
-        
+
         return sucursales;
-    } 
-    
-    public static DatosSucursal obtenerPorId(Integer idSucursal){
+    }
+
+    public static DatosSucursal obtenerPorId(Integer idSucursal) {
         DatosSucursal datosSucursal = new DatosSucursal();
-        String url = Constantes.URL_WS + "sucursales/obtenerInformacionSucursal/" + idSucursal;
+        String url = Constantes.URL_WS + "sucursales/obtenerPorId/" + idSucursal;
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
             datosSucursal = gson.fromJson(respuesta.getContenido(), DatosSucursal.class);
-    }
-    
+        }
+
         return datosSucursal;
     }
-    
-    public static Mensaje registrarSucursal(DatosSucursal datosSucursal){
+
+    public static Mensaje registrarSucursal(DatosSucursal datosSucursal) {
         Mensaje mensaje = new Mensaje();
-        String url = Constantes.URL_WS+"sucursales/registrarSucursal";
+        String url = Constantes.URL_WS + "sucursales/registrarSucursal";
+        
         Gson gson = new Gson();
         String json = gson.toJson(datosSucursal);
-        System.out.println(json);
+        
         CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, json);
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+        
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-        }else{
+        } else {
             mensaje.setMensaje("Error en la peticion para registrar la sucursal");
         }
-        
+
         return mensaje;
     }
-    
-    public static Mensaje editarSucursal(DatosSucursal datosSucursal){
+
+    public static Mensaje editarSucursal(DatosSucursal datosSucursal) {
         Mensaje mensaje = new Mensaje();
-        String url = Constantes.URL_WS+"sucursales/editarSucursal";
+        String url = Constantes.URL_WS + "sucursales/editarSucursal";
+        
         Gson gson = new Gson();
         String json = gson.toJson(datosSucursal);
+        
         CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, json);
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+        
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-        }else{
+        } else {
             mensaje.setMensaje("Error en la petición para registrar la sucursal");
         }
-        
+
         return mensaje;
     }
-    
+
 }

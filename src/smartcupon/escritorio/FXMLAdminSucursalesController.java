@@ -24,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.dao.SucursalDAO;
+import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Sucursal;
 import smartcupon.utils.Utilidades;
 
@@ -83,7 +84,6 @@ public class FXMLAdminSucursalesController implements Initializable {
             stage.showAndWait();
 
             consultarSucursales();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,6 +109,8 @@ public class FXMLAdminSucursalesController implements Initializable {
                 stage.setTitle("Formulario de sucursal");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
+                
+                consultarSucursales();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -121,6 +123,35 @@ public class FXMLAdminSucursalesController implements Initializable {
 
     @FXML
     private void btnEliminar(ActionEvent event) {
+        Mensaje respuesta = null;
+        Integer idSucursal = (tvSucursales.getSelectionModel().getSelectedItem() != null)
+                ? tvSucursales.getSelectionModel().getSelectedItem().getIdSucursal() : null;
+
+        if (idSucursal != null) {
+            boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
+                    "Eliminar sucursal",
+                    "¿Estás seguro que quieres eliminar esta sucursal?");
+
+            if (idSucursal > 0 && aceptar) {
+                respuesta = SucursalDAO.eliminarSucursal(idSucursal);
+
+                if (!respuesta.getError()) {
+                    Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
+                            respuesta.getMensaje(),
+                            Alert.AlertType.INFORMATION);
+                } else {
+                    Utilidades.mostrarAlertaSimple("Error al eliminar",
+                            respuesta.getMensaje(),
+                            Alert.AlertType.INFORMATION);
+                }
+            }
+            
+            consultarSucursales();
+        } else {
+            Utilidades.mostrarAlertaSimple("Seleccion de sucursal",
+                    "Para poder eliminar debes seleccionar una sucursal de la tabla",
+                    Alert.AlertType.WARNING);
+        }
     }
 
     public void consultarSucursales() {

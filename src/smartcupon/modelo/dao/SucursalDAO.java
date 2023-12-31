@@ -56,12 +56,12 @@ public class SucursalDAO {
     public static Mensaje registrarSucursal(DatosSucursal datosSucursal) {
         Mensaje mensaje = new Mensaje();
         String url = Constantes.URL_WS + "sucursales/registrarSucursal";
-        
+
         Gson gson = new Gson();
         String json = gson.toJson(datosSucursal);
-        
+
         CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, json);
-        
+
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
         } else {
@@ -74,16 +74,34 @@ public class SucursalDAO {
     public static Mensaje editarSucursal(DatosSucursal datosSucursal) {
         Mensaje mensaje = new Mensaje();
         String url = Constantes.URL_WS + "sucursales/editarSucursal";
-        
+
         Gson gson = new Gson();
         String json = gson.toJson(datosSucursal);
-        
+
         CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, json);
-        
+
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
         } else {
             mensaje.setMensaje("Error en la petición para registrar la sucursal");
+        }
+
+        return mensaje;
+    }
+
+    public static Mensaje eliminarSucursal(Integer idSucursal) {
+        Mensaje mensaje = new Mensaje();
+        String url = Constantes.URL_WS + "sucursales/eliminarSucursal/" + idSucursal;
+
+        Gson gson = new Gson();
+
+        CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error en la petición para eliminar la sucursal");
         }
 
         return mensaje;

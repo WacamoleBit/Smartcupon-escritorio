@@ -94,7 +94,7 @@ public class FXMLAdminEmpresasController implements Initializable {
             
             Stage stage = new Stage();
             Scene scene = new Scene(vista);
-            stage.setScene(scene);
+;           stage.setScene(scene);
             stage.setTitle("Formulario de empresa");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

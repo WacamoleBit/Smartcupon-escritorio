@@ -42,8 +42,8 @@
                   <Image url="@../../img/search.png" />
                </image></ImageView>
             <CheckBox fx:id="cbPorNombre" layoutX="256.0" layoutY="23.0" mnemonicParsing="false" text="Por nombre" />
-            <CheckBox fx:id="cbPorUsername" layoutX="360.0" layoutY="23.0" mnemonicParsing="false" text="Por username" />
-            <CheckBox fx:id="cbPorRol" layoutX="462.0" layoutY="23.0" mnemonicParsing="false" text="Por Rol" />
+            <CheckBox fx:id="cbPorUsername" layoutX="369.0" layoutY="23.0" mnemonicParsing="false" text="Por username" />
+            <CheckBox fx:id="cbPorRol" layoutX="498.0" layoutY="23.0" mnemonicParsing="false" text="Por Rol" />
             <Button layoutX="662.0" layoutY="16.0" mnemonicParsing="false" onAction="#btnBuscar" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Buscar" textFill="WHITE" />
          </children>
       </Pane>

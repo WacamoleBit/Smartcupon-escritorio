@@ -172,7 +172,7 @@ public class FXMLFormularioPromocionController implements Initializable {
             );
             promocion.setCodigoPromocion(tfCodigoPromocion.getText());
             promocion.setEmpresa(
-                    cbCategoria.getValue().getIdCategoria()
+                    cbEmpresa.getValue().getIdEmpresa()
             );
 
             guardarDatos(promocion);

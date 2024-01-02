@@ -14,13 +14,11 @@ import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import smartcupon.escritorio.FXMLFormularioPromocionController;
 import smartcupon.modelo.ConexionHTTP;
 import smartcupon.modelo.pojo.Categoria;
 import smartcupon.modelo.pojo.CodigoHTTP;
 import smartcupon.modelo.pojo.DatosPromocion;
+import smartcupon.modelo.pojo.FiltroBuscarPromocion;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Promocion;
 import smartcupon.modelo.pojo.TipoPromocion;
@@ -175,5 +173,27 @@ public class PromocionDAO {
         }
 
         return categorias;
+    }
+
+    public static List<Promocion> buscarPorFiltro(FiltroBuscarPromocion filtro) {
+        List<Promocion> promociones = new ArrayList();
+        String url = Constantes.URL_WS + "promociones/buscarPorFiltro?";
+        if (filtro.getNombre() != null) {
+            url += "nombre=" + filtro.getNombre();
+        }
+        if (filtro.getFecha() != null && filtro.getPorFechaInicio() != null) {
+            url += "fecha=" + filtro.getFecha();
+            url += "porFechaInicio=" + filtro.getPorFechaInicio();
+        }
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistPromociones = new TypeToken<ArrayList<Promocion>>() {
+            }.getType();
+            promociones = gson.fromJson(respuesta.getContenido(), arraylistPromociones);
+        }
+
+        return promociones;
     }
 }

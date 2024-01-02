@@ -52,9 +52,11 @@ public class PromocionDAO {
         String url = Constantes.URL_WS + "promociones/registrarPromocion";
 
         try {
-            byte[] imagen = Files.readAllBytes(archivoImagen.toPath());
+            if (archivoImagen != null) {
+                byte[] imagen = Files.readAllBytes(archivoImagen.toPath());
 
-            promocion.setImagen(imagen);
+                promocion.setImagen(imagen);
+            }
 
             DatosPromocion datos = new DatosPromocion();
             datos.setPromocion(promocion);

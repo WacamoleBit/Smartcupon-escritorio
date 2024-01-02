@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -24,6 +25,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.dao.SucursalDAO;
+import smartcupon.modelo.pojo.FiltroBuscarPromocion;
+import smartcupon.modelo.pojo.FiltroBuscarSucursal;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Sucursal;
 import smartcupon.utils.Utilidades;
@@ -49,6 +52,10 @@ public class FXMLAdminSucursalesController implements Initializable {
     private TableColumn colLongitud;
     @FXML
     private TextField tfBuscarSucursal;
+    @FXML
+    private CheckBox cbNombre;
+    @FXML
+    private CheckBox cbDireccion;
 
     /**
      * Initializes the controller class.
@@ -109,7 +116,7 @@ public class FXMLAdminSucursalesController implements Initializable {
                 stage.setTitle("Formulario de sucursal");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
-                
+
                 consultarSucursales();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,7 +152,7 @@ public class FXMLAdminSucursalesController implements Initializable {
                             Alert.AlertType.INFORMATION);
                 }
             }
-            
+
             consultarSucursales();
         } else {
             Utilidades.mostrarAlertaSimple("Seleccion de sucursal",
@@ -159,5 +166,26 @@ public class FXMLAdminSucursalesController implements Initializable {
         List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursales();
         sucursales = FXCollections.observableArrayList(listaSucursales);
         tvSucursales.setItems(sucursales);
+    }
+
+    @FXML
+    private void btnBuscar(ActionEvent event) {
+        FiltroBuscarSucursal filtro = new FiltroBuscarSucursal();
+
+        if (cbNombre.isSelected() && !tfBuscarSucursal.getText().trim().isEmpty()) {
+            filtro.setNombre(tfBuscarSucursal.getText());
+        }
+
+        if (cbDireccion.isSelected() && !tfBuscarSucursal.getText().trim().isEmpty()) {
+            filtro.setDireccion(tfBuscarSucursal.getText());
+        }
+
+        if (filtro.getNombre() != null || filtro.getDireccion() != null) {
+            List<Sucursal> listaSucursales = SucursalDAO.obtenerPorFiltro(filtro);
+            sucursales = FXCollections.observableArrayList(listaSucursales);
+            tvSucursales.setItems(sucursales);
+        } else {
+            consultarSucursales();
+        }
     }
 }

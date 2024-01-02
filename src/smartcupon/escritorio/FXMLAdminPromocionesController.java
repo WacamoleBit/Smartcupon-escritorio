@@ -7,6 +7,8 @@ package smartcupon.escritorio;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -18,6 +20,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.dao.PromocionDAO;
+import smartcupon.modelo.pojo.FiltroBuscarPromocion;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Promocion;
 import smartcupon.utils.Utilidades;
@@ -37,6 +42,7 @@ import smartcupon.utils.Utilidades;
 public class FXMLAdminPromocionesController implements Initializable {
 
     private ObservableList<Promocion> promociones;
+    private ObservableList<String> filtrosFechas;
 
     @FXML
     private TableColumn<?, ?> colNombre;
@@ -66,6 +72,10 @@ public class FXMLAdminPromocionesController implements Initializable {
     private TextField tfBuscarPromocion;
     @FXML
     private TableView<Promocion> tvPromociones;
+    @FXML
+    private DatePicker dpFecha;
+    @FXML
+    private ComboBox<String> cbFecha;
 
     /**
      * Initializes the controller class.
@@ -74,6 +84,7 @@ public class FXMLAdminPromocionesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnasTabla();
         mostrarInformacionPromociones();
+        configurarCombobox();
     }
 
     @FXML
@@ -186,6 +197,46 @@ public class FXMLAdminPromocionesController implements Initializable {
         promociones = FXCollections.observableArrayList(respuesta);
 
         tvPromociones.setItems(promociones);
+    }
+
+    private void configurarCombobox() {
+        List<String> todas = new ArrayList();
+
+        todas.add("");
+        todas.add("Fecha Inicio");
+        todas.add("Fecha Término");
+
+        filtrosFechas = FXCollections.observableArrayList();
+        filtrosFechas.setAll(todas);
+
+        cbFecha.setItems(filtrosFechas);
+    }
+
+    @FXML
+    private void btnBuscar(ActionEvent event) {
+        FiltroBuscarPromocion filtro = new FiltroBuscarPromocion();
+
+        if (!tfBuscarPromocion.getText().trim().isEmpty()) {
+            filtro.setNombre(tfBuscarPromocion.getText());
+        }
+
+        if (dpFecha.getValue() != null && cbFecha.getValue() != null
+                && cbFecha.getValue() != "") {
+            filtro.setFecha(dpFecha.getValue().toString());
+            Boolean porFechaInicio = (cbFecha.getSelectionModel().getSelectedIndex() == 1) ? true : false;
+            filtro.setPorFechaInicio(porFechaInicio);
+        }
+
+        if (filtro.getNombre() != null || filtro.getPorFechaInicio() != null) {
+            List<Promocion> respuesta = PromocionDAO.buscarPorFiltro(filtro);
+
+            promociones = FXCollections.observableArrayList(respuesta);
+
+            tvPromociones.setItems(promociones);
+        } else {
+            mostrarInformacionPromociones();
+        }
+
     }
 
 }

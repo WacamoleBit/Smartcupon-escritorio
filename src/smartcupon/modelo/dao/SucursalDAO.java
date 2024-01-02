@@ -16,6 +16,7 @@ import smartcupon.modelo.ConexionHTTP;
 import smartcupon.modelo.pojo.CodigoHTTP;
 import smartcupon.modelo.pojo.DatosSucursal;
 import smartcupon.modelo.pojo.Empresa;
+import smartcupon.modelo.pojo.FiltroBuscarSucursal;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Sucursal;
 import smartcupon.utils.Constantes;
@@ -105,6 +106,30 @@ public class SucursalDAO {
         }
 
         return mensaje;
+    }
+
+    public static List<Sucursal> obtenerPorFiltro(FiltroBuscarSucursal filtro) {
+        List<Sucursal> sucursales = new ArrayList<>();
+        String url = Constantes.URL_WS + "sucursales/buscarPorFiltro?";
+
+        if (filtro.getNombre() != null) {
+            url += "nombre=" + filtro.getNombre();
+        }
+
+        if (filtro.getDireccion() != null) {
+            url += "direccion=" + filtro.getDireccion();
+        }
+        
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type tipoListaSucursal = new TypeToken<List<Sucursal>>() {
+            }.getType();
+            sucursales = gson.fromJson(respuesta.getContenido(), tipoListaSucursal);
+        }
+
+        return sucursales;
     }
 
 }

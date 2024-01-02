@@ -12,11 +12,15 @@
    <children>
       <Pane layoutX="32.0" layoutY="19.0" prefHeight="62.0" prefWidth="968.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
          <children>
-            <TextField fx:id="tfBuscarPromocion" layoutX="14.0" layoutY="16.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 30;" />
+            <TextField fx:id="tfBuscarPromocion" layoutX="14.0" layoutY="16.0" prefHeight="30.0" prefWidth="220.0" promptText="Nombre promoción" style="-fx-background-radius: 30;" />
             <ImageView fitHeight="19.0" fitWidth="20.0" layoutX="204.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/search.png" />
                </image></ImageView>
+            <Button layoutX="864.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnBuscar" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Buscar" textFill="WHITE" />
+            <DatePicker fx:id="dpFecha" layoutX="295.0" layoutY="19.0" />
+            <Label layoutX="253.0" layoutY="23.0" text="Fecha:" />
+            <ComboBox fx:id="cbFecha" layoutX="526.0" layoutY="19.0" prefHeight="25.0" prefWidth="160.0" promptText="Fecha Inicio /Termino" />
          </children>
       </Pane>
       <Label layoutX="32.0" layoutY="94.0" text="Promociones">

@@ -46,19 +46,16 @@ public class FXMLAdminPromocionesController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> colNombre;
-    @FXML
     private TableColumn<?, ?> colDescripcion;
     @FXML
     private TableColumn<?, ?> colFechaInicio;
     @FXML
     private TableColumn<?, ?> colFechaTermino;
-    @FXML
     private TableColumn<?, ?> colRestricciones;
     @FXML
     private TableColumn<?, ?> colTipo;
     @FXML
     private TableColumn<?, ?> colPorcentajeDescuento;
-    @FXML
     private TableColumn<?, ?> colCategoria;
     @FXML
     private TableColumn<?, ?> colCuponesDisponibles;

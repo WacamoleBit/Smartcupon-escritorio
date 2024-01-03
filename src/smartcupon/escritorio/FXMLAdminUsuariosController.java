@@ -53,7 +53,6 @@ public class FXMLAdminUsuariosController implements Initializable {
     private TableColumn<?, ?> colEmail;
     @FXML
     private TableColumn<?, ?> colUsername;
-    @FXML
     private TableColumn<?, ?> colPassword;
     @FXML
     private TableColumn<?, ?> colRol;

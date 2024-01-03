@@ -40,18 +40,15 @@
             </Label>
             <TableView fx:id="tvPromociones" layoutX="15.0" layoutY="45.0" prefHeight="347.0" prefWidth="939.0" style="-fx-background-color: transparent;">
               <columns>
-                <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
-                <TableColumn fx:id="colDescripcion" prefWidth="75.0" text="Descripción" />
-                  <TableColumn fx:id="colFechaInicio" prefWidth="79.0" text="Fecha Inicio" />
-                  <TableColumn fx:id="colFechaTermino" prefWidth="89.0" text="Fecha Termino" />
-                  <TableColumn fx:id="colRestricciones" prefWidth="82.0" text="Restricciones" />
-                  <TableColumn fx:id="colTipo" prefWidth="65.0" text="Tipo" />
-                  <TableColumn fx:id="colPorcentajeDescuento" prefWidth="103.0" text="Porcentaje Descuento" />
-                  <TableColumn fx:id="colCategoria" prefWidth="52.0" text="Categoria" />
-                  <TableColumn fx:id="colCuponesDisponibles" prefWidth="118.0" text="Cupones Disponibles" />
-                  <TableColumn fx:id="colCodigo" prefWidth="65.0" text="Codigo" />
-                  <TableColumn fx:id="colEstatus" prefWidth="71.0" text="Estatus" />
-                  <TableColumn fx:id="ColEmpresa" prefWidth="64.0" text="Empresa" />
+                <TableColumn fx:id="colNombre" prefWidth="91.0" text="Nombre" />
+                  <TableColumn fx:id="colFechaInicio" prefWidth="84.0" text="Fecha Inicio" />
+                  <TableColumn fx:id="colFechaTermino" prefWidth="102.0" text="Fecha Termino" />
+                  <TableColumn fx:id="colTipo" prefWidth="111.0" text="Tipo" />
+                  <TableColumn fx:id="colPorcentajeDescuento" prefWidth="92.0" text="Porcentaje" />
+                  <TableColumn fx:id="colCuponesDisponibles" prefWidth="136.0" text="Cupones Disponibles" />
+                  <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Codigo" />
+                  <TableColumn fx:id="colEstatus" prefWidth="110.0" text="Estatus" />
+                  <TableColumn fx:id="ColEmpresa" prefWidth="92.0" text="Empresa" />
               </columns>
             </TableView>
          </children></Pane>

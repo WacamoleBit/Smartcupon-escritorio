@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLAdmiCuponesController">
+   <children>
+      <Pane layoutX="152.0" layoutY="75.0" prefHeight="100.0" prefWidth="397.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20px;">
+         <children>
+            <TextField fx:id="tfBuscar" layoutX="49.0" layoutY="16.0" prefHeight="30.0" prefWidth="300.0" promptText="Código" style="-fx-background-radius: 20px;" />
+            <ImageView fitHeight="19.0" fitWidth="20.0" layoutX="320.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/search.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="99.0" layoutY="56.0" mnemonicParsing="false" onAction="#btnCanjearCupon" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30px;" text="Canjear cupon" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane layoutX="28.0" layoutY="190.0" prefHeight="286.0" prefWidth="645.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20px;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Lista cupones">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tvCupones" layoutX="14.0" layoutY="43.0" prefHeight="232.0" prefWidth="622.0" style="-fx-background-color: transparent;">
+              <columns>
+                <TableColumn fx:id="colNombre" prefWidth="110.0" text="Nombre" />
+                <TableColumn fx:id="colCodigo" prefWidth="131.0" text="Código" />
+                  <TableColumn fx:id="colCuponesDisponibles" prefWidth="153.0" text="Cupones Disponibles" />
+                  <TableColumn fx:id="colFechaVigencia" prefWidth="122.0" text="Fecha Vigencia" />
+                  <TableColumn fx:id="colEstatus" prefWidth="105.0" text="Estatus" />
+              </columns>
+            </TableView>
+         </children>
+      </Pane>
+      <Label layoutX="28.0" layoutY="14.0" text="Canjeo de cupones">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

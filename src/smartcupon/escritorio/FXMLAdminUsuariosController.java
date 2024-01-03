@@ -53,7 +53,6 @@ public class FXMLAdminUsuariosController implements Initializable {
     private TableColumn<?, ?> colEmail;
     @FXML
     private TableColumn<?, ?> colUsername;
-    private TableColumn<?, ?> colPassword;
     @FXML
     private TableColumn<?, ?> colRol;
     @FXML
@@ -197,7 +196,6 @@ public class FXMLAdminUsuariosController implements Initializable {
         colCurp.setCellValueFactory(new PropertyValueFactory("curp"));
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
         colUsername.setCellValueFactory(new PropertyValueFactory("username"));
-        colPassword.setCellValueFactory(new PropertyValueFactory("password"));
         colRol.setCellValueFactory(new PropertyValueFactory("nombreRol"));
         colEmpresa.setCellValueFactory(new PropertyValueFactory("nombreEmpresa"));
     }

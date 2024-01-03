@@ -104,6 +104,8 @@ public class FXMLFormularioUsuarioController implements Initializable {
 
     @FXML
     private void btnGuardar(ActionEvent event) {
+        ocultarLabelsError();
+        
         if (usuario == null) {
             usuario = new Usuario();
         }

@@ -40,7 +40,8 @@ public class FXMLAdminUsuariosController implements Initializable {
 
     private Usuario usuario;
     private ObservableList<Usuario> usuarios;
-
+    @FXML
+    private TableView<Usuario> tvUsuarios;
     @FXML
     private TableColumn<?, ?> colNombre;
     @FXML
@@ -59,8 +60,6 @@ public class FXMLAdminUsuariosController implements Initializable {
     private TableColumn<?, ?> colEmpresa;
     @FXML
     private TextField tfBuscarUsuario;
-    @FXML
-    private TableView<Usuario> tvUsuarios;
     @FXML
     private CheckBox cbPorNombre;
     @FXML

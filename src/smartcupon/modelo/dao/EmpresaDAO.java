@@ -52,63 +52,72 @@ public class EmpresaDAO {
         return datosEmpresa;
     }
     
-    public static Mensaje registrarEmpresa(DatosEmpresa datosEmpresa){
+    public static Mensaje registrarEmpresa(Empresa empresa, File logo){
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "empresas/registrarEmpresa";
-        Gson gson = new Gson();
-        String json = gson.toJson(datosEmpresa);
-        System.out.println(json);
-        CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, json);
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
-            msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-        }else{
-            msj.setMensaje("Error en la peticion para registrar la empresa");
-        }
-        return msj;
-    }
-    
-    public static Mensaje editarEmpresa(DatosEmpresa datosEmpresa){
-        Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "empresas/editarEmpresa";
-        Gson gson = new Gson();
-        String json = gson.toJson(datosEmpresa);
-        System.out.println(json);
-        CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, json);
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
-            msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-        }else{
-            msj.setMensaje("Error en la peticion para registrar la empresa");
-        }
-        return msj;
-    }
-    
-    public static Mensaje subirLogoEmpresa(File logo, int idEmpresa){
-        Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "empresas/registrarLogo" + idEmpresa;
         try{
-            byte[] imagen = Files.readAllBytes(logo.toPath());
-            CodigoHTTP respuesta = ConexionHTTP.peticionPUTImagen(url, imagen);
+            if(logo != null){
+                byte[] logoEmpresa = Files.readAllBytes(logo.toPath());
+                empresa.setLogo(logoEmpresa);
+            }
+            DatosEmpresa  datos = new DatosEmpresa();
+            datos.setEmpresa(empresa);
+            Gson gson = new Gson();
+            String parametros = gson.toJson(datos);
+            CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
             if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
-                Gson gson = new Gson();
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+            }else{
                 msj.setError(true);
-                msj.setMensaje("Hubo un error al intentar subir la imagen, por favor intenta de nuevo");
+                msj.setMensaje("Error en la peticion para regitrar la empresa.");
             }
         }catch(IOException e){
             msj.setError(true);
-            msj.setMensaje("El archivo seleccionado no puede ser almacenado");
+            msj.setMensaje("El archivo seleccionado no puede ser enviado para su almacenamiento");
         }
         return msj;
     }
     
-    public static Empresa obtenerLogo(int idEmpresa){
-        Empresa empresa = null;
-        String url = Constantes.URL_WS + "empresas/obtenerLogo/" + idEmpresa;
-        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+    public static Mensaje editarEmpresa(Empresa empresa, File logo){
+        Mensaje msj = new Mensaje();
+        String url = Constantes.URL_WS + "empresas/editarEmpresa";
+        try{
+            if(logo != null){
+                byte[] logoEmpresa = Files.readAllBytes(logo.toPath());
+                empresa.setLogo(logoEmpresa);
+            }else{
+                empresa.setLogo(null);
+            }
+            DatosEmpresa  datos = new DatosEmpresa();
+            datos.setEmpresa(empresa);
             Gson gson = new Gson();
-            empresa = gson.fromJson(respuesta.getContenido(), Empresa.class);
+            String parametros = gson.toJson(datos);
+            CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
+            if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+                msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+            }else{
+                msj.setError(true);
+                msj.setMensaje("Error en la peticion para editar la empresa.");
+            }
+        }catch(IOException e){
+            msj.setError(true);
+            msj.setMensaje("El archivo seleccionado no puede ser enviado para su almacenamiento");
         }
-        return empresa;
+        return msj;
     }
+    
+    public static Mensaje eliminarEmpresa(Integer idEmpresa){
+        Mensaje msj = new Mensaje();
+        String url = Constantes.URL_WS + "empresas/eliminarEmpresa/" + idEmpresa;
+        Gson gson = new Gson();
+        CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url);
+        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+            msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        }else{
+            msj.setError(true);
+            msj.setMensaje("Error en la petición para eliminar la empresa");
+        }
+        return msj;
+    }
+    
 }

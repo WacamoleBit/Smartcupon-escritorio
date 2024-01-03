@@ -53,12 +53,14 @@ import static smartcupon.utils.Utilidades.seleccionarImagen;
 public class FXMLFomularioEmpresaController implements Initializable {
 
     DatosEmpresa datosEmpresa;
+    Empresa empresa = null;
     Persona representante = null;
+    Direccion direccion = null;
     
     private ObservableList<Ciudad> ciudades;
     private ObservableList<Estado> estados;
     private ObservableList<Empresa> empresas;
-    private File logo;
+    private File logo = null;
     
     @FXML
     private TextField tfNombre;
@@ -118,12 +120,14 @@ public class FXMLFomularioEmpresaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        limpiarLabels();
         this.cargarInformacionEstados();
         this.configurarSeleccionEstado();
+        configurarNumeros();
     }    
 
     public void iniciarlizarInformacion(DatosEmpresa datosEmpresa){
-        if (datosEmpresa!= null && datosEmpresa.getDireccion() != null ) {
+        if (datosEmpresa!= null && datosEmpresa.getDireccion() != null && datosEmpresa.getPersona() != null) {
             this.datosEmpresa = datosEmpresa;
             rellenarCampos();
         }
@@ -148,7 +152,27 @@ public class FXMLFomularioEmpresaController implements Initializable {
         tfCodigoPostal.setText(datosEmpresa.getDireccion().getCodigoPostal());
     }
      
-    private void limpiarCampos(){
+    private DatosEmpresa llenarDatosEmpresa(){
+        empresa.setNombre(tfNombre.getText());
+        empresa.setNombreComercial(tfNombreComercial.getText());
+        empresa.setEmail(tfEmail.getText());
+        empresa.setPaginaWeb(tfPaginaWeb.getText());
+        empresa.setRfc(tfRfc.getText());
+        empresa.setTelefono(tfTelefono.getText());
+        direccion.setCiudad(cbCiudad.getValue().getIdCiudad());
+        direccion.setEstado(cbEstado.getValue().getIdEstado());
+        direccion.setCodigoPostal(tfCodigoPostal.getText());
+        direccion.setNumero(Integer.parseInt(tfNumero.getText()));
+        representante.setNombreTipoPersona(tfRepresentante.getText());
+    
+        datosEmpresa.setEmpresa(empresa);
+        datosEmpresa.setDireccion(direccion);
+        datosEmpresa.setPersona(representante);
+        
+        return datosEmpresa;
+    }
+    
+    private void limpiarLabels(){
         lbNombre.setText("");
         lbNombreComercial.setText("");
         lbCalle.setText("");
@@ -163,6 +187,21 @@ public class FXMLFomularioEmpresaController implements Initializable {
         lbTelefono.setText("");
         lbCuidad.setText("");
         lbEstado.setText("");
+    }
+     
+    private void limpiarCampos(){
+        tfNombre.clear();
+        tfNombreComercial.clear();
+        tfEmail.clear();
+        tfNumero.clear();
+        tfPaginaWeb.clear();
+        tfRepresentante.clear();
+        tfRfc.clear();
+        tfTelefono.clear();
+        tfCodigoPostal.clear();
+        tfCalle.clear();
+        cbCiudad.setValue(null);
+        cbEstado.setValue(null);
     }
     
     private boolean validarCamposVacios(){
@@ -183,43 +222,40 @@ public class FXMLFomularioEmpresaController implements Initializable {
          Utilidades.mostrarAlertaSimple("Error: ", "Campos vacios, introduce todos los datos", Alert.AlertType.WARNING);
      
          if(tfNombre.getText().isEmpty()){
-             lbNombre.setText("Campo requerido");
+             lbNombre.setText("Ingrese el nombre de la empresa");
          }
          if(tfNombreComercial.getText().isEmpty()){
-             lbNombreComercial.setText("Campo requerido");
+             lbNombreComercial.setText("Ingrese el nombre comercial de la empresa");
          }
          if(tfCalle.getText().isEmpty()){
-             lbCalle.setText("Campo requerido");
+             lbCalle.setText("Ingrese la calle");
          }
          if(tfEmail.getText().isEmpty()){
-             lbEmail.setText("Campo requerido");
+             lbEmail.setText("Ingrese el email");
          }
          if(tfCodigoPostal.getText().isEmpty()){
-             lbCodigoPostal.setText("Campo requerido");
+             lbCodigoPostal.setText("Ingrese el codigo postal");
          }
          if(tfNumero.getText().isEmpty()){
-             lbNumero.setText("Campo requerido");
+             lbNumero.setText("Ingrese el numero");
          }
          if(tfPaginaWeb.getText().isEmpty()){
-             lbPaginaWeb.setText("Campo requerido");
+             lbPaginaWeb.setText("Ingrese la pagina web");
          }
          if(tfRfc.getText().isEmpty()){
-             lbRfc.setText("Campo requerido");
+             lbRfc.setText("Ingrese el rfc");
          }
          if(tfTelefono.getText().isEmpty()){
-             lbNombre.setText("Campo requerido");
-         }
-         if(tfTelefono.getText().isEmpty()){
-             lbNombre.setText("Campo requerido");
+             lbTelefono.setText("Ingrese el telefono");
          }
          if(tfRepresentante.getText().isEmpty()){
-             lbRepresentante.setText("Campo requerido");
+             lbRepresentante.setText("Ingrese el representante");
          }
          if(cbCiudad.getValue() == null){
-             lbCuidad.setText("Campo requerido");
+             lbCuidad.setText("Seleccione la ciudad");
          }
          if(cbEstado.getValue() == null){
-             lbEstado.setText("Campo requerido");
+             lbEstado.setText("Seleccione el estado");
          }
          
          return true;
@@ -227,49 +263,24 @@ public class FXMLFomularioEmpresaController implements Initializable {
      return false;
     }
     
-    private boolean validarTipoDato() {
-        boolean datosValidos = true;
-        String telefono = tfTelefono.getText();
-        if (!telefono.matches("\\d{10}")) {
-            lbTelefono.setText("Teléfono inválido");
-            datosValidos = false;
-        }
-        String rfc = tfRfc.getText();
-        if (!rfc.matches("[A-Z]{4}[0-9]{6}[A-Z0-9]{3}")) {
-            lbRfc.setText("RFC inválido");
-            datosValidos = false;
-        }
-        String email = tfEmail.getText();
-        if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            lbEmail.setText("Email inválido");
-            datosValidos = false;
-        }
-
-
-        return datosValidos;
-    }    
-    
-    private void registrarEmpresa(){
-        datosEmpresa = new DatosEmpresa();
-        Empresa empresa = new Empresa();
-        Direccion direccion = new Direccion();
-        Persona persona = new Persona();
-        
-        Mensaje msj = EmpresaDAO.registrarEmpresa(datosEmpresa);
-        if(!msj.getError()){
-            Utilidades.mostrarAlertaSimple("Empresa registrada con éxito. ", msj.getMensaje(), Alert.AlertType.INFORMATION);
+    private void guardarDatos(Empresa empresa){
+        Mensaje msj = null;
+        if(empresa.getIdEmpresa() == null){
+            msj = EmpresaDAO.registrarEmpresa(empresa, logo);
+            if(!msj.getError()){
+                Utilidades.mostrarAlertaSimple("La empresa se registró con éxito.", msj.getMensaje(), Alert.AlertType.INFORMATION);
+            }else{
+                Utilidades.mostrarAlertaSimple("Error al registrar la empresa.", msj.getMensaje(), Alert.AlertType.ERROR);
+            }
+        limpiarCampos();
         }else{
-            Utilidades.mostrarAlertaSimple("Error al registrar la empresa, intenta de nuevo.", msj.getMensaje(), Alert.AlertType.ERROR);
-        }
-        
-    }
-    
-    private void editarEmpresa(){
-       Mensaje msj = EmpresaDAO.editarEmpresa(datosEmpresa);
-        if (!msj.getError()) {
-            Utilidades.mostrarAlertaSimple("Datos de la empresa editos con exito.", msj.getMensaje(), Alert.AlertType.INFORMATION);
-        } else {
-            Utilidades.mostrarAlertaSimple("Error al editar la empresa, intenta de nuevo por favor.", msj.getMensaje(), Alert.AlertType.INFORMATION);
+            msj = EmpresaDAO.editarEmpresa(empresa, logo);
+            if(!msj.getError()){
+                Utilidades.mostrarAlertaSimple("La empresa se editó con éxito.", msj.getMensaje(), Alert.AlertType.INFORMATION);
+            }else{
+                Utilidades.mostrarAlertaSimple("Error al editar la empresa.", msj.getMensaje(), Alert.AlertType.ERROR);
+            }
+            rellenarCampos();
         }
     }
     
@@ -327,6 +338,12 @@ public class FXMLFomularioEmpresaController implements Initializable {
         
     }
     
+    private void configurarNumeros(){
+        tfTelefono.setTextFormatter(Utilidades.configurarFiltroNumerosConLimite(10));
+        tfNombre.setTextFormatter(Utilidades.configurarFiltroNumeros());
+        tfCodigoPostal.setTextFormatter(Utilidades.configurarFiltroNumerosConLimite(5));
+   }
+    
     private void mostrarLogo(File logo){
         try{
             BufferedImage buffer = ImageIO.read(logo);
@@ -336,14 +353,12 @@ public class FXMLFomularioEmpresaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error: ", "No se pudo cargar la imagen seleccionada", Alert.AlertType.ERROR);
         }
     }
-    
-    private void obtenerLogo(int idEmpresa){
-        Empresa logoEmpresa = EmpresaDAO.obtenerLogo(idEmpresa);
-        if(logoEmpresa != null && logoEmpresa.getLogoBase64() != null && logoEmpresa.getLogoBase64().length() > 0){
-                //Image imagen = Utilidades.decodificarImagenBase64(logoEmpresa.getLogoBase64());
-                byte[] decodeImg = Base64.getDecoder().decode(logoEmpresa.getLogoBase64().replaceAll("\\n", ""));
-                Image image = new Image(new ByteArrayInputStream(decodeImg));
-                ivFoto.setImage(image);
+    private void obtenerLogo(MouseEvent event){
+        Window ventanaPadre = tfNombre.getScene().getWindow();
+        logo = seleccionarImagen(ventanaPadre);
+
+        if (logo != null) {
+            mostrarLogo(logo);
         }
     }
     
@@ -351,34 +366,19 @@ public class FXMLFomularioEmpresaController implements Initializable {
      
     @FXML
     private void btnGuardar(ActionEvent event) {
-        limpiarCampos();
-        if(!validarCamposVacios() && validarTipoDato()){
-            if(datosEmpresa != null){
-                editarEmpresa();
-            }else{
-                registrarEmpresa();
+        limpiarLabels();
+            if(datosEmpresa == null){
+                datosEmpresa = new DatosEmpresa();
+                empresa = new Empresa();
+                direccion = new Direccion();
+                representante = new Persona();
             }
-        }
+            if(validarCamposVacios()){
+                datosEmpresa = llenarDatosEmpresa();
+                guardarDatos(empresa);
+            }
     }
 
-    @FXML
-    private void btnSubirFoto(ActionEvent event) {
-        if(datosEmpresa != null && logo != null){
-            Mensaje msj = EmpresaDAO.subirLogoEmpresa(logo, datosEmpresa.getEmpresa().getIdEmpresa());
-            if(!msj.getError()){
-                Utilidades.mostrarAlertaSimple("Logo guardado correctamente.", msj.getMensaje(), Alert.AlertType.INFORMATION);
-            }else{
-                Utilidades.mostrarAlertaSimple("Error al guardar el logo", msj.getMensaje(), Alert.AlertType.ERROR);
-            }
-        }
-    }
-
-    @FXML
-    private void btnSeleccionarFoto(ActionEvent event) {
-        logo = mostrarSeleccion();
-        if(logo != null){
-            mostrarLogo(logo);
-        }
-    }
+    
 
 }

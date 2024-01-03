@@ -46,17 +46,14 @@ public class FXMLAdminPromocionesController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> colNombre;
-    private TableColumn<?, ?> colDescripcion;
     @FXML
     private TableColumn<?, ?> colFechaInicio;
     @FXML
     private TableColumn<?, ?> colFechaTermino;
-    private TableColumn<?, ?> colRestricciones;
     @FXML
     private TableColumn<?, ?> colTipo;
     @FXML
     private TableColumn<?, ?> colPorcentajeDescuento;
-    private TableColumn<?, ?> colCategoria;
     @FXML
     private TableColumn<?, ?> colCuponesDisponibles;
     @FXML
@@ -173,13 +170,10 @@ public class FXMLAdminPromocionesController implements Initializable {
 
     private void configurarColumnasTabla() {
         colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
         colFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
         colFechaTermino.setCellValueFactory(new PropertyValueFactory("fechaTermino"));
-        colRestricciones.setCellValueFactory(new PropertyValueFactory("restricciones"));
         colTipo.setCellValueFactory(new PropertyValueFactory("tipoPromocionNombre"));
         colPorcentajeDescuento.setCellValueFactory(new PropertyValueFactory("porcentajeDescuento"));
-        colCategoria.setCellValueFactory(new PropertyValueFactory("categoriaNombre"));
         colCuponesDisponibles.setCellValueFactory(new PropertyValueFactory("cuponesDisponibles"));
         colCodigo.setCellValueFactory(new PropertyValueFactory("codigoPromocion"));
         colEstatus.setCellValueFactory(new PropertyValueFactory("estatusNombre"));

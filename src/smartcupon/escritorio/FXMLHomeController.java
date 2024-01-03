@@ -67,6 +67,8 @@ public class FXMLHomeController implements Initializable {
         if (this.usuario.getRol() != 1) {
             lbEmpresa.setVisible(false);
             tfEmpresa.setVisible(false);
+        } else {
+            tfEmpresa.setText(usuario.getNombreEmpresa().toString());
         }
     }
 
@@ -113,6 +115,24 @@ public class FXMLHomeController implements Initializable {
 
     @FXML
     private void btnIrPantallaCupon(ActionEvent event) {
+        try {
+            FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdmiCupones.fxml"));
+            Parent vista = vistaLoader.load();
+
+            FXMLAdmiCuponesController controlador = vistaLoader.getController();
+            controlador.obtenerEmpresa(usuario.getEmpresa());
+            System.out.println(usuario.getEmpresa());
+
+            Stage stage = new Stage();
+            Scene escenaFormularioEdicion = new Scene(vista);
+            stage.setScene(escenaFormularioEdicion);
+            stage.setTitle("Gestión cupones");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

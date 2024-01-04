@@ -38,6 +38,8 @@ import smartcupon.utils.Utilidades;
  */
 public class FXMLPromocionSucursalController implements Initializable {
 
+    ObservableList<Sucursal> sucursales = null;
+
     @FXML
     private TableView<Sucursal> tvSucursales;
     @FXML
@@ -51,11 +53,29 @@ public class FXMLPromocionSucursalController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        configurarTabla();
     }
 
     @FXML
     private void btnEliminar(ActionEvent event) {
+    }
+
+    public void consultarSucursales() {
+        tvSucursales.setItems(null);
+        List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursales();
+        sucursales = FXCollections.observableArrayList(listaSucursales);
+        tvSucursales.setItems(sucursales);
+    }
+
+    private void configurarTabla() {
+        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));
+        colLatitud.setCellValueFactory(new PropertyValueFactory("latitud"));
+        colLongitud.setCellValueFactory(new PropertyValueFactory("longitud"));
+    }
+
+    @FXML
+    private void btnGuardar(ActionEvent event) {
     }
 
 }

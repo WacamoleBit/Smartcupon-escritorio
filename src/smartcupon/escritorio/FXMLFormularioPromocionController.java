@@ -18,7 +18,10 @@ import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -30,6 +33,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import javax.imageio.ImageIO;
 import smartcupon.modelo.dao.EmpresaDAO;
@@ -67,7 +72,7 @@ public class FXMLFormularioPromocionController implements Initializable {
     private ObservableList<String> estatus = null;
     private ObservableList<TipoPromocion> tiposPromocion = null;
     private ObservableList<Categoria> categorias = null;
-    private ObservableList<Sucursal> sucursales= null;
+    private ObservableList<Sucursal> sucursales = null;
 
     private Promocion promocion = null;
     private File imagen = null;
@@ -145,7 +150,7 @@ public class FXMLFormularioPromocionController implements Initializable {
     public void inicializarDatos(Integer idPromocion) {
         this.promocion = PromocionDAO.obtenerPorId(idPromocion);
         cargarInformacionPromocion();
-        if(promocion.getIdPromocion() != null){
+        if (promocion.getIdPromocion() != null) {
             cargarInformacionSucursales();
         }
         cbEstatus.setDisable(false);
@@ -248,10 +253,10 @@ public class FXMLFormularioPromocionController implements Initializable {
 
         cbEstatus.getSelectionModel().selectFirst();
     }
-    
+
     private void cargarInformacionSucursales() {
         List<Sucursal> listaSucursales = PromocionDAO.obtenerSucursalesPorPromocion(promocion.getIdPromocion());
-       
+
         sucursales = FXCollections.observableArrayList();
         sucursales.setAll(listaSucursales);
         cbSucursales.setItems(sucursales);
@@ -571,6 +576,23 @@ public class FXMLFormularioPromocionController implements Initializable {
 
     @FXML
     private void btnEliminarSucursales(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLPromocionSucursal.fxml"));
+            Parent vista = loader.load();
+
+            FXMLPromocionSucursalController controlador = loader.getController();
+
+            Stage stage = new Stage();
+            Scene escenaFormularioEdicion = new Scene(vista);
+            stage.setScene(escenaFormularioEdicion);
+            stage.setTitle("Eliminar de sucursal");
+            stage.sizeToScene();
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void configurarBotonesSucursal() {

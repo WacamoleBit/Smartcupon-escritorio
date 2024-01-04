@@ -142,7 +142,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
 
         cbRol.getSelectionModel().select(
                 buscarIdRol(
-                        usuario.getRol())
+                        usuario.getRol()+1)
         );
 
         if (usuario.getEmpresa() != null) {

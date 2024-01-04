@@ -431,7 +431,6 @@ public class FXMLFormularioEmpresaController implements Initializable {
             msj = EmpresaDAO.registrarEmpresa(empresa, imagen);
             if (!msj.getError()) {
                 Utilidades.mostrarAlertaSimple("La empresa se registró con éxito.", msj.getMensaje(), Alert.AlertType.INFORMATION);
-                iniciarlizarDatos(datosEmpresa.getEmpresa().getIdEmpresa());
             } else {
                 Utilidades.mostrarAlertaSimple("Error al registrar la empresa.", msj.getMensaje(), Alert.AlertType.ERROR);
             }
@@ -443,6 +442,7 @@ public class FXMLFormularioEmpresaController implements Initializable {
             } else {
                 Utilidades.mostrarAlertaSimple("Error al editar la empresa.", msj.getMensaje(), Alert.AlertType.ERROR);
             }
+            
             rellenarCampos();
         }
     }

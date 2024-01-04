@@ -145,7 +145,7 @@ public class Utilidades {
     
     public static boolean validarRFC(String rfc) {
         // Patrón regex para validar RFC
-        String patronRFC = "^[A-Z]{5}[0-9]{7}[A-Z0-9]{1}$";
+        String patronRFC = "^[A-Z]{4}[0-9]{6}[A-Z0-9]{3}$";
 
         // Compilar el patrón
         return rfc.matches(patronRFC);

@@ -104,6 +104,8 @@ public class FXMLAdminEmpresasController implements Initializable {
             stage.setTitle("Formulario de empresa");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            
+            consultarEmpresas();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -130,6 +132,8 @@ public class FXMLAdminEmpresasController implements Initializable {
                 stage.setTitle("Formulario de empresa");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
+                
+                consultarEmpresas();
             } catch (Exception e) {
                 e.printStackTrace();
             }

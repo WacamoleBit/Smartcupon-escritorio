@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -43,6 +44,10 @@ public class FXMLHomeController implements Initializable {
     private TextField tfRol;
     @FXML
     private TextField tfNombre;
+    @FXML
+    private Button btnEmpresa;
+    @FXML
+    private Label lbBotonEmpresa;
 
     /**
      * Initializes the controller class.
@@ -64,11 +69,14 @@ public class FXMLHomeController implements Initializable {
     }
 
     private void detectarRolUsuario() {
-        if (this.usuario.getRol() != 1) {
+        if (this.usuario.getRol() != 2) {
+            btnEmpresa.setVisible(false);
+            lbBotonEmpresa.setVisible(false);
+
+            tfEmpresa.setText(usuario.getNombreEmpresa().toString());
+        } else {
             lbEmpresa.setVisible(false);
             tfEmpresa.setVisible(false);
-        } else {
-            tfEmpresa.setText(usuario.getNombreEmpresa().toString());
         }
     }
 

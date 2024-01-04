@@ -27,9 +27,9 @@ import smartcupon.modelo.pojo.Usuario;
  * @author jegal
  */
 public class FXMLHomeController implements Initializable {
-
+    
     Usuario usuario = null;
-
+    
     @FXML
     private Label lbNombreUsuario;
     @FXML
@@ -48,6 +48,8 @@ public class FXMLHomeController implements Initializable {
     private Button btnEmpresa;
     @FXML
     private Label lbBotonEmpresa;
+    @FXML
+    private Button btnUsuarios;
 
     /**
      * Initializes the controller class.
@@ -56,7 +58,7 @@ public class FXMLHomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-
+    
     public void inicializarVariables(Usuario usuario) {
         this.usuario = usuario;
         lbNombreUsuario.setText(usuario.getNombre());
@@ -64,114 +66,116 @@ public class FXMLHomeController implements Initializable {
         tfCurp.setText(usuario.getCurp());
         tfEmail.setText(usuario.getEmail());
         tfRol.setText(usuario.getNombreRol());
-
+        
         detectarRolUsuario();
     }
-
+    
     private void detectarRolUsuario() {
         if (this.usuario.getRol() != 2) {
             btnEmpresa.setVisible(false);
             lbBotonEmpresa.setVisible(false);
-
+            btnUsuarios.setVisible(false);
+            
             tfEmpresa.setText(usuario.getNombreEmpresa().toString());
         } else {
             lbEmpresa.setVisible(false);
             tfEmpresa.setVisible(false);
         }
     }
-
+    
     @FXML
     private void btnIrPantallaEmpresa(ActionEvent event) {
         try {
             FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminEmpresas.fxml"));
             Parent vista = vistaLoader.load();
-
+            
             FXMLAdminEmpresasController controlador = vistaLoader.getController();
             controlador.consultarEmpresas();
-
+            
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
             stage.setTitle("Gestión empresas");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    
     @FXML
     private void btnIrPantallaPromocion(ActionEvent event) {
         try {
             FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminPromociones.fxml"));
             Parent vista = vistaLoader.load();
-
+            
             FXMLAdminPromocionesController controlador = vistaLoader.getController();
-
+            
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
             stage.setTitle("Gestión promociones");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    
     @FXML
     private void btnIrPantallaCupon(ActionEvent event) {
         try {
             FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdmiCupones.fxml"));
             Parent vista = vistaLoader.load();
-
+            
             FXMLAdmiCuponesController controlador = vistaLoader.getController();
             controlador.obtenerEmpresa(usuario.getEmpresa());
             System.out.println(usuario.getEmpresa());
-
+            
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
             stage.setTitle("Gestión cupones");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    
     @FXML
     private void btnIrPantallaSucursal(ActionEvent event) {
         try {
             FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminSucursales.fxml"));
             Parent vista = vistaLoader.load();
-
+            
             FXMLAdminSucursalesController controlador = vistaLoader.getController();
             controlador.consultarSucursales();
-
+            controlador.definirEmpresa(usuario.getEmpresa());
+            
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
             stage.setTitle("Gestión sucursales");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    
     @FXML
     private void btnIrPantallaUsuarios(ActionEvent event) {
         try {
             FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminUsuarios.fxml"));
             Parent vista = vistaLoader.load();
-
+            
             FXMLAdminUsuariosController controlador = vistaLoader.getController();
-
+            
             Stage stage = new Stage();
             Scene escenaAdminUsuarios = new Scene(vista);
             stage.setScene(escenaAdminUsuarios);
@@ -184,5 +188,5 @@ public class FXMLHomeController implements Initializable {
             ex.printStackTrace();
         }
     }
-
+    
 }

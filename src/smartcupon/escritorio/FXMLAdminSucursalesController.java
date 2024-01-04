@@ -38,6 +38,8 @@ import smartcupon.utils.Utilidades;
  */
 public class FXMLAdminSucursalesController implements Initializable {
 
+    private Integer empresa = null;
+
     private ObservableList<Sucursal> sucursales;
 
     @FXML
@@ -73,6 +75,11 @@ public class FXMLAdminSucursalesController implements Initializable {
         colLongitud.setCellValueFactory(new PropertyValueFactory("longitud"));
     }
 
+    public void definirEmpresa(Integer empresa) {
+        this.empresa = empresa;
+        consultarSucursales();
+    }
+
     @FXML
     private void btnRegistrar(ActionEvent event) {
         try {
@@ -80,6 +87,7 @@ public class FXMLAdminSucursalesController implements Initializable {
             Parent vista = loader.load();
 
             FXMLFormularioSucursalController controlador = loader.getController();
+            controlador.definirEmpresa(empresa);
 
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
@@ -162,10 +170,17 @@ public class FXMLAdminSucursalesController implements Initializable {
     }
 
     public void consultarSucursales() {
-        tvSucursales.setItems(null);
-        List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursales();
-        sucursales = FXCollections.observableArrayList(listaSucursales);
-        tvSucursales.setItems(sucursales);
+        if (empresa != null) {
+            tvSucursales.setItems(null);
+            List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursalesPorIdEmpresa(empresa);
+            sucursales = FXCollections.observableArrayList(listaSucursales);
+            tvSucursales.setItems(sucursales);
+        } else {
+            tvSucursales.setItems(null);
+            List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursales();
+            sucursales = FXCollections.observableArrayList(listaSucursales);
+            tvSucursales.setItems(sucursales);
+        }
     }
 
     @FXML

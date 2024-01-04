@@ -93,7 +93,7 @@
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Button layoutX="45.0" layoutY="244.0" mnemonicParsing="false" onAction="#btnIrPantallaUsuarios" prefHeight="21.0" prefWidth="82.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Usuarios" textFill="WHITE" />
+            <Button fx:id="btnUsuarios" layoutX="45.0" layoutY="244.0" mnemonicParsing="false" onAction="#btnIrPantallaUsuarios" prefHeight="21.0" prefWidth="82.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Usuarios" textFill="WHITE" />
          </children></Pane>
       <Pane layoutX="853.0" layoutY="136.0" prefHeight="200.0" prefWidth="200.0" />
       <Pane layoutX="751.0" layoutY="125.0" prefHeight="504.0" prefWidth="302.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">

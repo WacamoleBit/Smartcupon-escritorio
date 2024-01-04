@@ -6,6 +6,7 @@
 package smartcupon.escritorio;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -30,6 +31,7 @@ import smartcupon.modelo.pojo.Estado;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Persona;
 import smartcupon.modelo.pojo.Sucursal;
+import smartcupon.modelo.pojo.Usuario;
 import smartcupon.utils.Utilidades;
 
 /**
@@ -39,10 +41,11 @@ import smartcupon.utils.Utilidades;
  */
 public class FXMLFormularioSucursalController implements Initializable {
 
-    DatosSucursal datosSucursal = null;
-    Sucursal sucursal = null;
-    Persona encargado = null;
-    Direccion direccion = null;
+    private DatosSucursal datosSucursal = null;
+    private Sucursal sucursal = null;
+    private Persona encargado = null;
+    private Direccion direccion = null;
+    private Integer empresa = null;
 
     private ObservableList<Estado> estados;
     private ObservableList<Ciudad> ciudades;
@@ -112,7 +115,6 @@ public class FXMLFormularioSucursalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ocultarLabelsError();
         this.cargarInformacionEstados();
-        this.cargarInformacionEmpresas();
         this.configurarSeleccionEstado();
         configurarCamposNumericos();
     }
@@ -127,6 +129,11 @@ public class FXMLFormularioSucursalController implements Initializable {
         rellenarCampos();
 
         cbCiudad.setDisable(false);
+    }
+
+    public void definirEmpresa(Integer empresa) {
+        this.empresa = empresa;
+        this.cargarInformacionEmpresas();
     }
 
     @FXML
@@ -258,10 +265,20 @@ public class FXMLFormularioSucursalController implements Initializable {
     }
 
     private void cargarInformacionEmpresas() {
-        empresas = FXCollections.observableArrayList();
-        List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
-        empresas.addAll(listaEmpresas);
-        cbEmpresa.setItems(empresas);
+        if (empresa != null) {
+            empresas = FXCollections.observableArrayList();
+            Empresa empresa = EmpresaDAO.obtenerDatosEmpresa(this.empresa).getEmpresa();
+            List<Empresa> listaEmpresas = new ArrayList<>();
+            listaEmpresas.add(empresa);
+            empresas.addAll(listaEmpresas);
+            cbEmpresa.setItems(empresas);
+        } else {
+            empresas = FXCollections.observableArrayList();
+            List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
+            empresas.addAll(listaEmpresas);
+            cbEmpresa.setItems(empresas);
+        }
+
     }
 
     private void configurarSeleccionEstado() {

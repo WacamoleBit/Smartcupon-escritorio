@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -28,6 +29,7 @@ import smartcupon.modelo.dao.EmpresaDAO;
 import smartcupon.modelo.dao.SucursalDAO;
 import smartcupon.modelo.pojo.DatosEmpresa;
 import smartcupon.modelo.pojo.Empresa;
+import smartcupon.modelo.pojo.FiltroBuscarEmpresa;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.utils.Utilidades;
 
@@ -39,7 +41,7 @@ import smartcupon.utils.Utilidades;
 public class FXMLAdminEmpresasController implements Initializable {
 
     private DatosEmpresa datosEmpresa;
-    
+
     private ObservableList<Empresa> empresas;
     @FXML
     private TableColumn colNombre;
@@ -57,6 +59,12 @@ public class FXMLAdminEmpresasController implements Initializable {
     private TableColumn colEstatus;
     @FXML
     private TextField tfBuscarEmpresa;
+    @FXML
+    private CheckBox cbPorNombre;
+    @FXML
+    private CheckBox cbPorRFC;
+    @FXML
+    private CheckBox cbPorRepresentante;
 
     /**
      * Initializes the controller class.
@@ -65,7 +73,7 @@ public class FXMLAdminEmpresasController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cargarInformacion();
         consultarEmpresas();
-    }    
+    }
 
     private void cargarInformacion() {
         colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
@@ -75,38 +83,38 @@ public class FXMLAdminEmpresasController implements Initializable {
         colPaginaWeb.setCellValueFactory(new PropertyValueFactory("paginaWeb"));
         colEstatus.setCellValueFactory(new PropertyValueFactory("nombreEstatus"));
     }
-    
-    public void consultarEmpresas(){
+
+    public void consultarEmpresas() {
         List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
-        if(listaEmpresas.size() < 0 ){
+        if (listaEmpresas.size() < 0) {
             Utilidades.mostrarAlertaSimple("Empresas", "Por el momento no hay empresas registradas", Alert.AlertType.INFORMATION);
         }
         empresas = FXCollections.observableArrayList(listaEmpresas);
         tvEmpresas.setItems(empresas);
     }
-    
-    private void consultarInformacionEmpresa(Integer idEmpresa){
+
+    private void consultarInformacionEmpresa(Integer idEmpresa) {
         datosEmpresa = EmpresaDAO.obtenerDatosEmpresa(idEmpresa);
     }
-    
+
     @FXML
     private void btnRegistrar(ActionEvent event) {
-        try{
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioEmpresa.fxml"));
             Parent vista = loader.load();
-            
+
             FXMLFormularioEmpresaController controlador = loader.getController();
-            
-            
+
             Stage stage = new Stage();
             Scene scene = new Scene(vista);
-;           stage.setScene(scene);
+            ;
+            stage.setScene(scene);
             stage.setTitle("Formulario de empresa");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-            
+
             consultarEmpresas();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -114,30 +122,30 @@ public class FXMLAdminEmpresasController implements Initializable {
     @FXML
     private void btnEditar(ActionEvent event) {
         Empresa empresa = tvEmpresas.getSelectionModel().getSelectedItem();
-        if (empresa!= null) {
+        if (empresa != null) {
             consultarInformacionEmpresa(empresa.getIdEmpresa());
-           
+
             datosEmpresa.setEmpresa(empresa);
-            
+
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioEmpresa.fxml"));
                 Parent vista = loader.load();
-                
+
                 FXMLFormularioEmpresaController controlador = loader.getController();
                 controlador.iniciarlizarDatos(empresa.getIdEmpresa());
-                
+
                 Stage stage = new Stage();
                 Scene escenaFormularioEdicion = new Scene(vista);
                 stage.setScene(escenaFormularioEdicion);
                 stage.setTitle("Formulario de empresa");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
-                
+
                 consultarEmpresas();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             Utilidades.mostrarAlertaSimple("Seleccion de empresa", "Para editar, debes seleccionar una empresa de la tabla", Alert.AlertType.WARNING);
         }
     }
@@ -156,10 +164,10 @@ public class FXMLAdminEmpresasController implements Initializable {
             if (idEmpresa > 0 && aceptar) {
                 DatosEmpresa datos = new DatosEmpresa();
                 Empresa empresa = new Empresa();
-                
+
                 empresa.setIdEmpresa(idEmpresa);
                 datos.setEmpresa(empresa);
-                
+
                 respuesta = EmpresaDAO.eliminarEmpresa(datos);
 
                 if (!respuesta.getError()) {
@@ -179,5 +187,30 @@ public class FXMLAdminEmpresasController implements Initializable {
                     "Para poder eliminar debes seleccionar una empresa de la tabla",
                     Alert.AlertType.WARNING);
         }
+    }
+
+    @FXML
+    private void btnBuscar(ActionEvent event) {
+        if (!tfBuscarEmpresa.getText().trim().isEmpty() && validarCheckBox()) {
+            FiltroBuscarEmpresa filtro = new FiltroBuscarEmpresa();
+            
+            filtro.setCadena(tfBuscarEmpresa.getText());
+            filtro.setPorNombre(cbPorNombre.isSelected());
+            filtro.setPorRFC(cbPorRFC.isSelected());
+            filtro.setPorRepresentante(cbPorRepresentante.isSelected());
+            
+            List<Empresa> lista = EmpresaDAO.buscarPorFiltro(filtro);
+            
+            empresas = FXCollections.observableArrayList(lista);
+            
+            tvEmpresas.setItems(empresas);
+        } else {
+            consultarEmpresas();
+        }
+    }
+
+    private boolean validarCheckBox() {
+        return cbPorNombre.isSelected() || cbPorRFC.isSelected()
+                || cbPorRepresentante.isSelected();
     }
 }

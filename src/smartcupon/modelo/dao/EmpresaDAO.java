@@ -18,6 +18,7 @@ import smartcupon.modelo.ConexionHTTP;
 import smartcupon.modelo.pojo.CodigoHTTP;
 import smartcupon.modelo.pojo.DatosEmpresa;
 import smartcupon.modelo.pojo.Empresa;
+import smartcupon.modelo.pojo.FiltroBuscarEmpresa;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.utils.Constantes;
 
@@ -26,99 +27,117 @@ import smartcupon.utils.Constantes;
  * @author Dell
  */
 public class EmpresaDAO {
-    
+
     public static List<Empresa> obtenerEmpresas() {
         List<Empresa> empresas = new ArrayList<>();
         String url = Constantes.URL_WS + "empresas/obtenerEmpresas";
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
-            Type tipoListaEstados = new TypeToken<List<Empresa>>(){}.getType();
+            Type tipoListaEstados = new TypeToken<List<Empresa>>() {
+            }.getType();
             empresas = gson.fromJson(respuesta.getContenido(), tipoListaEstados);
         }
 
         return empresas;
     }
-    
-    public static DatosEmpresa obtenerDatosEmpresa(Integer idEmpresa){
+
+    public static DatosEmpresa obtenerDatosEmpresa(Integer idEmpresa) {
         DatosEmpresa datosEmpresa = new DatosEmpresa();
         String url = Constantes.URL_WS + "empresas/obtenerInformacionEmpresa/" + idEmpresa;
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
             datosEmpresa = gson.fromJson(respuesta.getContenido(), DatosEmpresa.class);
         }
-        
+
         return datosEmpresa;
     }
-    
-    public static Mensaje registrarEmpresa(DatosEmpresa empresa, File logo){
+
+    public static Mensaje registrarEmpresa(DatosEmpresa empresa, File logo) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "empresas/registrarEmpresa";
-        try{
-            if(logo != null){
+        try {
+            if (logo != null) {
                 byte[] logoEmpresa = Files.readAllBytes(logo.toPath());
                 empresa.getEmpresa().setLogo(logoEmpresa);
             }
-            
+
             Gson gson = new Gson();
             String parametros = gson.toJson(empresa);
             CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
-            if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-            }else{
+            } else {
                 msj.setError(true);
                 msj.setMensaje("Error en la peticion para regitrar la empresa.");
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             msj.setError(true);
             msj.setMensaje("El archivo seleccionado no puede ser enviado para su almacenamiento");
         }
         return msj;
     }
-    
-    public static Mensaje editarEmpresa(DatosEmpresa empresa, File logo){
+
+    public static Mensaje editarEmpresa(DatosEmpresa empresa, File logo) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "empresas/editarEmpresa";
-        try{
-            if(logo != null){
+        try {
+            if (logo != null) {
                 byte[] logoEmpresa = Files.readAllBytes(logo.toPath());
                 empresa.getEmpresa().setLogo(logoEmpresa);
-            }else{
+            } else {
                 empresa.getEmpresa().setLogo(null);
             }
             //empresa.getEmpresa().setNombreEstatus(null);
-            
+
             Gson gson = new Gson();
             String parametros = gson.toJson(empresa);
-            
+
             CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, parametros);
-            if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-            }else{
+            } else {
                 msj.setError(true);
                 msj.setMensaje("Error en la peticion para editar la empresa.");
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             msj.setError(true);
             msj.setMensaje("El archivo seleccionado no puede ser enviado para su almacenamiento");
         }
         return msj;
     }
-    
-    public static Mensaje eliminarEmpresa(DatosEmpresa empresa){
+
+    public static Mensaje eliminarEmpresa(DatosEmpresa empresa) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "empresas/eliminarEmpresa";
         Gson gson = new Gson();
         String json = gson.toJson(empresa);
         CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url, json);
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-        }else{
+        } else {
             msj.setError(true);
             msj.setMensaje("Error en la petición para eliminar la empresa");
         }
         return msj;
     }
-    
+
+    public static List<Empresa> buscarPorFiltro(FiltroBuscarEmpresa filtro) {
+        List<Empresa> usuarios = new ArrayList();
+        String parametros = String.format("?cadenaBusqueda=%s&porNombre=%s&porRFC=%s&porRepresentante=%s",
+                filtro.getCadena(), filtro.getPorNombre(), filtro.getPorRFC(), filtro.getPorRepresentante());
+        String url = Constantes.URL_WS + "empresas/buscarPorFiltro" + parametros;
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistEmpresa = new TypeToken<ArrayList<Empresa>>() {
+            }.getType();
+            usuarios = gson.fromJson(respuesta.getContenido(), arraylistEmpresa);
+        }
+
+        return usuarios;
+    }
+
 }

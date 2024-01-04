@@ -61,9 +61,9 @@ public class PromocionDAO {
         return promociones;
     }
     
-    public static List<Sucursal> obtenerSucursalesPorPromocion(Integer idEmpresa) {
+    public static List<Sucursal> obtenerSucursalesPorPromocion(Integer idPromocion) {
         List<Sucursal> sucursales = new ArrayList();
-        String url = Constantes.URL_WS + "promociones/obtenerSucursalesPorPromocion/" + idEmpresa;
+        String url = Constantes.URL_WS + "promociones/obtenerSucursalesPorPromocion/" + idPromocion;
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
 
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {

@@ -135,14 +135,16 @@ public class FXMLFormularioPromocionController implements Initializable {
         cargarInformacionEstatus();
         cargarInformacionTipoPromocion();
         cargarInformacionCategorias();
-        cargarInformacionSucursales();
         configurarCamposNumericos();
-        configurarDatePickers();
+        configurarDatePickers();;
     }
 
     public void inicializarDatos(Integer idPromocion) {
         this.promocion = PromocionDAO.obtenerPorId(idPromocion);
         cargarInformacionPromocion();
+        if(promocion.getIdPromocion() != null){
+            cargarInformacionSucursales();
+        }
         cbEstatus.setDisable(false);
     }
 

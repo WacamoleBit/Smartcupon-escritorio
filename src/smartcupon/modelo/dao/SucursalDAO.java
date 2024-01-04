@@ -41,7 +41,7 @@ public class SucursalDAO {
 
         return sucursales;
     }
-    
+
     public static List<Sucursal> obtenerSucursalesPorIdEmpresa(Integer idEmpresa) {
         List<Sucursal> sucursales = new ArrayList<>();
         String url = Constantes.URL_WS + "sucursales/obtenerSucursalesPorIdEmpresa/" + idEmpresa;
@@ -134,7 +134,7 @@ public class SucursalDAO {
         if (filtro.getDireccion() != null) {
             url += "direccion=" + filtro.getDireccion();
         }
-        
+
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
 
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
@@ -147,4 +147,18 @@ public class SucursalDAO {
         return sucursales;
     }
 
+    public static List<Sucursal> obtenerSucursalesPorPromocion(Integer idPromocion) {
+        List<Sucursal> sucursales = new ArrayList();
+        String url = Constantes.URL_WS + "promociones/obtenerSucursalesPorPromocion/" + idPromocion;
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistSucursales = new TypeToken<ArrayList<Sucursal>>() {
+            }.getType();
+            sucursales = gson.fromJson(respuesta.getContenido(), arraylistSucursales);
+        }
+
+        return sucursales;
+    }
 }

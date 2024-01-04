@@ -60,21 +60,6 @@ public class PromocionDAO {
 
         return promociones;
     }
-    
-    public static List<Sucursal> obtenerSucursalesPorPromocion(Integer idPromocion) {
-        List<Sucursal> sucursales = new ArrayList();
-        String url = Constantes.URL_WS + "promociones/obtenerSucursalesPorPromocion/" + idPromocion;
-        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
-
-        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
-            Gson gson = new Gson();
-            Type arraylistSucursales = new TypeToken<ArrayList<Sucursal>>() {
-            }.getType();
-            sucursales = gson.fromJson(respuesta.getContenido(), arraylistSucursales);
-        }
-
-        return sucursales;
-    }
 
     public static Mensaje registrarPromocion(Promocion promocion, File archivoImagen) {
         Mensaje mensaje = new Mensaje();

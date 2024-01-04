@@ -39,6 +39,7 @@ import javafx.stage.Window;
 import javax.imageio.ImageIO;
 import smartcupon.modelo.dao.EmpresaDAO;
 import smartcupon.modelo.dao.PromocionDAO;
+import smartcupon.modelo.dao.SucursalDAO;
 import smartcupon.modelo.pojo.Categoria;
 import smartcupon.modelo.pojo.Empresa;
 import smartcupon.modelo.pojo.Mensaje;
@@ -257,7 +258,7 @@ public class FXMLFormularioPromocionController implements Initializable {
     }
 
     private void cargarInformacionSucursales() {
-        List<Sucursal> listaSucursales = PromocionDAO.obtenerSucursalesPorPromocion(promocion.getIdPromocion());
+        List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursalesPorPromocion(promocion.getIdPromocion());
 
         sucursales = FXCollections.observableArrayList();
         sucursales.setAll(listaSucursales);
@@ -574,6 +575,23 @@ public class FXMLFormularioPromocionController implements Initializable {
 
     @FXML
     private void btnRegistrarSucursales(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLPromocionSucursal.fxml"));
+            Parent vista = loader.load();
+
+            FXMLPromocionSucursalController controlador = loader.getController();
+
+            Stage stage = new Stage();
+            Scene escenaFormularioEdicion = new Scene(vista);
+            stage.setScene(escenaFormularioEdicion);
+            stage.setTitle("Eliminar de sucursal");
+            stage.sizeToScene();
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

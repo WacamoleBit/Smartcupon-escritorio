@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import smartcupon.modelo.dao.PromocionDAO;
 import smartcupon.modelo.dao.SucursalDAO;
 import smartcupon.modelo.pojo.FiltroBuscarPromocion;
 import smartcupon.modelo.pojo.FiltroBuscarSucursal;
@@ -38,7 +39,8 @@ import smartcupon.utils.Utilidades;
  */
 public class FXMLPromocionSucursalController implements Initializable {
 
-    ObservableList<Sucursal> sucursales = null;
+    private ObservableList<Sucursal> sucursales = null;
+    private Integer idPromocion = null;
 
     @FXML
     private TableView<Sucursal> tvSucursales;
@@ -57,7 +59,18 @@ public class FXMLPromocionSucursalController implements Initializable {
     }
 
     @FXML
+    private void btnGuardar(ActionEvent event) {
+    }
+
+    @FXML
     private void btnEliminar(ActionEvent event) {
+    }
+
+    private void fijarPromocion(Integer idPromocion) {
+        this.idPromocion = idPromocion;
+
+        cargarSucursalesPorPromocion();
+
     }
 
     public void consultarSucursales() {
@@ -74,8 +87,18 @@ public class FXMLPromocionSucursalController implements Initializable {
         colLongitud.setCellValueFactory(new PropertyValueFactory("longitud"));
     }
 
-    @FXML
-    private void btnGuardar(ActionEvent event) {
+    private void cargarSucursalesPorPromocion() {
+        if (idPromocion != null) {
+            tvSucursales.setItems(null);
+            List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursalesPorPromocion(idPromocion);
+            sucursales = FXCollections.observableArrayList(listaSucursales);
+            tvSucursales.setItems(sucursales);
+        } else {
+            tvSucursales.setItems(null);
+            List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursales();
+            sucursales = FXCollections.observableArrayList(listaSucursales);
+            tvSucursales.setItems(sucursales);
+        }
     }
 
 }

@@ -46,7 +46,7 @@ public class PromocionDAO {
 
         return promociones;
     }
-    
+
     public static List<Promocion> obtenerPromocionesDisponiblesPorEmpresa(Integer idEmpresa) {
         List<Promocion> promociones = new ArrayList();
         String url = Constantes.URL_WS + "promociones/obtenerPromocionesDisponiblesPorEmpresa/" + idEmpresa;
@@ -61,12 +61,11 @@ public class PromocionDAO {
 
         return promociones;
     }
-    
-    public static Mensaje eliminarPromocionSucursal(PromocionSucursal promocionSucursal){
-        Mensaje mensaje= new Mensaje();
-        String url = Constantes.URL_WS + "promociones/obtenerSucursalesPorPromocion/";
-        
-        
+
+    public static Mensaje eliminarPromocionSucursal(PromocionSucursal promocionSucursal) {
+        Mensaje mensaje = new Mensaje();
+        String url = Constantes.URL_WS + "promociones/eliminarPromocionSucursal/";
+
         Gson gson = new Gson();
         String json = gson.toJson(promocionSucursal);
         CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url, json);
@@ -80,12 +79,12 @@ public class PromocionDAO {
 
         return mensaje;
     }
-    
-    public static Mensaje registrarPromocionSucursal(PromocionSucursal promocionSucursal){
-    
+
+    public static Mensaje registrarPromocionSucursal(PromocionSucursal promocionSucursal) {
+
         Mensaje mensaje = new Mensaje();
         String url = Constantes.URL_WS + "promociones/registroPromocionSucursal/";
-                
+
         Gson gson = new Gson();
         String json = gson.toJson(promocionSucursal);
         CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, json);

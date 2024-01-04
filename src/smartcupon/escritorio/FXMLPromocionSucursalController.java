@@ -17,7 +17,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,6 +31,7 @@ import smartcupon.modelo.dao.SucursalDAO;
 import smartcupon.modelo.pojo.FiltroBuscarPromocion;
 import smartcupon.modelo.pojo.FiltroBuscarSucursal;
 import smartcupon.modelo.pojo.Mensaje;
+import smartcupon.modelo.pojo.PromocionSucursal;
 import smartcupon.modelo.pojo.Sucursal;
 import smartcupon.utils.Utilidades;
 
@@ -52,6 +55,12 @@ public class FXMLPromocionSucursalController implements Initializable {
     private TableColumn<?, ?> colLatitud;
     @FXML
     private TableColumn<?, ?> colLongitud;
+    @FXML
+    private Label lbTituloLista;
+    @FXML
+    private Button btnEliminar;
+    @FXML
+    private Button btnGuardar;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,17 +69,58 @@ public class FXMLPromocionSucursalController implements Initializable {
 
     @FXML
     private void btnGuardar(ActionEvent event) {
+        Integer idSucursal = (tvSucursales.getSelectionModel() != null)
+                ? tvSucursales.getSelectionModel().getSelectedItem().getIdSucursal()
+                : null;
+
+        if (idSucursal != null) {
+            PromocionSucursal datos = new PromocionSucursal();
+            datos.setIdPromocion(idPromocion);
+            datos.setIdSucursal(idSucursal);
+            Mensaje mensaje = PromocionDAO.registrarPromocionSucursal(datos);
+
+            if (!mensaje.getError()) {
+                Utilidades.mostrarAlertaSimple("Registro exitoso",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarAlertaSimple("Error al editar",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            }
+            
+            cargarSucursalesSinPromocion();
+        }
     }
 
     @FXML
     private void btnEliminar(ActionEvent event) {
+        Integer idSucursal = (tvSucursales.getSelectionModel() != null)
+                ? tvSucursales.getSelectionModel().getSelectedItem().getIdSucursal()
+                : null;
+
+        if (idSucursal != null) {
+            PromocionSucursal datos = new PromocionSucursal();
+            datos.setIdPromocion(idPromocion);
+            datos.setIdSucursal(idSucursal);
+            Mensaje mensaje = PromocionDAO.eliminarPromocionSucursal(datos);
+
+            if (!mensaje.getError()) {
+                Utilidades.mostrarAlertaSimple("Registro exitoso",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarAlertaSimple("Error al editar",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+            }
+            
+            cargarSucursalesPorPromocion();
+        }
     }
 
-    private void fijarPromocion(Integer idPromocion) {
+    public void fijarPromocion(Integer idPromocion) {
         this.idPromocion = idPromocion;
-
-        cargarSucursalesPorPromocion();
-
     }
 
     public void consultarSucursales() {
@@ -87,18 +137,20 @@ public class FXMLPromocionSucursalController implements Initializable {
         colLongitud.setCellValueFactory(new PropertyValueFactory("longitud"));
     }
 
-    private void cargarSucursalesPorPromocion() {
-        if (idPromocion != null) {
-            tvSucursales.setItems(null);
-            List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursalesPorPromocion(idPromocion);
-            sucursales = FXCollections.observableArrayList(listaSucursales);
-            tvSucursales.setItems(sucursales);
-        } else {
-            tvSucursales.setItems(null);
-            List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursales();
-            sucursales = FXCollections.observableArrayList(listaSucursales);
-            tvSucursales.setItems(sucursales);
-        }
+    public void cargarSucursalesPorPromocion() {
+        btnGuardar.setVisible(false);
+        tvSucursales.setItems(null);
+        List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursalesPorPromocion(idPromocion);
+        sucursales = FXCollections.observableArrayList(listaSucursales);
+        tvSucursales.setItems(sucursales);
+    }
+
+    public void cargarSucursalesSinPromocion() {
+        btnEliminar.setVisible(false);
+        tvSucursales.setItems(null);
+        List<Sucursal> listaSucursales = SucursalDAO.obtenerSucursalesSinPromocion(idPromocion);
+        sucursales = FXCollections.observableArrayList(listaSucursales);
+        tvSucursales.setItems(sucursales);
     }
 
 }

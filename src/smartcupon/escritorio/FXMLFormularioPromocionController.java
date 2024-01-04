@@ -579,6 +579,8 @@ public class FXMLFormularioPromocionController implements Initializable {
             Parent vista = loader.load();
 
             FXMLPromocionSucursalController controlador = loader.getController();
+            controlador.fijarPromocion(promocion.getIdPromocion());
+            controlador.cargarSucursalesSinPromocion();
 
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
@@ -588,6 +590,8 @@ public class FXMLFormularioPromocionController implements Initializable {
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            
+            cargarInformacionSucursales();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -600,6 +604,8 @@ public class FXMLFormularioPromocionController implements Initializable {
             Parent vista = loader.load();
 
             FXMLPromocionSucursalController controlador = loader.getController();
+            controlador.fijarPromocion(promocion.getIdPromocion());
+            controlador.cargarSucursalesPorPromocion();
 
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
@@ -609,6 +615,8 @@ public class FXMLFormularioPromocionController implements Initializable {
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            
+            cargarInformacionSucursales();
         } catch (Exception e) {
             e.printStackTrace();
         }

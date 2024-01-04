@@ -10,7 +10,8 @@ package smartcupon.modelo.pojo;
  * @author Dell
  */
 public class PromocionSucursal {
-        private Integer idSucursal;
+
+    private Integer idSucursal;
     private Integer idPromocion;
 
     public PromocionSucursal() {
@@ -36,5 +37,5 @@ public class PromocionSucursal {
     public void setIdPromocion(Integer idPromocion) {
         this.idPromocion = idPromocion;
     }
-    
+
 }

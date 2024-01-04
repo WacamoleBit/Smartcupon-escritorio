@@ -101,6 +101,20 @@ public class Utilidades {
 
         return new TextFormatter<>(filtro);
     }
+    
+    public static TextFormatter<String> configurarFiltroRFC() {
+        UnaryOperator<TextFormatter.Change> filtro = change -> {
+            String nuevaCadena = change.getControlNewText();
+            if (nuevaCadena.matches("[A-Z0-9]{0,13}")) {
+                return change;
+            } else {
+                return null;
+            }
+        };
+
+        return new TextFormatter<>(filtro);
+    }
+
 
     public static boolean validarEmail(String email) {
         Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
@@ -127,5 +141,45 @@ public class Utilidades {
 
         Image imagen = new Image(new ByteArrayInputStream(decodeImage));
         return imagen;
+    }
+    
+    public static boolean validarRFC(String rfc) {
+        // Patrón regex para validar RFC
+        String patronRFC = "^[A-Z]{5}[0-9]{7}[A-Z0-9]{1}$";
+
+        // Compilar el patrón
+        return rfc.matches(patronRFC);
+    }
+    
+    public static boolean validarCalle(String calle) {
+        String patronCalle = "^[\\p{L}0-9\\s]+$";
+
+        Pattern pattern = Pattern.compile(patronCalle);
+
+        return pattern.matcher(calle).matches();
+    }
+    
+    public static boolean validarNumerico(String cadena) {
+        String patronNumerico = "^[0-9]+$";
+
+        Pattern pattern = Pattern.compile(patronNumerico);
+
+        return pattern.matcher(cadena).matches();
+    }
+    
+    public static boolean validarNombre(String nombre) {
+        String patronNombre = "^[\\p{L}]+( [\\p{L}]+)*$";
+
+        Pattern pattern = Pattern.compile(patronNombre);
+
+        return pattern.matcher(nombre).matches();
+    }
+    
+    public static boolean validarPaginaWeb(String paginaWeb) {
+        String patronPaginaWeb = "^www\\.[a-zA-Z0-9-]+\\.com$";
+
+        Pattern pattern = Pattern.compile(patronPaginaWeb);
+
+        return pattern.matcher(paginaWeb).matches();
     }
 }

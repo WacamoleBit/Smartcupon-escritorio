@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -124,6 +125,8 @@ public class FXMLFormularioPromocionController implements Initializable {
     private ImageView ivPromocion;
     @FXML
     private ComboBox<Sucursal> cbSucursales;
+    @FXML
+    private Button btnEliminarSucursales;
 
     /**
      * Initializes the controller class.
@@ -136,7 +139,7 @@ public class FXMLFormularioPromocionController implements Initializable {
         cargarInformacionTipoPromocion();
         cargarInformacionCategorias();
         configurarCamposNumericos();
-        configurarDatePickers();;
+        configurarDatePickers();
     }
 
     public void inicializarDatos(Integer idPromocion) {
@@ -151,6 +154,7 @@ public class FXMLFormularioPromocionController implements Initializable {
     public void definirEmpresa(Integer empresa) {
         this.empresa = empresa;
         cargarInformacionEmpresas();
+        configurarBotonesSucursal();
     }
 
     @FXML
@@ -567,5 +571,13 @@ public class FXMLFormularioPromocionController implements Initializable {
 
     @FXML
     private void btnEliminarSucursales(ActionEvent event) {
+    }
+
+    private void configurarBotonesSucursal() {
+        if (promocion == null) {
+            btnEliminarSucursales.setVisible(false);
+        } else {
+            btnEliminarSucursales.setVisible(true);
+        }
     }
 }

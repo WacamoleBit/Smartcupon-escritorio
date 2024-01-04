@@ -108,7 +108,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button layoutX="21.0" layoutY="228.0" mnemonicParsing="false" onAction="#btnEliminarSucursales" prefHeight="36.0" prefWidth="193.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30px;" text="Eliminar sucursales" textFill="WHITE">
+            <Button fx:id="btnEliminarSucursales" layoutX="21.0" layoutY="228.0" mnemonicParsing="false" onAction="#btnEliminarSucursales" prefHeight="36.0" prefWidth="193.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30px;" text="Eliminar sucursales" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>

@@ -21,6 +21,7 @@ import smartcupon.modelo.pojo.DatosPromocion;
 import smartcupon.modelo.pojo.FiltroBuscarPromocion;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Promocion;
+import smartcupon.modelo.pojo.PromocionSucursal;
 import smartcupon.modelo.pojo.Sucursal;
 import smartcupon.modelo.pojo.TipoPromocion;
 import smartcupon.utils.Constantes;
@@ -74,6 +75,60 @@ public class PromocionDAO {
         }
 
         return sucursales;
+    }
+    
+    
+    public static List<Sucursal> obtenerSucursalesSinPromocion(Integer idPromocion) {
+        List<Sucursal> sucursales = new ArrayList();
+        String url = Constantes.URL_WS + "promociones/obtenerSucursalesSinPromocion/" + idPromocion;
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistSucursales = new TypeToken<ArrayList<Sucursal>>() {
+            }.getType();
+            sucursales = gson.fromJson(respuesta.getContenido(), arraylistSucursales);
+        }
+
+        return sucursales;
+    }
+    
+    public static Mensaje eliminarPromocionSucursal(PromocionSucursal promocionSucursal){
+        Mensaje mensaje= new Mensaje();
+        String url = Constantes.URL_WS + "promociones/obtenerSucursalesPorPromocion/";
+        
+        
+        Gson gson = new Gson();
+        String json = gson.toJson(promocionSucursal);
+        CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url, json);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error en la petición para eliminar la sucursal");
+        }
+
+        return mensaje;
+    }
+    
+    public static Mensaje registrarPromocionSucursal(PromocionSucursal promocionSucursal){
+    
+        Mensaje mensaje = new Mensaje();
+        String url = Constantes.URL_WS + "promociones/registroPromocionSucursal/";
+                
+        Gson gson = new Gson();
+        String json = gson.toJson(promocionSucursal);
+        CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, json);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("Error en la petición para eliminar la sucursal");
+        }
+
+        return mensaje;
     }
 
     public static Mensaje registrarPromocion(Promocion promocion, File archivoImagen) {

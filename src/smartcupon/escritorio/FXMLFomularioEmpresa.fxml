@@ -16,11 +16,6 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <ImageView fitHeight="22.0" fitWidth="16.0" layoutX="25.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../../Downloads/business-and-trade.png" />
-         </image>
-      </ImageView>
       <Label layoutX="47.0" layoutY="103.0" text="Registro de la empresa">
          <font>
             <Font size="13.0" />

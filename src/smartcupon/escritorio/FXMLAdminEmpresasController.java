@@ -25,8 +25,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.dao.EmpresaDAO;
+import smartcupon.modelo.dao.SucursalDAO;
 import smartcupon.modelo.pojo.DatosEmpresa;
 import smartcupon.modelo.pojo.Empresa;
+import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.utils.Utilidades;
 
 /**
@@ -61,8 +63,8 @@ public class FXMLAdminEmpresasController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        empresas = FXCollections.observableArrayList();
         cargarInformacion();
+        consultarEmpresas();
     }    
 
     private void cargarInformacion() {
@@ -76,7 +78,10 @@ public class FXMLAdminEmpresasController implements Initializable {
     
     public void consultarEmpresas(){
         List<Empresa> listaEmpresas = EmpresaDAO.obtenerEmpresas();
-        empresas.addAll(listaEmpresas);
+        if(listaEmpresas.size() < 0 ){
+            Utilidades.mostrarAlertaSimple("Empresas", "Por el momento no hay empresas registradas", Alert.AlertType.INFORMATION);
+        }
+        empresas = FXCollections.observableArrayList(listaEmpresas);
         tvEmpresas.setItems(empresas);
     }
     
@@ -87,10 +92,11 @@ public class FXMLAdminEmpresasController implements Initializable {
     @FXML
     private void btnRegistrar(ActionEvent event) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFomularioEmpresa.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioEmpresa.fxml"));
             Parent vista = loader.load();
-            FXMLFomularioEmpresaController controlador = loader.getController();
-            controlador.iniciarlizarInformacion(null);
+            
+            FXMLFormularioEmpresaController controlador = loader.getController();
+            
             
             Stage stage = new Stage();
             Scene scene = new Scene(vista);
@@ -108,14 +114,15 @@ public class FXMLAdminEmpresasController implements Initializable {
         Empresa empresa = tvEmpresas.getSelectionModel().getSelectedItem();
         if (empresa!= null) {
             consultarInformacionEmpresa(empresa.getIdEmpresa());
-            System.out.println(empresa.getIdEmpresa());
+           
             datosEmpresa.setEmpresa(empresa);
             
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFomularioEmpresa.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioEmpresa.fxml"));
                 Parent vista = loader.load();
-                FXMLFomularioEmpresaController controlador = loader.getController();
-                controlador.iniciarlizarInformacion(datosEmpresa);
+                
+                FXMLFormularioEmpresaController controlador = loader.getController();
+                controlador.iniciarlizarDatos(empresa.getIdEmpresa());
                 
                 Stage stage = new Stage();
                 Scene escenaFormularioEdicion = new Scene(vista);
@@ -133,5 +140,40 @@ public class FXMLAdminEmpresasController implements Initializable {
 
     @FXML
     private void btnEliminar(ActionEvent event) {
+        Mensaje respuesta = null;
+        Integer idEmpresa = (tvEmpresas.getSelectionModel().getSelectedItem() != null)
+                ? tvEmpresas.getSelectionModel().getSelectedItem().getIdEmpresa() : null;
+
+        if (idEmpresa != null) {
+            boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
+                    "Eliminar empresa",
+                    "¿Estás seguro que quieres eliminar esta empresa?");
+
+            if (idEmpresa > 0 && aceptar) {
+                DatosEmpresa datos = new DatosEmpresa();
+                Empresa empresa = new Empresa();
+                
+                empresa.setIdEmpresa(idEmpresa);
+                datos.setEmpresa(empresa);
+                
+                respuesta = EmpresaDAO.eliminarEmpresa(datos);
+
+                if (!respuesta.getError()) {
+                    Utilidades.mostrarAlertaSimple("Eliminacion exitosa",
+                            respuesta.getMensaje(),
+                            Alert.AlertType.INFORMATION);
+                } else {
+                    Utilidades.mostrarAlertaSimple("Error al eliminar",
+                            respuesta.getMensaje(),
+                            Alert.AlertType.INFORMATION);
+                }
+            }
+
+            consultarEmpresas();
+        } else {
+            Utilidades.mostrarAlertaSimple("Seleccion de empresa",
+                    "Para poder eliminar debes seleccionar una empresa de la tabla",
+                    Alert.AlertType.WARNING);
+        }
     }
 }

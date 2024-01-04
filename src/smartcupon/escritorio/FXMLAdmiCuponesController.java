@@ -110,7 +110,6 @@ public class FXMLAdmiCuponesController implements Initializable {
     
     public void obtenerPromociones(){
         tvCupones.setItems(null);
-        System.out.println(idEmpresa + "Admin");
         List<Promocion> listaPromociones = CuponDAO.obtenerPromociones(idEmpresa);
         if(listaPromociones.isEmpty()){
             Utilidades.mostrarAlertaSimple("Cupones", "Por el momento no hay cupones disponibles", Alert.AlertType.INFORMATION);

@@ -205,4 +205,37 @@ public class ConexionHTTP {
             buffer.close();
             return cadenaBuffer.toString();
        }
+
+    public static CodigoHTTP peticionDELETE(String url, String json) {
+        CodigoHTTP respuesta = new CodigoHTTP();
+
+        try {
+            URL urlServicio = new URL(url);
+            HttpURLConnection conexionHTTP = (HttpURLConnection) urlServicio.openConnection();
+
+            conexionHTTP.setRequestMethod("DELETE");
+            conexionHTTP.setRequestProperty("Content-Type", "application/json");
+            conexionHTTP.setDoOutput(true);
+
+            OutputStream outputStream = conexionHTTP.getOutputStream();
+            outputStream.write(json.getBytes());
+            outputStream.flush();
+            outputStream.close();
+            
+            int codigoRespuesta = conexionHTTP.getResponseCode();
+            respuesta.setCodigoRespuesta(codigoRespuesta);
+
+            if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
+                respuesta.setContenido(deserializar(conexionHTTP.getInputStream()));
+            }
+        } catch (MalformedURLException ex) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_URL);
+            respuesta.setContenido("ERROR: " + ex.getMessage());
+        } catch (IOException ex) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_PETICION);
+            respuesta.setContenido("ERROR: " + ex.getMessage());
+        }
+
+        return respuesta;
+    }
 }

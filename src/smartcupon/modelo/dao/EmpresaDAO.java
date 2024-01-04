@@ -52,18 +52,17 @@ public class EmpresaDAO {
         return datosEmpresa;
     }
     
-    public static Mensaje registrarEmpresa(Empresa empresa, File logo){
+    public static Mensaje registrarEmpresa(DatosEmpresa empresa, File logo){
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "empresas/registrarEmpresa";
         try{
             if(logo != null){
                 byte[] logoEmpresa = Files.readAllBytes(logo.toPath());
-                empresa.setLogo(logoEmpresa);
+                empresa.getEmpresa().setLogo(logoEmpresa);
             }
-            DatosEmpresa  datos = new DatosEmpresa();
-            datos.setEmpresa(empresa);
+            
             Gson gson = new Gson();
-            String parametros = gson.toJson(datos);
+            String parametros = gson.toJson(empresa);
             CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
             if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
@@ -78,21 +77,22 @@ public class EmpresaDAO {
         return msj;
     }
     
-    public static Mensaje editarEmpresa(Empresa empresa, File logo){
+    public static Mensaje editarEmpresa(DatosEmpresa empresa, File logo){
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "empresas/editarEmpresa";
         try{
             if(logo != null){
                 byte[] logoEmpresa = Files.readAllBytes(logo.toPath());
-                empresa.setLogo(logoEmpresa);
+                empresa.getEmpresa().setLogo(logoEmpresa);
             }else{
-                empresa.setLogo(null);
+                empresa.getEmpresa().setLogo(null);
             }
-            DatosEmpresa  datos = new DatosEmpresa();
-            datos.setEmpresa(empresa);
+            //empresa.getEmpresa().setNombreEstatus(null);
+            
             Gson gson = new Gson();
-            String parametros = gson.toJson(datos);
-            CodigoHTTP respuesta = ConexionHTTP.peticionPOST(url, parametros);
+            String parametros = gson.toJson(empresa);
+            
+            CodigoHTTP respuesta = ConexionHTTP.peticionPUT(url, parametros);
             if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
             }else{
@@ -106,11 +106,12 @@ public class EmpresaDAO {
         return msj;
     }
     
-    public static Mensaje eliminarEmpresa(Integer idEmpresa){
+    public static Mensaje eliminarEmpresa(DatosEmpresa empresa){
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "empresas/eliminarEmpresa/" + idEmpresa;
+        String url = Constantes.URL_WS + "empresas/eliminarEmpresa";
         Gson gson = new Gson();
-        CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url);
+        String json = gson.toJson(empresa);
+        CodigoHTTP respuesta = ConexionHTTP.peticionDELETE(url, json);
         if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
             msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
         }else{

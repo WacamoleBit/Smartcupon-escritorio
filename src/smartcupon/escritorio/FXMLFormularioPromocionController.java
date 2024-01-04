@@ -68,6 +68,7 @@ public class FXMLFormularioPromocionController implements Initializable {
 
     private Promocion promocion = null;
     private File imagen = null;
+    private Integer empresa = null;
 
     @FXML
     private TextField tfNombre;
@@ -140,6 +141,11 @@ public class FXMLFormularioPromocionController implements Initializable {
         cbEstatus.setDisable(false);
     }
 
+    public void definirEmpresa(Integer empresa) {
+        this.empresa = empresa;
+        cargarInformacionEmpresas();
+    }
+
     @FXML
     private void btnGuardar(ActionEvent event) {
         ocultarLabelsError();
@@ -200,12 +206,22 @@ public class FXMLFormularioPromocionController implements Initializable {
     }
 
     private void cargarInformacionEmpresas() {
-        List<Empresa> todas = EmpresaDAO.obtenerEmpresas();
+        if (empresa != null) {
+            Empresa empresa = EmpresaDAO.obtenerDatosEmpresa(this.empresa).getEmpresa();
+            List<Empresa> todas = new ArrayList<>();
+            todas.add(empresa);
+            empresas = FXCollections.observableArrayList();
+            empresas.addAll(todas);
 
-        empresas = FXCollections.observableArrayList();
-        empresas.addAll(todas);
+            cbEmpresa.setItems(empresas);
+        } else {
+            List<Empresa> todas = EmpresaDAO.obtenerEmpresas();
 
-        cbEmpresa.setItems(empresas);
+            empresas = FXCollections.observableArrayList();
+            empresas.addAll(todas);
+
+            cbEmpresa.setItems(empresas);
+        }
     }
 
     private void cargarInformacionEstatus() {

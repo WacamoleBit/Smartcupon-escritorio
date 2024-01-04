@@ -44,6 +44,21 @@ public class PromocionDAO {
 
         return promociones;
     }
+    
+    public static List<Promocion> obtenerPromocionesDisponiblesPorEmpresa(Integer idEmpresa) {
+        List<Promocion> promociones = new ArrayList();
+        String url = Constantes.URL_WS + "promociones/obtenerPromocionesDisponiblesPorEmpresa/" + idEmpresa;
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistPromociones = new TypeToken<ArrayList<Promocion>>() {
+            }.getType();
+            promociones = gson.fromJson(respuesta.getContenido(), arraylistPromociones);
+        }
+
+        return promociones;
+    }
 
     public static Mensaje registrarPromocion(Promocion promocion, File archivoImagen) {
         Mensaje mensaje = new Mensaje();

@@ -41,6 +41,7 @@ import smartcupon.utils.Utilidades;
  */
 public class FXMLAdminPromocionesController implements Initializable {
 
+    private Integer empresa = null;
     private ObservableList<Promocion> promociones;
     private ObservableList<String> filtrosFechas;
 
@@ -81,6 +82,11 @@ public class FXMLAdminPromocionesController implements Initializable {
         configurarCombobox();
     }
 
+    public void definirEmpresa(Integer empresa) {
+        this.empresa = empresa;
+        mostrarInformacionPromociones();
+    }
+
     @FXML
     private void btnRegistrar(ActionEvent event) {
         try {
@@ -88,6 +94,7 @@ public class FXMLAdminPromocionesController implements Initializable {
             Parent vista = vistaLoader.load();
 
             FXMLFormularioPromocionController controlador = vistaLoader.getController();
+            controlador.definirEmpresa(empresa);
 
             Stage stage = new Stage();
             Scene escenaFormularioPromocion = new Scene(vista);
@@ -114,6 +121,7 @@ public class FXMLAdminPromocionesController implements Initializable {
 
                 FXMLFormularioPromocionController controlador = vistaLoader.getController();
                 controlador.inicializarDatos(idPromocion);
+                controlador.definirEmpresa(empresa);
 
                 Stage stage = new Stage();
                 Scene escenaFormularioPromocion = new Scene(vista);
@@ -181,13 +189,24 @@ public class FXMLAdminPromocionesController implements Initializable {
     }
 
     private void mostrarInformacionPromociones() {
-        tvPromociones.setItems(null);
+        if (empresa != null) {
+            tvPromociones.setItems(null);
 
-        List<Promocion> respuesta = PromocionDAO.obtenerPromociones();
+            List<Promocion> respuesta = PromocionDAO.obtenerPromocionesDisponiblesPorEmpresa(empresa);
 
-        promociones = FXCollections.observableArrayList(respuesta);
+            promociones = FXCollections.observableArrayList(respuesta);
 
-        tvPromociones.setItems(promociones);
+            tvPromociones.setItems(promociones);
+        } else {
+            tvPromociones.setItems(null);
+
+            List<Promocion> respuesta = PromocionDAO.obtenerPromociones();
+
+            promociones = FXCollections.observableArrayList(respuesta);
+
+            tvPromociones.setItems(promociones);
+        }
+
     }
 
     private void configurarCombobox() {

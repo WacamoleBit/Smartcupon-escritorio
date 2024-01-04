@@ -111,6 +111,7 @@ public class FXMLHomeController implements Initializable {
             Parent vista = vistaLoader.load();
             
             FXMLAdminPromocionesController controlador = vistaLoader.getController();
+            controlador.definirEmpresa(usuario.getEmpresa());
             
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);

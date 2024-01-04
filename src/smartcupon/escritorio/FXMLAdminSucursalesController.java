@@ -116,7 +116,8 @@ public class FXMLAdminSucursalesController implements Initializable {
                 Parent vista = loader.load();
 
                 FXMLFormularioSucursalController controlador = loader.getController();
-                controlador.inicializarDatos(idSucursal);
+                controlador.definirEmpresa(empresa);
+                controlador.inicializarDatos(idSucursal);                
 
                 Stage stage = new Stage();
                 Scene escenaFormularioEdicion = new Scene(vista);

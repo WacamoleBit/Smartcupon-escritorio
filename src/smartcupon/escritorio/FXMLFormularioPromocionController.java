@@ -37,6 +37,7 @@ import smartcupon.modelo.pojo.Categoria;
 import smartcupon.modelo.pojo.Empresa;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Promocion;
+import smartcupon.modelo.pojo.Sucursal;
 import smartcupon.modelo.pojo.TipoPromocion;
 import smartcupon.utils.Utilidades;
 import static smartcupon.utils.Utilidades.seleccionarImagen;
@@ -65,6 +66,7 @@ public class FXMLFormularioPromocionController implements Initializable {
     private ObservableList<String> estatus = null;
     private ObservableList<TipoPromocion> tiposPromocion = null;
     private ObservableList<Categoria> categorias = null;
+    private ObservableList<Sucursal> sucursales= null;
 
     private Promocion promocion = null;
     private File imagen = null;
@@ -120,6 +122,8 @@ public class FXMLFormularioPromocionController implements Initializable {
     private Label lbErrorEmpresa;
     @FXML
     private ImageView ivPromocion;
+    @FXML
+    private ComboBox<Sucursal> cbSucursales;
 
     /**
      * Initializes the controller class.
@@ -131,6 +135,7 @@ public class FXMLFormularioPromocionController implements Initializable {
         cargarInformacionEstatus();
         cargarInformacionTipoPromocion();
         cargarInformacionCategorias();
+        cargarInformacionSucursales();
         configurarCamposNumericos();
         configurarDatePickers();
     }
@@ -236,6 +241,16 @@ public class FXMLFormularioPromocionController implements Initializable {
         cbEstatus.setItems(estatus);
 
         cbEstatus.getSelectionModel().selectFirst();
+    }
+    
+    private void cargarInformacionSucursales() {
+        List<Sucursal> listaSucursales = PromocionDAO.obtenerSucursalesPorPromocion(promocion.getIdPromocion());
+       
+        sucursales = FXCollections.observableArrayList();
+        sucursales.setAll(listaSucursales);
+        cbSucursales.setItems(sucursales);
+
+        cbSucursales.getSelectionModel().selectFirst();
     }
 
     private void cargarInformacionTipoPromocion() {
@@ -542,5 +557,13 @@ public class FXMLFormularioPromocionController implements Initializable {
                     "Error al intentar visualizar la imagen seleccionada",
                     Alert.AlertType.ERROR);
         }
+    }
+
+    @FXML
+    private void btnRegistrarSucursales(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnEliminarSucursales(ActionEvent event) {
     }
 }

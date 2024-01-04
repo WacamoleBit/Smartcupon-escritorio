@@ -21,6 +21,7 @@ import smartcupon.modelo.pojo.DatosPromocion;
 import smartcupon.modelo.pojo.FiltroBuscarPromocion;
 import smartcupon.modelo.pojo.Mensaje;
 import smartcupon.modelo.pojo.Promocion;
+import smartcupon.modelo.pojo.Sucursal;
 import smartcupon.modelo.pojo.TipoPromocion;
 import smartcupon.utils.Constantes;
 
@@ -58,6 +59,21 @@ public class PromocionDAO {
         }
 
         return promociones;
+    }
+    
+    public static List<Sucursal> obtenerSucursalesPorPromocion(Integer idEmpresa) {
+        List<Sucursal> sucursales = new ArrayList();
+        String url = Constantes.URL_WS + "promociones/obtenerSucursalesPorPromocion/" + idEmpresa;
+        CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            Type arraylistSucursales = new TypeToken<ArrayList<Sucursal>>() {
+            }.getType();
+            sucursales = gson.fromJson(respuesta.getContenido(), arraylistSucursales);
+        }
+
+        return sucursales;
     }
 
     public static Mensaje registrarPromocion(Promocion promocion, File archivoImagen) {

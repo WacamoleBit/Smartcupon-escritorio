@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="583.0" prefWidth="833.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLPromocionSucursalController">
+   <children>
+      <Pane layoutX="32.0" layoutY="143.0" prefHeight="409.0" prefWidth="769.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Lista de sucursales donde aplica la promoción">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tvSucursales" layoutX="15.0" layoutY="45.0" prefHeight="347.0" prefWidth="739.0" style="-fx-background-color: transparent;">
+              <columns>
+                <TableColumn fx:id="colNombre" prefWidth="165.0" text="Nombre" />
+                  <TableColumn fx:id="colTelefono" prefWidth="168.0" text="Telefono" />
+                  <TableColumn fx:id="colLatitud" prefWidth="199.0" text="Latitud" />
+                  <TableColumn fx:id="colLongitud" prefWidth="206.0" text="Longitud" />
+              </columns>
+            </TableView>
+         </children></Pane>
+      <Label layoutX="32.0" layoutY="94.0" text="Promociones Sucursales">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Button layoutX="698.0" layoutY="97.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: #2d82d1; -fx-background-radius: 30;" text="Eliminar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+   </children>
+</AnchorPane>

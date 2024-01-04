@@ -36,7 +36,7 @@ import smartcupon.utils.Utilidades;
  *
  * @author Dell
  */
-public class FXMLAdmiCuponesController implements Initializable {
+public class FXMLAdminCuponesController implements Initializable {
 
     private Integer idEmpresa;
     private Promocion promocion;

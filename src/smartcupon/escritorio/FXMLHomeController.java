@@ -96,6 +96,7 @@ public class FXMLHomeController implements Initializable {
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
             stage.setTitle("Gestión empresas");
+            stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             
@@ -117,6 +118,7 @@ public class FXMLHomeController implements Initializable {
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
             stage.setTitle("Gestión promociones");
+            stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             
@@ -128,17 +130,18 @@ public class FXMLHomeController implements Initializable {
     @FXML
     private void btnIrPantallaCupon(ActionEvent event) {
         try {
-            FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdmiCupones.fxml"));
+            FXMLLoader vistaLoader = new FXMLLoader(getClass().getResource("FXMLAdminCupones.fxml"));
             Parent vista = vistaLoader.load();
             
-            FXMLAdmiCuponesController controlador = vistaLoader.getController();
+            FXMLAdminCuponesController controlador = vistaLoader.getController();
             controlador.obtenerEmpresa(usuario.getEmpresa());
-            System.out.println(usuario.getEmpresa());
+            
             
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
             stage.setTitle("Gestión cupones");
+            stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             
@@ -160,6 +163,7 @@ public class FXMLHomeController implements Initializable {
             Stage stage = new Stage();
             Scene escenaFormularioEdicion = new Scene(vista);
             stage.setScene(escenaFormularioEdicion);
+            stage.setResizable(false);
             stage.setTitle("Gestión sucursales");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

@@ -99,6 +99,7 @@ public class FXMLAdminPromocionesController implements Initializable {
             Stage stage = new Stage();
             Scene escenaFormularioPromocion = new Scene(vista);
             stage.setScene(escenaFormularioPromocion);
+            stage.setResizable(false);
             stage.setTitle("Registrar Promoción");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -126,6 +127,7 @@ public class FXMLAdminPromocionesController implements Initializable {
                 Stage stage = new Stage();
                 Scene escenaFormularioPromocion = new Scene(vista);
                 stage.setScene(escenaFormularioPromocion);
+                stage.setResizable(false);
                 stage.setTitle("Editar Promoción");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();

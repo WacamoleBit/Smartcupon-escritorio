@@ -123,6 +123,7 @@ public class FXMLAdminSucursalesController implements Initializable {
                 Scene escenaFormularioEdicion = new Scene(vista);
                 stage.setScene(escenaFormularioEdicion);
                 stage.setTitle("Formulario de sucursal");
+                stage.setResizable(false);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
 

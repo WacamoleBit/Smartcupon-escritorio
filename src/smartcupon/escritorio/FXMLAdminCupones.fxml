@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLAdmiCuponesController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLAdminCuponesController">
    <children>
       <Pane layoutX="152.0" layoutY="75.0" prefHeight="100.0" prefWidth="397.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20px;">
          <children>

@@ -41,7 +41,7 @@ public class FXMLAdminCuponesController implements Initializable {
     private Integer idEmpresa;
     private Promocion promocion;
     private ObservableList<Promocion> promociones;
-    
+
     @FXML
     private TextField tfBuscar;
     @FXML
@@ -65,67 +65,65 @@ public class FXMLAdminCuponesController implements Initializable {
         cargarInformacion();
         obtenerPromociones();
         tvCupones.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, codigo) -> {
-        if (codigo != null) {
-            tfBuscar.setText(codigo.getCodigoPromocion());
-        }
-    });
-    }    
+            if (codigo != null) {
+                tfBuscar.setText(codigo.getCodigoPromocion());
+            }
+        });
+    }
 
     @FXML
     private void btnCanjearCupon(ActionEvent event) {
-        Mensaje mensaje = null;      
+        Mensaje mensaje = null;
         promocion = new Promocion();
         promocion.setCodigoPromocion(tfBuscar.getText().trim().toString());
         promocion.setEmpresa(idEmpresa);
-  
+
         boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
-                    "Canjear cupon",
-                    "¿Estás seguro de que quieres canjear este cupon?");
+                "Canjear cupon",
+                "¿Estás seguro de que quieres canjear este cupon?");
 
-            if (!promocion.getCodigoPromocion().isEmpty() && aceptar) {
-                mensaje = CuponDAO.canjearCupon(promocion);
+        if (!promocion.getCodigoPromocion().isEmpty() && aceptar) {
+            mensaje = CuponDAO.canjearCupon(promocion);
 
-                if (!mensaje.getError()) {
-                    
-                    Utilidades.mostrarAlertaSimple("Canjeo éxitoso",
-                            mensaje.getMensaje(),
-                            Alert.AlertType.INFORMATION);
-                    obtenerPromociones();
-                } else {
-                    Utilidades.mostrarAlertaSimple("Error al canjear el cupon",
-                            mensaje.getMensaje(),
-                            Alert.AlertType.INFORMATION);
-                }
+            if (!mensaje.getError()) {
+
+                Utilidades.mostrarAlertaSimple("Canjeo éxitoso",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
+                obtenerPromociones();
+            } else {
+                Utilidades.mostrarAlertaSimple("Error al canjear el cupon",
+                        mensaje.getMensaje(),
+                        Alert.AlertType.INFORMATION);
             }
-         else{
+        } else {
             Utilidades.mostrarAlertaSimple("Codigo cupon",
                     "Para poder canjear debes ingresar el codigo del cupon",
                     Alert.AlertType.WARNING);
         }
-        }
-    
-    public void obtenerEmpresa(Integer idEmpresa){
+    }
+
+    public void obtenerEmpresa(Integer idEmpresa) {
         this.idEmpresa = idEmpresa;
         obtenerPromociones();
     }
-    
-    public void obtenerPromociones(){
+
+    public void obtenerPromociones() {
         tvCupones.setItems(null);
         List<Promocion> listaPromociones = CuponDAO.obtenerPromociones(idEmpresa);
-        if(listaPromociones.isEmpty()){
+        if (listaPromociones.isEmpty()) {
             Utilidades.mostrarAlertaSimple("Cupones", "Por el momento no hay cupones disponibles", Alert.AlertType.INFORMATION);
         }
         promociones = FXCollections.observableArrayList(listaPromociones);
         tvCupones.setItems(promociones);
     }
-    
-    private void cargarInformacion(){
+
+    private void cargarInformacion() {
         colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         colCodigo.setCellValueFactory(new PropertyValueFactory("codigoPromocion"));
         colCuponesDisponibles.setCellValueFactory(new PropertyValueFactory("cuponesDisponibles"));
         colFechaVigencia.setCellValueFactory(new PropertyValueFactory("fechaTermino"));
         colEstatus.setCellValueFactory(new PropertyValueFactory("estatusNombre"));
     }
-    
-   
+
 }

@@ -19,10 +19,11 @@
             </Label>
             <TableView fx:id="tvSucursales" layoutX="15.0" layoutY="45.0" prefHeight="347.0" prefWidth="739.0" style="-fx-background-color: transparent;">
               <columns>
-                <TableColumn fx:id="colNombre" prefWidth="165.0" text="Nombre" />
-                  <TableColumn fx:id="colTelefono" prefWidth="168.0" text="Telefono" />
-                  <TableColumn fx:id="colLatitud" prefWidth="199.0" text="Latitud" />
-                  <TableColumn fx:id="colLongitud" prefWidth="206.0" text="Longitud" />
+                <TableColumn fx:id="colNombre" prefWidth="105.0" text="Nombre" />
+                  <TableColumn fx:id="colTelefono" prefWidth="130.0" text="Telefono" />
+                  <TableColumn fx:id="colDireccion" prefWidth="177.0" text="Direccion" />
+                  <TableColumn fx:id="colEncargado" prefWidth="192.0" text="Encargado" />
+                  <TableColumn fx:id="colEmpresa" prefWidth="134.0" text="Empresa" />
               </columns>
             </TableView>
          </children></Pane>

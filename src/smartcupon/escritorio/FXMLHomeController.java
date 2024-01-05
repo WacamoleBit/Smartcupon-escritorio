@@ -61,7 +61,7 @@ public class FXMLHomeController implements Initializable {
     
     public void inicializarVariables(Usuario usuario) {
         this.usuario = usuario;
-        lbNombreUsuario.setText(usuario.getNombre());
+        lbNombreUsuario.setText(usuario.getNombre()+" !");
         tfNombre.setText(usuario.getNombre() + " " + usuario.getApellidoPaterno() + " " + usuario.getApellidoMaterno());
         tfCurp.setText(usuario.getCurp());
         tfEmail.setText(usuario.getEmail());

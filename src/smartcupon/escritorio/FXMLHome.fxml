@@ -10,25 +10,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="658.0" prefWidth="1085.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLHomeController">
+<AnchorPane id="AnchorPane" prefHeight="653.0" prefWidth="930.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartcupon.escritorio.FXMLHomeController">
    <children>
-      <Label layoutX="197.0" layoutY="88.0" text="Dashboad" textFill="#2d82d1">
+      <Label layoutX="91.0" layoutY="9.0" text="SmartCupon" textFill="#2d82d1">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Label>
+      <Label layoutX="38.0" layoutY="89.0" text="Dashboad" textFill="#2d82d1">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="287.0" layoutY="88.0" text="¡Hola, bienvenido de nuevo">
+      <Label layoutX="128.0" layoutY="89.0" text="¡Hola, bienvenid@ de nuevo">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="lbNombreUsuario" layoutX="479.0" layoutY="88.0" text="nombre">
+      <Label fx:id="lbNombreUsuario" layoutX="320.0" layoutY="89.0" text="nombre">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d3d7da" height="21.0" layoutX="276.0" layoutY="88.0" stroke="#dbe0e4" strokeType="INSIDE" width="3.0" />
-      <Pane layoutX="194.0" layoutY="125.0" prefHeight="504.0" prefWidth="549.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d3d7da" height="21.0" layoutX="117.0" layoutY="89.0" stroke="#dbe0e4" strokeType="INSIDE" width="3.0" />
+      <Pane layoutX="27.0" layoutY="125.0" prefHeight="504.0" prefWidth="549.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
          <children>
             <Label layoutX="14.0" layoutY="22.0" text="Modulos">
                <font>
@@ -86,37 +91,43 @@
                   </ImageView>
                </graphic></Button>
          </children></Pane>
-      <Pane prefHeight="665.0" prefWidth="172.0" style="-fx-background-color: #2d82d1;">
-         <children>
-            <Label layoutX="13.0" layoutY="34.0" text="SmartCupon" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="25.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnUsuarios" layoutX="1.0" layoutY="265.0" mnemonicParsing="false" onAction="#btnIrPantallaUsuarios" prefHeight="31.0" prefWidth="170.0" style="-fx-background-color: white;" text="Usuarios" textFill="#2d82d1">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-         </children></Pane>
-      <Pane layoutX="853.0" layoutY="136.0" prefHeight="200.0" prefWidth="200.0" />
-      <Pane layoutX="761.0" layoutY="125.0" prefHeight="504.0" prefWidth="302.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
+      <Pane layoutX="600.0" layoutY="125.0" prefHeight="349.0" prefWidth="302.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;">
          <children>
             <Label layoutX="14.0" layoutY="27.0" text="Datos de la cuenta">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
-            <Label layoutX="15.0" layoutY="77.0" text="Nombre" />
-            <Label layoutX="14.0" layoutY="126.0" text="Curp" />
-            <Label layoutX="12.0" layoutY="185.0" text="Email" />
-            <Label layoutX="17.0" layoutY="235.0" text="Rol" />
+            <Label layoutX="12.0" layoutY="61.0" text="Nombre" />
+            <Label layoutX="13.0" layoutY="116.0" text="Curp" />
+            <Label layoutX="11.0" layoutY="175.0" text="Email" />
+            <Label layoutX="17.0" layoutY="229.0" text="Rol" />
             <Label fx:id="lbEmpresa" layoutX="17.0" layoutY="285.0" text="Empresa" />
-            <TextField fx:id="tfNombre" editable="false" layoutX="19.0" layoutY="94.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <TextField fx:id="tfCurp" editable="false" layoutX="19.0" layoutY="150.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <TextField fx:id="tfEmail" editable="false" layoutX="19.0" layoutY="202.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfNombre" editable="false" layoutX="19.0" layoutY="84.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfCurp" editable="false" layoutX="19.0" layoutY="139.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfEmail" editable="false" layoutX="19.0" layoutY="198.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
             <TextField fx:id="tfRol" editable="false" layoutX="19.0" layoutY="252.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
-            <TextField fx:id="tfEmpresa" editable="false" layoutX="19.0" layoutY="302.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
+            <TextField fx:id="tfEmpresa" editable="false" layoutX="19.0" layoutY="310.0" prefHeight="25.0" prefWidth="265.0" style="-fx-background-radius: 30; -fx-background-color: white;" />
          </children>
       </Pane>
+      <ImageView fitHeight="60.0" fitWidth="53.0" layoutX="38.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/hot-sale.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnUsuarios" layoutX="600.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnIrPantallaUsuarios" prefHeight="138.0" prefWidth="302.0" style="-fx-background-color: #F4F6F6; -fx-background-radius: 20;" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="751.0" layoutY="550.0" text="Usuarios">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="110.0" fitWidth="111.0" layoutX="617.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/search%20(1).png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

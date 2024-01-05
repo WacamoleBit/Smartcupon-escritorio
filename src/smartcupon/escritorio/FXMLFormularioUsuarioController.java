@@ -105,7 +105,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
     @FXML
     private void btnGuardar(ActionEvent event) {
         ocultarLabelsError();
-        
+
         if (usuario == null) {
             usuario = new Usuario();
         }
@@ -142,7 +142,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
 
         cbRol.getSelectionModel().select(
                 buscarIdRol(
-                        usuario.getRol()+1)
+                        usuario.getRol())
         );
 
         if (usuario.getEmpresa() != null) {

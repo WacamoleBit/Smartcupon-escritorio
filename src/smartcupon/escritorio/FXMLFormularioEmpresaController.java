@@ -319,7 +319,7 @@ public class FXMLFormularioEmpresaController implements Initializable {
             lbPaginaWeb.setText("Ingrese una pagina web valida");
             esValido = false;
         }
-        if (!Utilidades.validarRFC(tfRfc.getText().trim()) || tfRfc.getText().isEmpty()) {
+        if (datosEmpresa == null && !Utilidades.validarRFC(tfRfc.getText().trim()) || tfRfc.getText().isEmpty()) {
             lbRfc.setText("Ingrese un rfc valido");
             esValido = false;
         }
@@ -347,11 +347,6 @@ public class FXMLFormularioEmpresaController implements Initializable {
         }
         if (cbEstado.getValue() == null) {
             lbEstado.setText("Seleccione el estado");
-            esValido = false;
-        }
-        
-        if (imagen == null) {
-            lbLogo.setText("Selecciona una imagen");
             esValido = false;
         }
 

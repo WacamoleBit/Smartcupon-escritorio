@@ -93,12 +93,7 @@
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <Button fx:id="btnUsuarios" layoutX="1.0" layoutY="265.0" mnemonicParsing="false" onAction="#btnIrPantallaUsuarios" prefHeight="31.0" prefWidth="170.0" style="-fx-background-color: #2d82d1;" text="Usuarios" textFill="WHITE">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnUsuarios1" layoutX="1.0" layoutY="599.0" mnemonicParsing="false" onAction="#btnIrPantallaUsuarios" prefHeight="31.0" prefWidth="172.0" style="-fx-background-color: #2d82d1;" text="Cerrar Sesion" textFill="WHITE">
+            <Button fx:id="btnUsuarios" layoutX="1.0" layoutY="265.0" mnemonicParsing="false" onAction="#btnIrPantallaUsuarios" prefHeight="31.0" prefWidth="170.0" style="-fx-background-color: white;" text="Usuarios" textFill="#2d82d1">
                <font>
                   <Font size="18.0" />
                </font>

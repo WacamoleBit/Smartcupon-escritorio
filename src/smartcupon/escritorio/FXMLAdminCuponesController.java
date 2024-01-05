@@ -76,6 +76,7 @@ public class FXMLAdminCuponesController implements Initializable {
         Mensaje mensaje = null;      
         promocion = new Promocion();
         promocion.setCodigoPromocion(tfBuscar.getText().trim().toString());
+        promocion.setEmpresa(idEmpresa);
   
         boolean aceptar = Utilidades.mostrarAlertaConfirmacion(
                     "Canjear cupon",

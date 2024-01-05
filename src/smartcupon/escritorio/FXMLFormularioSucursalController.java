@@ -278,7 +278,6 @@ public class FXMLFormularioSucursalController implements Initializable {
             empresas.addAll(listaEmpresas);
             cbEmpresa.setItems(empresas);
         }
-
     }
 
     private void configurarSeleccionEstado() {

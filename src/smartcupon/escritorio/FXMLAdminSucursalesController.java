@@ -49,15 +49,17 @@ public class FXMLAdminSucursalesController implements Initializable {
     @FXML
     private TableColumn colTelefono;
     @FXML
-    private TableColumn colLatitud;
-    @FXML
-    private TableColumn colLongitud;
-    @FXML
     private TextField tfBuscarSucursal;
     @FXML
     private CheckBox cbNombre;
     @FXML
     private CheckBox cbDireccion;
+    @FXML
+    private TableColumn colDireccion;
+    @FXML
+    private TableColumn colEncargado;
+    @FXML
+    private TableColumn colEmpresa;
 
     /**
      * Initializes the controller class.
@@ -71,8 +73,9 @@ public class FXMLAdminSucursalesController implements Initializable {
     private void cargarInformacion() {
         colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         colTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));
-        colLatitud.setCellValueFactory(new PropertyValueFactory("latitud"));
-        colLongitud.setCellValueFactory(new PropertyValueFactory("longitud"));
+        colDireccion.setCellValueFactory(new PropertyValueFactory("direccionNombre"));
+        colEncargado.setCellValueFactory(new PropertyValueFactory("encargadoNombre"));
+        colEmpresa.setCellValueFactory(new PropertyValueFactory("empresaNombre"));
     }
 
     public void definirEmpresa(Integer empresa) {

@@ -11,27 +11,33 @@ package smartcupon.modelo.pojo;
  */
 public class Sucursal {
 
-    private Integer idSucursal;
+   private Integer idSucursal;
     private String nombre;
     private Integer direccion;
+    private String direccionNombre;
     private String telefono;
     private Double latitud;
     private Double longitud;
     private Integer encargado;
+    private String encargadoNombre;
     private Integer empresa;
+    private String empresaNombre;
 
     public Sucursal() {
     }
 
-    public Sucursal(Integer idSucursal, String nombre, Integer direccion, String telefono, Double latitud, Double longitud, Integer encargado, Integer empresa) {
+    public Sucursal(Integer idSucursal, String nombre, Integer direccion, String direccionNombre, String telefono, Double latitud, Double longitud, Integer encargado, String encargadoNombre, Integer empresa, String empresaNombre) {
         this.idSucursal = idSucursal;
         this.nombre = nombre;
         this.direccion = direccion;
+        this.direccionNombre = direccionNombre;
         this.telefono = telefono;
         this.latitud = latitud;
         this.longitud = longitud;
         this.encargado = encargado;
+        this.encargadoNombre = encargadoNombre;
         this.empresa = empresa;
+        this.empresaNombre = empresaNombre;
     }
 
     public Integer getIdSucursal() {
@@ -56,6 +62,14 @@ public class Sucursal {
 
     public void setDireccion(Integer direccion) {
         this.direccion = direccion;
+    }
+
+    public String getDireccionNombre() {
+        return direccionNombre;
+    }
+
+    public void setDireccionNombre(String direccionNombre) {
+        this.direccionNombre = direccionNombre;
     }
 
     public String getTelefono() {
@@ -90,6 +104,14 @@ public class Sucursal {
         this.encargado = encargado;
     }
 
+    public String getEncargadoNombre() {
+        return encargadoNombre;
+    }
+
+    public void setEncargadoNombre(String encargadoNombre) {
+        this.encargadoNombre = encargadoNombre;
+    }
+
     public Integer getEmpresa() {
         return empresa;
     }
@@ -98,6 +120,15 @@ public class Sucursal {
         this.empresa = empresa;
     }
 
+    public String getEmpresaNombre() {
+        return empresaNombre;
+    }
+
+    public void setEmpresaNombre(String empresaNombre) {
+        this.empresaNombre = empresaNombre;
+    }
+    
+    
     @Override
     public String toString() {
         return nombre;

@@ -202,7 +202,7 @@ public class FXMLAdminPromocionesController implements Initializable {
         } else {
             tvPromociones.setItems(null);
 
-            List<Promocion> respuesta = PromocionDAO.obtenerPromociones(empresa);
+            List<Promocion> respuesta = PromocionDAO.obtenerPromociones();
 
             promociones = FXCollections.observableArrayList(respuesta);
 

@@ -32,9 +32,9 @@ import smartcupon.utils.Constantes;
  */
 public class PromocionDAO {
 
-    public static List<Promocion> obtenerPromociones(Integer idEmpresa) {
+    public static List<Promocion> obtenerPromociones() {
         List<Promocion> promociones = new ArrayList();
-        String url = Constantes.URL_WS + "promociones/obtenerPromociones/" + idEmpresa;
+        String url = Constantes.URL_WS + "promociones/obtenerPromociones";
         CodigoHTTP respuesta = ConexionHTTP.peticionGET(url);
 
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {

@@ -79,7 +79,7 @@ public class Utilidades {
             String cadena = change.getControlNewText();
 
             // Verifica si la cadena contiene solo dígitos
-            if (cadena.matches("\\d*\\.?\\d*")) { // \\d* significa: "cero o mas digitos , \\.? significa: "cero o un punto"
+            if (cadena.matches("-?\\d*\\.?\\d*")) { // \\d* significa: "cero o mas digitos , \\.? significa: "cero o un punto"
                 return change;
             } else {
                 return null;

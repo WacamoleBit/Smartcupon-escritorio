@@ -119,12 +119,12 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Label layoutX="751.0" layoutY="550.0" text="Usuarios">
+      <Label fx:id="lbUsuarios" layoutX="751.0" layoutY="550.0" text="Usuarios">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <ImageView fitHeight="110.0" fitWidth="111.0" layoutX="617.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivUsuarios" fitHeight="110.0" fitWidth="111.0" layoutX="617.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../img/search%20(1).png" />
          </image>

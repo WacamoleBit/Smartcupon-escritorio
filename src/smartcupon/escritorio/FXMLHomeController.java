@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import smartcupon.modelo.pojo.Usuario;
@@ -50,6 +51,10 @@ public class FXMLHomeController implements Initializable {
     private Label lbBotonEmpresa;
     @FXML
     private Button btnUsuarios;
+    @FXML
+    private Label lbUsuarios;
+    @FXML
+    private ImageView ivUsuarios;
 
     /**
      * Initializes the controller class.
@@ -75,6 +80,8 @@ public class FXMLHomeController implements Initializable {
             btnEmpresa.setVisible(false);
             lbBotonEmpresa.setVisible(false);
             btnUsuarios.setVisible(false);
+            lbUsuarios.setVisible(false);
+            ivUsuarios.setVisible(false);
             
             tfEmpresa.setText(usuario.getNombreEmpresa().toString());
         } else {

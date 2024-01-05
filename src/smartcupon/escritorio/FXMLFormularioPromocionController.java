@@ -133,6 +133,8 @@ public class FXMLFormularioPromocionController implements Initializable {
     private ComboBox<Sucursal> cbSucursales;
     @FXML
     private Button btnEliminarSucursales;
+    @FXML
+    private Button btnRegistrarSucursales;
 
     /**
      * Initializes the controller class.
@@ -625,6 +627,8 @@ public class FXMLFormularioPromocionController implements Initializable {
     private void configurarBotonesSucursal() {
         if (promocion == null) {
             btnEliminarSucursales.setVisible(false);
+            btnRegistrarSucursales.setVisible(false);
+            cbSucursales.setDisable(true);
         } else {
             btnEliminarSucursales.setVisible(true);
         }

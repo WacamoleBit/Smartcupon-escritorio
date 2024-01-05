@@ -69,6 +69,7 @@ public class FXMLAdminCuponesController implements Initializable {
                 tfBuscar.setText(codigo.getCodigoPromocion());
             }
         });
+        configurarFiltroCodigo();
     }
 
     @FXML
@@ -126,4 +127,7 @@ public class FXMLAdminCuponesController implements Initializable {
         colEstatus.setCellValueFactory(new PropertyValueFactory("estatusNombre"));
     }
 
+    private void configurarFiltroCodigo(){
+        tfBuscar.setTextFormatter(Utilidades.configurarFiltroCodigoPromocion());
+    }
 }

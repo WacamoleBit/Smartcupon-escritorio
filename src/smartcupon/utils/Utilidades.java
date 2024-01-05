@@ -73,6 +73,20 @@ public class Utilidades {
 
         return new TextFormatter<>(filtro);
     }
+    
+    public static TextFormatter<String> configurarFiltroCodigoPromocion() {
+        UnaryOperator<TextFormatter.Change> filtro = change -> {
+             String cadena = change.getControlNewText();
+
+            if (cadena.matches("[a-zA-Z0-9]*") && cadena.length() <= 8) {
+                return change;
+            } else {
+                return null;
+            }
+        };
+        
+        return new TextFormatter<>(filtro);
+    }
 
     public static TextFormatter<String> configurarFiltroNumerosDecimales() {
         UnaryOperator<TextFormatter.Change> filtro = change -> {

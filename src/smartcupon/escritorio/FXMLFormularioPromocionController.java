@@ -409,6 +409,7 @@ public class FXMLFormularioPromocionController implements Initializable {
     private void configurarCamposNumericos() {
         tfMaximoCupones.setTextFormatter(Utilidades.configurarFiltroNumeros());
         tfCostoDescuento.setTextFormatter(Utilidades.configurarFiltroNumeros());
+        tfCodigoPromocion.setTextFormatter(Utilidades.configurarFiltroCodigoPromocion());
     }
 
     private void guardarDatos(Promocion promocion) {

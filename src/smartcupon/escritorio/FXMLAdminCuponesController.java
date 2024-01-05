@@ -95,7 +95,7 @@ public class FXMLAdminCuponesController implements Initializable {
             } else {
                 Utilidades.mostrarAlertaSimple("Error al canjear el cupon",
                         mensaje.getMensaje(),
-                        Alert.AlertType.INFORMATION);
+                        Alert.AlertType.ERROR);
             }
         } else {
             Utilidades.mostrarAlertaSimple("Codigo cupon",
@@ -112,11 +112,12 @@ public class FXMLAdminCuponesController implements Initializable {
     public void obtenerPromociones() {
         tvCupones.setItems(null);
         List<Promocion> listaPromociones = CuponDAO.obtenerPromociones(idEmpresa);
-        if (listaPromociones.isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Cupones", "Por el momento no hay cupones disponibles", Alert.AlertType.INFORMATION);
-        }
+        
         promociones = FXCollections.observableArrayList(listaPromociones);
         tvCupones.setItems(promociones);
+        if (listaPromociones.isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Cupones", "Por el momento no hay cupones disponibles", Alert.AlertType.WARNING);
+        }
     }
 
     private void cargarInformacion() {
